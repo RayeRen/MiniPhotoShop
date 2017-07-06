@@ -7,3 +7,7 @@
 const shared_ptr<BaseCommand> &ViewModel::getAddLineCommand() const {
     return addLineCommand;
 }
+
+void ViewModel::update(Params params) {
+
+}

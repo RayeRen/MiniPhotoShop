@@ -19,6 +19,8 @@ public:
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
 
+    virtual void update(Params params);
+
 private:
     shared_ptr<BaseCommand> addLineCommand;
 };

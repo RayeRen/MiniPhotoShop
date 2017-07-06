@@ -7,3 +7,7 @@
 void MainWindows::setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand) {
     MainWindows::addLineCommand = addLineCommand;
 }
+
+void MainWindows::update(Params params) {
+
+}

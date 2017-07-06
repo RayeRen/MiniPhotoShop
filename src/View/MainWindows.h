@@ -9,9 +9,11 @@
 #include "../Common/Observer.h"
 #include "../Common/BaseCommand.h"
 
-class MainWindows : public Observer{
+class MainWindows : public Observer {
 public:
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand);
+
+    virtual void update(Params params);
 
 private:
     shared_ptr<BaseCommand> addLineCommand;
