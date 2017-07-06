@@ -6,9 +6,10 @@
 #include "View/MainWindows.h"
 
 using namespace std;
-int main(){
-    shared_ptr<ViewModel> pViewModel(new ViewModel);
+
+int main() {
     shared_ptr<Model> pModel(new Model);
+    shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
     shared_ptr<MainWindows> pMainWindows(new MainWindows);
 
     //add viewModel to the observer list of model

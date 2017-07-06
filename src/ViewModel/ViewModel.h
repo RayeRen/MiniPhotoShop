@@ -14,7 +14,8 @@ using namespace std;
 class ViewModel : public Observable,
                   public Observer {
 public:
-    ViewModel() : addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand())) {}
+    ViewModel(shared_ptr<Model> pModel) :
+            addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))) {}
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
 

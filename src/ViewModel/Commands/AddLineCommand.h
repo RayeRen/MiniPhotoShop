@@ -10,6 +10,8 @@
 
 class AddLineCommand : public BaseCommand {
 public:
+    AddLineCommand(const shared_ptr<Model> &pModel):pModel(pModel){}
+
     void setPModel(const shared_ptr<Model> &pModel);
 
     void exec() {
