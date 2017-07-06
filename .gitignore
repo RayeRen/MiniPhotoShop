@@ -37,3 +37,7 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user*
 
+# Clion
+.idea
+cmake-build-debug
+.git

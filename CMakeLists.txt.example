@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.7)
+project(MiniPhotoShop)
+
+set(CMAKE_CXX_STANDARD 11)
+
+set(SOURCE_FILES src/Common/BaseCommand.h src/Common/Params.h src/Common/Observer.h src/Common/Observable.h src/ViewModel/Commands/AddLineCommand.cpp src/ViewModel/Commands/AddLineCommand.h src/Model/Model.cpp src/Model/Model.h src/ViewModel/ViewModel.cpp src/ViewModel/ViewModel.h src/App.cpp src/View/MainWindows.cpp src/View/MainWindows.h)
+
+add_executable(MiniPhotoShop ${SOURCE_FILES})
