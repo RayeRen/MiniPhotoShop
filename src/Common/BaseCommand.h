@@ -7,9 +7,12 @@
 
 
 #include "Params.h"
+#include "../Model/Model.h"
 
 class BaseCommand {
 public:
+    BaseCommand(const shared_ptr<Model> &pModel) : pModel(pModel) {}
+
     void setParams(const Params &params) {
         BaseCommand::params = params;
     }
@@ -18,6 +21,7 @@ public:
 
 protected:
     Params params;
+    shared_ptr<Model> pModel;
 };
 
 
