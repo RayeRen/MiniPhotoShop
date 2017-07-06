@@ -4,7 +4,4 @@
 
 #include "AddLineCommand.h"
 
-void AddLineCommand::setPModel(const shared_ptr<Model> &pModel) {
-    AddLineCommand::pModel = pModel;
-}
 
