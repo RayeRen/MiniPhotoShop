@@ -1,16 +1,16 @@
-//
-// Created by Raye on 2017/7/6.
-//
-#include <iostream>
-#include "ViewModel/ViewModel.h"
-#include "View/MainWindows.h"
+#include "View/mainwindow.h"
+#include <QApplication>
+#include <src/ViewModel/ViewModel.h>
 
-using namespace std;
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
-int main() {
     shared_ptr<Model> pModel(new Model);
     shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
-    shared_ptr<MainWindows> pMainWindows(new MainWindows);
+    shared_ptr<MainWindow> pMainWindows(new MainWindow);
 
     //add viewModel to the observer list of model
     pModel->addObserver(pViewModel);
@@ -20,4 +20,5 @@ int main() {
     //bind the commands
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
 
+    return a.exec();
 }

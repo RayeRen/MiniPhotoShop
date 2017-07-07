@@ -11,7 +11,6 @@
 class Model : public Observable {
 public:
     void addLine(){
-
     }
 };
 
