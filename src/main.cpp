@@ -1,5 +1,4 @@
 #include "View/mainwindow.h"
-#include "Constants.h"
 #include <QApplication>
 #include <src/ViewModel/ViewModel.h>
 
