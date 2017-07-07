@@ -39,7 +39,7 @@ HEADERS += \
     src/ViewModel/Commands/AddLineCommand.h \
     src/ViewModel/ViewModel.h \
     src/View/mainwindow.h \
-    src/Model/Constants.h \
+    src/Constants.h \
     src/Model/DataStructure.h \
     src/Model/Layouts.h
 
