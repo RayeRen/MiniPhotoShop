@@ -11,4 +11,18 @@ namespace SHAPE {
     };
 }
 
+namespace PEN {
+    enum {
+        COLOR,LINE_WEIGHT,STYLE
+    };
+}
+
+namespace BRUSH {
+    enum {
+        COLOR,STYLE
+    };
+}
+
+
+
 #endif //MINIPHOTOSHOP_CONSTANTS_H
