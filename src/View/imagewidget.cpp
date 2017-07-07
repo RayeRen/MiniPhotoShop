@@ -84,30 +84,17 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     {
     case STATE::INIT:
         *state=STATE::DRAW_LINE;
-        mouseLastX=event->localPos().x();
-        mouseLastY=event->localPos().y();
+        mouseX=mouseLastX=event->localPos().x();
+        mouseY=mouseLastY=event->localPos().y();
         break;
-       case STATE::DRAW_LINE:
-         *state=STATE::INIT;
-        Params para;
-        para.setInts({mouseLastX,mouseLastY,mouseX,mouseY});
-        addLineCommand->setParams(para);
-        addLineCommand->exec();
-        break;
-
     }
-
+ update();
 }
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     switch(*state)
     {
-    case STATE::INIT:
-        *state=STATE::DRAW_LINE;
-        mouseLastX=event->localPos().x();
-        mouseLastY=event->localPos().y();
-        break;
        case STATE::DRAW_LINE:
          *state=STATE::INIT;
         Params para;
@@ -117,6 +104,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         break;
 
     }
+     update();
 }
 
 void ImageWidget::mouseMoveEvent(QMouseEvent *event)
