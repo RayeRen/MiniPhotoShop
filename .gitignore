@@ -41,3 +41,4 @@ CMakeLists.txt.user*
 .idea
 cmake-build-debug
 .git
+CMakeLists.txt
