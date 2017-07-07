@@ -41,4 +41,4 @@ HEADERS += \
     src/View/mainwindow.h
 
 FORMS += \
-        src/UI/mainwindow.ui
+        src/View/mainwindow.ui
