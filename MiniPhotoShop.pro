@@ -27,7 +27,7 @@ SOURCES += \
     src/Model/Model.cpp \
     src/ViewModel/Commands/AddLineCommand.cpp \
     src/ViewModel/ViewModel.cpp \
-    src/View/mainwindow.cpp
+    src/View/mainwindow.cpp\
     src/main.cpp \
 
 HEADERS += \
@@ -39,7 +39,7 @@ HEADERS += \
     src/ViewModel/ViewModel.h \
     src/View/mainwindow.h \
     src/Model/DataStructure.h \
-    src/Model/Layouts.h
+    src/Model/Layouts.h\
     src/Model/Model.h \
     src/Constants.h \
 
