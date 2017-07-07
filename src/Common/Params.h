@@ -51,6 +51,7 @@ private:
     vector<shared_ptr<void> > ptrs;
 
     vector<double> doubles;
+
     vector<string> strings;
 };
 
