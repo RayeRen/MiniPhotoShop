@@ -44,4 +44,4 @@ HEADERS += \
     src/Model/Layouts.h
 
 FORMS += \
-        src/UI/mainwindow.ui
+    src/View/mainwindow.ui
