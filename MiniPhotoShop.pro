@@ -38,7 +38,8 @@ HEADERS += \
     src/Model/Model.h \
     src/ViewModel/Commands/AddLineCommand.h \
     src/ViewModel/ViewModel.h \
-    src/View/mainwindow.h
+    src/View/mainwindow.h \
+    src/Constants.h
 
 FORMS += \
         src/View/mainwindow.ui
