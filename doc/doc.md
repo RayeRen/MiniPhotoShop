@@ -1,6 +1,7 @@
 # Data Structure
 ## Pen
 ```cpp
+
 struct Pen
 {
  unsigned char foreR,foreG,foreB;
@@ -88,9 +89,38 @@ class Layouts
     bool AddLayout(BaseShape*);
 }
 ```
-# Commands Doc
 
+# Constants
+```cpp=
+//Shape
+namespace SHAPE {
+    enum {
+        LINE, ELLIPSE, RECT, PIXMAP
+    };
+}
 
+//Pen
+namespace PEN {
+    enum {
+        COLOR,LINE_WEIGHT,STYLE
+    };
+}
+
+namespace PENSTYLE {
+    enum {
+        SOLID,DASH,DOT,DASH_DOT,DASH_DOT_DOT
+    };
+}
+
+//Brush
+namespace BRUSH {
+    enum {
+        COLOR,STYLE
+    };
+}
+```
+
+# Commands
 
 ## AddLineCommand
 - params:
@@ -156,6 +186,16 @@ class Layouts
 ## SaveCommand
 - params 
     - ints
-        - type(jpg,bmp,)
+        - type(jpg,bmp)
     - string
         - path(e.g. .../.../xx.TYPE)
+
+# Observer
+## model2vm
+- params
+    - ints
+        - type
+
+## vm2view
+
+
