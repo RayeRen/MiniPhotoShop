@@ -27,21 +27,21 @@ SOURCES += \
     src/Model/Model.cpp \
     src/ViewModel/Commands/AddLineCommand.cpp \
     src/ViewModel/ViewModel.cpp \
-    src/main.cpp \
     src/View/mainwindow.cpp
+    src/main.cpp \
 
 HEADERS += \
     src/Common/BaseCommand.h \
     src/Common/Observable.h \
     src/Common/Observer.h \
     src/Common/Params.h \
-    src/Model/Model.h \
     src/ViewModel/Commands/AddLineCommand.h \
     src/ViewModel/ViewModel.h \
     src/View/mainwindow.h \
-    src/Constants.h \
     src/Model/DataStructure.h \
     src/Model/Layouts.h
+    src/Model/Model.h \
+    src/Constants.h \
 
 FORMS += \
     src/View/mainwindow.ui
