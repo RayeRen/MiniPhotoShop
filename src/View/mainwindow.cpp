@@ -31,6 +31,7 @@ void MainWindow::update(Params params)
 void MainWindow::SetPen(const Pen* pen)
 {
     this->pen=pen;
+
     ui->MainDisplayWidget->SetPen(pen);
 }
 

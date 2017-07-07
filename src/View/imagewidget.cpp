@@ -33,8 +33,8 @@ void ImageWidget::paintEvent(QPaintEvent *event)
         if(pen!=NULL)
         {
             QPen tmpPen(QColor(pen->foreR,pen->foreG,pen->foreB));
-            tmpPen.setWidth(pen->lineWidth);
             tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->penStyle));
+            tmpPen.setWidth(pen->lineWidth);
             p.setPen(tmpPen);
             p.drawLine(mouseLastX,mouseLastY,mouseX,mouseY);
             qDebug()<<pen->foreR<<pen->foreG<<pen->foreB<<pen->lineWidth;
