@@ -7,11 +7,15 @@
 
 
 #include "../Common/Observable.h"
-
+#include "../Common/DataStructure.h"
 class Model : public Observable {
+    Pen pen;
+    Brush brush;
 public:
     void addLine(){
     }
+    void SetPen(Pen pen){this->pen=pen;}
+    const Pen* GetPen(){return &pen;}
 };
 
 

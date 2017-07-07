@@ -21,7 +21,7 @@ namespace PEN {
 
 namespace PENSTYLE {
     enum {
-        SOLID,DASH,DOT,DASH_DOT,DASH_DOT_DOT
+        SOLID=1,DASH,DOT,DASH_DOT,DASH_DOT_DOT
     };
 }
 
@@ -32,6 +32,18 @@ namespace BRUSH {
     };
 }
 
+//Notify Type
+namespace NOTIFY{
+enum{
+    UPDATE_PEN,UPDATE_BRUSH,UPDATE_IMAGE
+};
+}
 
+//UI states
+namespace STATE{
+enum{
+    INIT,DRAW_LINE
+};
+};
 
 #endif //MINIPHOTOSHOP_CONSTANTS_H

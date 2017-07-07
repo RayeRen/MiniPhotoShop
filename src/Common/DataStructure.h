@@ -7,9 +7,8 @@ using namespace std;
 
 struct Pen
 {
-    unsigned char foreR, foreE, foreB;
-    double lineWidth;
-    int penStyle;
+    unsigned char foreR=255, foreG=0, foreB=0;
+    int penStyle=1,lineWidth=4;
 };
 
 struct Brush
@@ -24,10 +23,12 @@ protected:
     int posX, posY;
     int type;
     string name;
+    double scaleX,scaleY,angle;
 
 public:
     BaseShape(int posX, int posY, int type);
-    pair<int, int> getPos()const;
+    int getPosX()const;
+    int getPosY()const;
     void setPos(pair<int, int>& Pos);
     string getName()const;
 };

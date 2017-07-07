@@ -29,6 +29,7 @@ SOURCES += \
     src/ViewModel/ViewModel.cpp \
     src/View/mainwindow.cpp\
     src/main.cpp \
+    src/View/imagewidget.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -38,10 +39,11 @@ HEADERS += \
     src/ViewModel/Commands/AddLineCommand.h \
     src/ViewModel/ViewModel.h \
     src/View/mainwindow.h \
-    src/Model/DataStructure.h \
     src/Model/Layouts.h\
     src/Model/Model.h \
     src/Constants.h \
+    src/View/imagewidget.h \
+    src/Common/DataStructure.h
 
 FORMS += \
     src/View/mainwindow.ui

@@ -6,11 +6,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.show();
 
     shared_ptr<Model> pModel(new Model);
     shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
-    shared_ptr<MainWindow> pMainWindows(new MainWindow);
+    shared_ptr<MainWindow> pMainWindows(&w);
 
     //add viewModel to the observer list of model
     pModel->addObserver(pViewModel);
@@ -20,5 +19,8 @@ int main(int argc, char *argv[])
     //bind the commands
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
 
+    pModel->SetPen(Pen());
+    pMainWindows->SetPen(pModel->GetPen());
+    w.show();
     return a.exec();
 }

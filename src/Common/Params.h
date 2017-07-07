@@ -46,6 +46,7 @@ public:
     }
 
 private:
+    int type;
     vector<int> ints;
 
     vector<shared_ptr<void> > ptrs;
