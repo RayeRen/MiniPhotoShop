@@ -49,6 +49,15 @@ void ViewModel::RefreshDisplayImage() {
             }
                 break;
             case SHAPE::ELLIPSE:
+                {
+                        shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[i]));
+                        Pen ellipsePen = ellipse->getPen();
+                        QPen tmpPen(QColor(ellipsePen.getForeR(),ellipsePen.getForeG(),ellipsePen.getForeB()));
+                        tmpPen.setStyle(static_cast<Qt::PenStyle>(ellipsePen.getPenStyle()));
+                        tmpPen.setWidth(ellipsePen.getLineWidth());
+                        painter.setPen(tmpPen);
+                        painter.drawEllipse(QPoint((int)ellipse->getPosX(),(int)ellipse->getPosY()),(int)ellipse->getA(),(int)ellipse->getB());
+                    }
                 break;
             case SHAPE::PIXMAP:
                 break;

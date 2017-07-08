@@ -14,4 +14,11 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
     params.setType(NOTIFY::UPDATE_IMAGE);
     notify(params);
 }
-
+void Model::addEllipse(double centerX,double centerY,double a,double b){
+    shared_ptr<Ellipse> pEllipse;
+    layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(centerX,
+        centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,a,b)));
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE);
+    notify(params);
+}

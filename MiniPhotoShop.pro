@@ -30,7 +30,8 @@ SOURCES += \
     src/View/mainwindow.cpp\
     src/main.cpp \
     src/View/imagewidget.cpp \
-    src/ViewModel/Commands/newcanvascommand.cpp
+    src/ViewModel/Commands/newcanvascommand.cpp \
+    src/ViewModel/Commands/addellipsecommand.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -45,7 +46,8 @@ HEADERS += \
     src/Constants.h \
     src/View/imagewidget.h \
     src/Common/DataStructure.h \
-    src/ViewModel/Commands/newcanvascommand.h
+    src/ViewModel/Commands/newcanvascommand.h \
+    src/ViewModel/Commands/addellipsecommand.h
 
 FORMS += \
     src/View/mainwindow.ui

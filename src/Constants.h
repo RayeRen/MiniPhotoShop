@@ -29,7 +29,7 @@ enum{
 //UI states
 namespace STATE{
 enum{
-    INIT,DRAW_LINE
+    INIT,DRAW_LINE,DRAW_ELLIPSE
 };
 }
 

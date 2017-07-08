@@ -1,5 +1,7 @@
 #include "imageWidget.h"
 #include <qDebug>
+#include <cmath>
+
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {
     image=new QImage;
@@ -47,6 +49,16 @@ void ImageWidget::paintEvent(QPaintEvent *event)
             p.drawLine(mouseLastX,mouseLastY,mouseX,mouseY);
         }
         break;
+    case STATE::DRAW_ELLIPSE:
+        if(pen!=NULL)
+        {
+            QPen tmpPen(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()));
+            tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->getPenStyle()));
+            tmpPen.setWidth(pen->getLineWidth());
+            p.setPen(tmpPen);
+            p.drawEllipse(QPoint(mouseLastX,mouseLastY),std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY));
+        }
+        break;
     }
 }
 
@@ -90,7 +102,8 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     switch(*state)
     {
     case STATE::INIT:
-        *state=STATE::DRAW_LINE;
+        //*state=STATE::DRAW_LINE;
+        *state=STATE::DRAW_ELLIPSE;
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
@@ -100,20 +113,28 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    int centerX,centerY;
+    Params para;
     switch(*state)
     {
     case STATE::DRAW_LINE:
         *state=STATE::INIT;
-        Params para;
+        //Params para;
         qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
-        int centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
+        centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
         para.setDoubles({(double)centerX/realWidth,(double)centerY/realHeight,(double)(mouseLastX-centerX)/realWidth,
                          (double)(mouseLastY-centerY)/realHeight,(double)(mouseX-centerX)/realWidth,
                          (double)(mouseY-centerY)/realHeight});
         addLineCommand->setParams(para);
         addLineCommand->exec();
         break;
-
+    case STATE::DRAW_ELLIPSE:
+        *state=STATE::INIT;
+        centerX=mouseLastX,centerY=mouseLastY;
+        para.setDoubles({(double)centerX,(double)centerY,(double)(std::abs(mouseX-mouseLastX)),(double)(std::abs(mouseY-mouseLastY))});
+        addEllipseCommand->setParams(para);
+        addEllipseCommand->exec();
+        break;
     }
     update();
 }

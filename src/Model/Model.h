@@ -26,6 +26,7 @@ public:
     void addLine(){
     }
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);
+    void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void SetPen(Pen pen){this->pen=pen;}
     const Pen* GetPen(){return &pen;}
     const Layouts* GetLayouts(){return &layouts;}
