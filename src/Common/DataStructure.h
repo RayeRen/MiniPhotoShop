@@ -125,6 +125,15 @@ public:
         return type;
     }
 
+    int getPosX() const {
+        return posX;
+    }
+
+
+    int getPosY() const {
+        return posY;
+    }
+
     void setType(int type) {
         BaseShape::type = type;
     }
@@ -161,12 +170,11 @@ public:
 class Line : public BaseShape {
 protected:
     Pen pen;
-    Brush brush;
     int x1, y1, x2, y2;
 public:
     Line(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
-         const Brush &brush, int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                                               pen(pen), brush(brush), x1(x1), y1(y1), x2(x2), y2(y2) {}
+          int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+                                                               pen(pen),  x1(x1), y1(y1), x2(x2), y2(y2) {}
 
     const Pen &getPen() const {
         return pen;
@@ -174,14 +182,6 @@ public:
 
     void setPen(const Pen &pen) {
         Line::pen = pen;
-    }
-
-    const Brush &getBrush() const {
-        return brush;
-    }
-
-    void setBrush(const Brush &brush) {
-        Line::brush = brush;
     }
 
     int getX1() const {

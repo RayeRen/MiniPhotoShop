@@ -97,7 +97,8 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
        case STATE::DRAW_LINE:
          *state=STATE::INIT;
         Params para;
-        para.setInts({mouseLastX,mouseLastY,mouseX,mouseY});
+        int centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
+        para.setInts({centerX,centerY,mouseLastX-centerX,mouseLastY-centerY,mouseX-centerX,mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
         break;

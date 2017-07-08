@@ -54,6 +54,7 @@ private:
     vector<double> doubles;
 
     vector<string> strings;
+
 };
 
 

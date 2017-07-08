@@ -13,7 +13,8 @@ public:
     AddLineCommand(const shared_ptr<Model> &pModel) : BaseCommand(pModel) {}
 
     void exec() {
-        pModel->addLine();
+        vector<int> ints=params.getInts();
+        pModel->addLine(ints[0],ints[1],ints[2],ints[3],ints[4],ints[5]);
     }
 };
 

@@ -9,7 +9,10 @@ using namespace std;
 
 class Layouts{
 protected:
-    vector<shared_ptr<BaseShape*>>list;
+    vector<shared_ptr<BaseShape>>list;
+
+    friend class Model;
+    friend class ViewModel;
 };
 
 #endif // LAYOUTS_H

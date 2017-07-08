@@ -20,5 +20,8 @@ int main(int argc, char *argv[]) {
     pModel->SetPen(Pen());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->show();
+
+    pViewModel->SetLayouts(pModel->GetLayouts());
+
     return a.exec();
 }
