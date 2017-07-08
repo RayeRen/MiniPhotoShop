@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
     //bind the commands
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
 
-    pModel->SetPen(Pen());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->show();
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());

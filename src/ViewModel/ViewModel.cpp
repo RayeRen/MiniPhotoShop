@@ -34,11 +34,12 @@ void ViewModel::RefreshDisplayImage() {
             case SHAPE::LINE: {
                 shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[i]));
                 Pen linePen = line->getPen();
-                //QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
-                //tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
-                //tmpPen.setWidth(linePen.getLineWidth());
-                QPen pen(Qt::red);
-                pen.setStyle(Qt::SolidLine);
+                QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
+                tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
+                tmpPen.setWidth(linePen.getLineWidth());
+               // QPen pen(Qt::red);
+              //  pen.setStyle(Qt::SolidLine);
+                painter.setPen(tmpPen);
                 painter.drawLine(line->getPosX() + line->getX1(), line->getPosY() + line->getY1(),
                                  line->getPosX() + line->getX2(), line->getPosY() + line->getY2());
             }

@@ -14,6 +14,7 @@ class ImageWidget : public QWidget
 public:
     explicit ImageWidget(QWidget *parent = 0);
     void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent *event);
     void mousePressEvent(QMouseEvent *event);        //单击
     void mouseReleaseEvent(QMouseEvent *event);      //释放
     void mouseMoveEvent(QMouseEvent *event);         //移动
@@ -25,14 +26,18 @@ public:
     void SetBrush(const Brush* brush){this->brush=brush;}
     void SetState(int *state){this->state=state;}
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand){this->addLineCommand=addLineCommand;}
+    void setNewCanvasCommand(const shared_ptr<BaseCommand> &anewCanvasCommand){this->newCanvasCommand=newCanvasCommand;}
+    int getRealWidth() const{return realWidth;}
+    int getRealHeight() const {return realHeight;}
 private:
    const QImage *image;
    const Pen* pen;
    const Brush* brush;
     int * state;
    shared_ptr<BaseCommand> addLineCommand;
+   shared_ptr<BaseCommand> newCanvasCommand;
    int mouseLastX,mouseLastY,mouseX,mouseY;
-
+    int realWidth,realHeight;
 };
 
 #endif // IMAGEWIDGET_H

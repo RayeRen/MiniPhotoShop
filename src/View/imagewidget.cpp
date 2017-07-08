@@ -119,3 +119,17 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
     mouseY=event->localPos().y();
     update();
 }
+
+void ImageWidget::resizeEvent(QResizeEvent *event)
+{
+    realWidth=event->size().width();
+    realHeight=event->size().height();
+    if(newCanvasCommand!=nullptr)
+    {
+        Params params;
+        params.setInts({realWidth,realHeight});
+        newCanvasCommand->setParams(params);
+        newCanvasCommand->exec();
+    }
+
+}

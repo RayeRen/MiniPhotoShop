@@ -49,8 +49,9 @@ void MainWindow::SetDisplayImage(const QImage* displayImage)
 void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand)
 {
     this->newCanvasCommand=newCanvasCommand;
+    ui->MainDisplayWidget->setNewCanvasCommand(newCanvasCommand);
     Params params;
-    params.setInts({ui->MainDisplayWidget->width(),ui->MainDisplayWidget->height()});
+    params.setInts({ui->MainDisplayWidget->getRealWidth(),ui->MainDisplayWidget->getRealHeight()});
     newCanvasCommand->setParams(params);
     newCanvasCommand->exec();
 }

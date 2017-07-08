@@ -14,9 +14,9 @@ class Model : public Observable {
 private:
     Pen pen;
     Brush brush;
-    Model(){};
-    Model(const Model & model){};
-    void operator = (const Model& model){};
+    Model(){}
+    Model(const Model & model){}
+    void operator = (const Model& model){}
     Layouts layouts;
 public:
     static Model& getInstance(){

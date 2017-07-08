@@ -13,7 +13,7 @@ protected:
     int penStyle, lineWidth;
 public:
 
-    Pen() : foreR(0), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(1) {
+    Pen() : foreR(255), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(4){
 
     }
 
