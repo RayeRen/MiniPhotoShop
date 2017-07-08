@@ -8,6 +8,7 @@
 
 #include "../Common/Observable.h"
 #include "../Common/DataStructure.h"
+
 class Model : public Observable {
     Pen pen;
     Brush brush;
