@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <memory>
+#include <src/Common/DataStructure.h>
+
 using namespace std;
 
 class LAYOUTS{
