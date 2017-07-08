@@ -24,10 +24,24 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         src/ViewModel/Commands/AddLineCommand.cpp
+        src/ViewModel/Commands/newcanvascommand.cpp
+        src/ViewModel/Commands/addellipsecommand.cpp
         src/ViewModel/ViewModel.cpp
         src/View/mainwindow.cpp
+        src/View/imagewidget.cpp
         src/Model/Model.cpp
         src/main.cpp
+
+        src/Common/Params.h
+        src/Common/Observable.h
+        src/Common/Observer.h
+        src/Common/DataStructure.h
+        src/Common/BaseCommand.h
+        src/View/imagewidget.h
+        src/Model/Layouts.h
+        src/ViewModel/Commands/newcanvascommand.h
+        src/ViewModel/Commands/addellipsecommand.h
+        src/Constants.h
         )
 
 # User interface files
@@ -37,9 +51,9 @@ set(FORMS
 
 # Resource fileshgx
 
-#set(RESOURCES
-#        resources.qrc
-#        )
+set(RESOURCES
+        imgs.qrc
+        )
 
 # Shared libraries
 set(LIBRARIES
@@ -48,11 +62,13 @@ set(LIBRARIES
         )
 
 qt5_wrap_ui(UIC_SOURCES ${FORMS})
-#qt5_add_resources(RCC_SOURCES ${RESOURCES})
+qt5_add_resources(RCC_SOURCES ${RESOURCES})
 
 add_executable(MiniPhotoShop
         ${SOURCE_FILES}
         ${UI_HEADERS}
-        ${UIC_SOURCES})
+        ${UIC_SOURCES}
+        ${RCC_SOURCES}
+        )
 
 target_link_libraries(${TARGET_NAME} ${LIBRARIES})
