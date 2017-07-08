@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->MainDisplayWidget->SetState(&state);
 
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
-    ui->action_5->setCheckable(true);
+    ui->actionLineSelected->setCheckable(true);
+    ui->actionEllipseSelected->setCheckable(true);
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
 }
 
@@ -76,6 +77,9 @@ void MainWindow::menuTriggered(QAction* action)
     {
         state=STATE::DRAW_LINE_INIT;
     }
+    if(action->text()==ui->actionEllipseSelected->text()){
+        state=STATE::DRAW_ELLIPSE_INIT;
+    }
 
 }
 
@@ -84,10 +88,17 @@ void MainWindow::StateChanged()
    switch(state)
    {
     case STATE::INIT:
-        ui->action_5->setChecked(false);
+        ui->actionLineSelected->setChecked(false);
+        ui->actionEllipseSelected->setChecked(false);
         break;
     case STATE::DRAW_LINE_INIT:
-        ui->action_5->setChecked(true);
-    break;
+        ui->actionLineSelected->setChecked(true);
+        ui->actionEllipseSelected->setChecked(false);
+       break;
+    case STATE::DRAW_ELLIPSE_INIT:
+       ui->actionLineSelected->setChecked(false);
+       ui->actionEllipseSelected->setChecked(true);
+        break;
    }
+   QWidget::update();
 }

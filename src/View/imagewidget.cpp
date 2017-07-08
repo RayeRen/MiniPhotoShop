@@ -108,6 +108,13 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
+    case STATE::DRAW_ELLIPSE_INIT:
+        *state=STATE::DRAW_ELLIPSE;
+        emit StateChanged();
+         //*state=STATE::DRAW_ELLIPSE;
+         mouseX=mouseLastX=event->localPos().x();
+         mouseY=mouseLastY=event->localPos().y();
+         break;
     }
     update();
 }
