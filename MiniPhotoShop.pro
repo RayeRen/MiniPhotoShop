@@ -54,4 +54,5 @@ FORMS += \
     src/View/mainwindow.ui
 
 RESOURCES += \
-    imgs.qrc
+    imgs.qrc \
+    langs.qrc
