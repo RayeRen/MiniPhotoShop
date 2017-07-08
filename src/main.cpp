@@ -5,8 +5,8 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    shared_ptr<Model> pModel(new Model);
-    shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
+    shared_ptr<Model> pModel(&Model::getInstance());
+    shared_ptr<ViewModel> pViewModel(&ViewModel::getInstance(pModel));
     shared_ptr<MainWindow> pMainWindows(new MainWindow);
 
     //add viewModel to the observer list of model

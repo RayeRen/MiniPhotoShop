@@ -17,7 +17,10 @@ class BaseCommand;
 class ViewModel : public Observable,
                   public Observer {
 public:
-    ViewModel(shared_ptr<Model> pModel);
+    static ViewModel& getInstance(shared_ptr<Model> pModel){
+        static ViewModel instance(pModel);
+        return instance;
+    }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
 const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
@@ -31,6 +34,12 @@ private:
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
+
+    ViewModel(shared_ptr<Model> pModel);
+
+    ViewModel(){};
+
+    void operator = (const ViewModel& viewModel){}
 };
 
 
