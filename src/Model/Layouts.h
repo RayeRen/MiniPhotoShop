@@ -11,6 +11,7 @@ class Layouts{
 protected:
     vector<shared_ptr<BaseShape>>list;
 
+public:
     friend class Model;
     friend class ViewModel;
 };

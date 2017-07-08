@@ -1,7 +1,6 @@
 #ifndef DATASTRUCTURE_H
 #define DATASTRUCTURE_H
 
-#include <utility>
 #include <string>
 #include "../Constants.h"
 
@@ -253,4 +252,40 @@ public:
     }
 
 };
+
+class Rect:public BaseShape
+{
+protected:
+    Pen pen;
+    double width, height;
+
+public:
+    Rect(ouble posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+         double width, double height):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+                                      pen(pen), width(width), height(height){}
+    const Pen &getPen() const {
+        return pen;
+    }
+
+    void setPen(const Pen &pen) {
+        Rect::pen = pen;
+    }
+
+    double getWidth() const {
+        return width;
+    }
+
+    void setWidth(double width){
+        Rect::width = width;
+    }
+
+    double getHeight() const {
+        return height;
+    }
+
+    void setHeight(double height){
+        Rect::height = height;
+    }
+};
+
 #endif // DATASTRUCTURE_H

@@ -23,6 +23,16 @@ void Model::addEllipse(double centerX,double centerY,double a,double b){
     notify(params);
 }
 
+void Model::addRect(double centerX, double centerY, double width, double height)
+{
+    shared_ptr<Rect> pRect;
+    layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
+         centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,width,height)));
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE);
+    notify(params);
+}
+
  void Model::SetPenColor(unsigned char r,unsigned char g,unsigned char b)
  {
      pen.setForeR(r);

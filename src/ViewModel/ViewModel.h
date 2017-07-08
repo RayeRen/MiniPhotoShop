@@ -24,6 +24,7 @@ public:
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
+    const shared_ptr<BaseCommand> &getAddRectCommad() const;
 
     const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     const shared_ptr<BaseCommand> &getPenUpdateCommand() const;
@@ -34,7 +35,7 @@ public:
     void NewCanvas(unsigned int width,unsigned int height);
     ViewModel(shared_ptr<Model> pModel);
 private:
-    shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,newCanvasCommand,penUpdateCommand;
+    shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,addRectCommand,newCanvasCommand,penUpdateCommand;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
