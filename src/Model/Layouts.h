@@ -2,11 +2,12 @@
 #define LAYOUTS_H
 
 #include <vector>
+#include <memory>
 using namespace std;
 
 class LAYOUTS{
 protected:
-    vector<BaseShape*>list;
+    vector<shared_ptr<BaseShape*>>list;
 };
 
 #endif // LAYOUTS_H
