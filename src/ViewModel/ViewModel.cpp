@@ -30,8 +30,10 @@ void ViewModel::RefreshDisplayImage() {
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
+     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.setRenderHint(QPainter::Antialiasing, true);
     for (int i = 0; i < layouts->list.size(); i++) {
+        qDebug()<<"SIZE"<<layouts->list.size();
         switch ((layouts->list)[i]->getType()) {
             case SHAPE::LINE: {
                 shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[i]));
