@@ -1,6 +1,10 @@
 #include "View/mainwindow.h"
 #include <QApplication>
+#include <QSplashScreen>
+#include <QElapsedTimer>
 #include <src/ViewModel/ViewModel.h>
+
+#define SPLAHSCREENTIME 2000
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
@@ -20,9 +24,18 @@ int main(int argc, char *argv[]) {
 
     pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
-    pMainWindows->show();
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
 
+
+    QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
+    screen->show();
+    QElapsedTimer timer;
+    timer.start();
+    while(timer.elapsed() < SPLAHSCREENTIME)
+        a.processEvents();
+    delete screen;
+
+    pMainWindows->show();
     return a.exec();
 }

@@ -51,3 +51,6 @@ HEADERS += \
 
 FORMS += \
     src/View/mainwindow.ui
+
+RESOURCES += \
+    imgs.qrc

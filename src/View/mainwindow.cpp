@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <Qdebug>
+#include <QMessageBox>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -11,6 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     displayImage=NULL;
     ui->setupUi(this);
     ui->MainDisplayWidget->SetState(&state);
+
+    connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
+    ui->action_5->setCheckable(true);
+    connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
 }
 
 MainWindow::~MainWindow()
@@ -58,4 +63,31 @@ void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCom
     params.setInts({ui->MainDisplayWidget->getRealWidth(),ui->MainDisplayWidget->getRealHeight()});
     newCanvasCommand->setParams(params);
     newCanvasCommand->exec();
+}
+
+void MainWindow::menuTriggered(QAction* action)
+{
+    if(action->text()=="关于Qt")
+    {
+        QMessageBox::aboutQt(NULL);
+        return;
+    }
+    if(action->text()=="画线")
+    {
+        state=STATE::DRAW_LINE_INIT;
+    }
+
+}
+
+void MainWindow::StateChanged()
+{
+   switch(state)
+   {
+    case STATE::INIT:
+        ui->action_5->setChecked(false);
+        break;
+    case STATE::DRAW_LINE_INIT:
+        ui->action_5->setChecked(true);
+    break;
+   }
 }

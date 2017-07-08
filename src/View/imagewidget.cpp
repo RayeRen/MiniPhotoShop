@@ -101,9 +101,10 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
 {
     switch(*state)
     {
-    case STATE::INIT:
-        //*state=STATE::DRAW_LINE;
-        *state=STATE::DRAW_ELLIPSE;
+    case STATE::DRAW_LINE_INIT:
+       *state=STATE::DRAW_LINE;
+       emit StateChanged();
+        //*state=STATE::DRAW_ELLIPSE;
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
@@ -119,6 +120,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
     {
     case STATE::DRAW_LINE:
         *state=STATE::INIT;
+        emit StateChanged();
         //Params para;
         qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
@@ -130,6 +132,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         break;
     case STATE::DRAW_ELLIPSE:
         *state=STATE::INIT;
+        emit StateChanged();
         centerX=mouseLastX,centerY=mouseLastY;
         para.setDoubles({(double)centerX,(double)centerY,(double)(std::abs(mouseX-mouseLastX)),(double)(std::abs(mouseY-mouseLastY))});
         addEllipseCommand->setParams(para);

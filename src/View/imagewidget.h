@@ -40,6 +40,8 @@ private:
    shared_ptr<BaseCommand> newCanvasCommand;
    int mouseLastX,mouseLastY,mouseX,mouseY;
     int realWidth,realHeight;
+signals:
+    void StateChanged();
 };
 
 #endif // IMAGEWIDGET_H

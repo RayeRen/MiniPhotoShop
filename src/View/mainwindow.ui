@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Mini PhotoShop</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../imgs.qrc">
+    <normaloff>:/img/img/icon.png</normaloff>:/img/img/icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -73,6 +77,33 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
+    <addaction name="action_4"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>绘制</string>
+    </property>
+    <addaction name="action_5"/>
+    <addaction name="action_6"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="action_7"/>
+    <addaction name="action_Qt"/>
+    <addaction name="action_8"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -81,8 +112,78 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_5"/>
+   <addaction name="action_6"/>
+   <addaction name="action_7"/>
+   <addaction name="action_8"/>
+   <addaction name="action_Qt"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action">
+   <property name="text">
+    <string>新建工程</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>打开图片</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>保存工程</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>另存为图片</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>画线</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/ellipse.png</normaloff>:/img/img/ellipse.png</iconset>
+   </property>
+   <property name="text">
+    <string>画椭圆</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/information.png</normaloff>:/img/img/information.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于此程序</string>
+   </property>
+  </action>
+  <action name="action_Qt">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/qt.png</normaloff>:/img/img/qt.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于Qt</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/help.png</normaloff>:/img/img/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -93,6 +194,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../imgs.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -36,6 +36,9 @@ private:
     const QImage* displayImage;
     int state;
      shared_ptr<BaseCommand> newCanvasCommand;
+ public slots:
+     void menuTriggered(QAction*);   //响应菜单栏事件
+     void StateChanged();
 };
 
 #endif // MAINWINDOW_H
