@@ -7,6 +7,7 @@
 #include "src/ViewModel/Commands/AddLineCommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include <QPainter>
+#include <QDebug>
 
 const shared_ptr<BaseCommand> &ViewModel::getAddLineCommand() const {
     return addLineCommand;
@@ -29,6 +30,7 @@ void ViewModel::RefreshDisplayImage() {
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
+    painter.setRenderHint(QPainter::Antialiasing, true);
     for (int i = 0; i < layouts->list.size(); i++) {
         switch ((layouts->list)[i]->getType()) {
             case SHAPE::LINE: {
@@ -37,8 +39,8 @@ void ViewModel::RefreshDisplayImage() {
                 QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
                 tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
                 tmpPen.setWidth(linePen.getLineWidth());
-               // QPen pen(Qt::red);
-              //  pen.setStyle(Qt::SolidLine);
+                qDebug()<<((line->getPosX() + line->getX1())*displayImage.width())<<((line->getPosY() + line->getY1())*displayImage.height())
+                       <<((line->getPosX() + line->getX2())*displayImage.width())<<((line->getPosY() + line->getY2())*displayImage.height());
                 painter.setPen(tmpPen);
                 painter.drawLine((line->getPosX() + line->getX1())*displayImage.width(), (line->getPosY() + line->getY1())*displayImage.height(),
                                  (line->getPosX() + line->getX2())*displayImage.width(), (line->getPosY() + line->getY2())*displayImage.height());
