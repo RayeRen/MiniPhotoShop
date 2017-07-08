@@ -16,7 +16,7 @@ public:
     void addLine(){
     }
     void SetPen(Pen pen){this->pen=pen;}
-    const Pen* GetPen(){return &pen;}
+    const Pen* GetPen()const{return &pen;}
 };
 
 
