@@ -23,6 +23,7 @@ public:
     void addRect(double centerX, double centerY, double width, double height);
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
+    void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
     const Pen* GetPen(){return &pen;}
     const Layouts* GetLayouts(){return &layouts;}
 };

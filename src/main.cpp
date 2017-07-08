@@ -2,12 +2,17 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QElapsedTimer>
+#include<QTranslator>
 #include <src/ViewModel/ViewModel.h>
 
 #define SPLAHSCREENTIME 2000
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+
+    QTranslator tran;
+    tran.load("qt_zh_CN.qm",":/langs/trans");
+    a.installTranslator(&tran);
 
     shared_ptr<Model> pModel(new Model());
     shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));

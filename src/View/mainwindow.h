@@ -42,6 +42,7 @@ private:
      void StateChanged();
      void ButtonForeColorPressed();
      void ButtonBackColorPressed();
+     void PenWidthSliderChanged(int value);
 };
 
 #endif // MAINWINDOW_H

@@ -1,4 +1,4 @@
-#include "imageWidget.h"
+#include "imagewidget.h"
 #include <qDebug>
 #include <cmath>
 

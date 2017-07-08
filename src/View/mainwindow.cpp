@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->action_drawLine->setCheckable(true);
     ui->action_drawEllipse->setCheckable(true);
-
+    connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
 }
@@ -52,6 +52,7 @@ void MainWindow::SetPen(const Pen* pen)
 {
     this->pen=pen;
     ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(pen->getForeR()).arg(pen->getForeG()).arg(pen->getForeB()));
+    ui->penWidthSlider->setValue(pen->getLineWidth());
     ui->MainDisplayWidget->SetPen(pen);
 }
 
@@ -133,5 +134,19 @@ void MainWindow::ButtonForeColorPressed()
 
 void MainWindow::ButtonBackColorPressed()
 {
+
+}
+
+void MainWindow::PenWidthSliderChanged(int value)
+{
+    if(penUpdateCommand!=nullptr)
+    {
+        qDebug()<<"Changed";
+        Params params;
+        params.setType(COMMAND::UPDATE_PEN_WIDTH);
+        params.setInts({value});
+        penUpdateCommand->setParams(params);
+        penUpdateCommand->exec();
+    }
 
 }
