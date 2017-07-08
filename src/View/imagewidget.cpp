@@ -1,6 +1,6 @@
 #include "imagewidget.h"
-#include <qDebug>
 #include <cmath>
+#include <QDebug>
 
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {

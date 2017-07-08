@@ -141,7 +141,6 @@ void MainWindow::PenWidthSliderChanged(int value)
 {
     if(penUpdateCommand!=nullptr)
     {
-        qDebug()<<"Changed";
         Params params;
         params.setType(COMMAND::UPDATE_PEN_WIDTH);
         params.setInts({value});
