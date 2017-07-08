@@ -29,7 +29,9 @@ SOURCES += \
     src/ViewModel/ViewModel.cpp \
     src/View/mainwindow.cpp\
     src/main.cpp \
-    src/View/imagewidget.cpp
+    src/View/imagewidget.cpp \
+    src/ViewModel/Commands/newcanvascommand.cpp \
+    src/ViewModel/Commands/addellipsecommand.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -43,7 +45,13 @@ HEADERS += \
     src/Model/Model.h \
     src/Constants.h \
     src/View/imagewidget.h \
-    src/Common/DataStructure.h
+    src/Common/DataStructure.h \
+    src/ViewModel/Commands/newcanvascommand.h \
+    src/ViewModel/Commands/addellipsecommand.h \
+    src/ViewModel/Commands/penupdatecommand.h
 
 FORMS += \
     src/View/mainwindow.ui
+
+RESOURCES += \
+    imgs.qrc

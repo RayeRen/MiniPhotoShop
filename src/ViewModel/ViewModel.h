@@ -6,23 +6,43 @@
 #define MINIPHOTOSHOP_VIEWMODEL_H
 
 #include <memory>
-#include "../Common/BaseCommand.h"
-#include "Commands/AddLineCommand.h"
+#include <QImage>
+#include "src/Common/Observable.h"
+#include "src/Model/Model.h"
 
 using namespace std;
+
+class BaseCommand;
 
 class ViewModel : public Observable,
                   public Observer {
 public:
-    ViewModel(shared_ptr<Model> pModel) :
-            addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))) {}
+//    static ViewModel& getInstance(shared_ptr<Model> pModel){
+//        static ViewModel instance(pModel);
+//        return instance;
+//    }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
+    const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
 
+    const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
+    const shared_ptr<BaseCommand> &getPenUpdateCommand() const;
     virtual void update(Params params);
-
+    void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
+    const QImage* GetDisplayImage(){return &displayImage;}
+    void RefreshDisplayImage();
+    void NewCanvas(unsigned int width,unsigned int height);
+    ViewModel(shared_ptr<Model> pModel);
 private:
-    shared_ptr<BaseCommand> addLineCommand;
+    shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,newCanvasCommand,penUpdateCommand;
+    vector<shared_ptr<QImage>> displayBuffer;
+    QImage displayImage;
+    const Layouts* layouts;
+    QImage backGround;
+
+//    ViewModel(){};
+
+//    void operator = (const ViewModel& viewModel){}
 };
 
 

@@ -12,7 +12,7 @@ protected:
     int penStyle, lineWidth;
 public:
 
-    Pen() : foreR(0), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(1) {
+    Pen() : foreR(255), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(4){
 
     }
 
@@ -105,23 +105,32 @@ public:
 
 class BaseShape {
 protected:
-    int posX, posY;
+    double posX, posY;
     int type;
     string name;
     double scaleX, scaleY, angle;
 public:
-    BaseShape(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle) : posX(posX), posY(posY), type(type), name(name), scaleX(scaleX), scaleY(scaleY), angle(angle) {}
+    BaseShape(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle) : posX(posX), posY(posY), type(type), name(name), scaleX(scaleX), scaleY(scaleY), angle(angle) {}
 
-    void setPosX(int posX) {
+    void setPosX(double posX) {
         BaseShape::posX = posX;
     }
 
-    void setPosY(int posY) {
+    void setPosY(double posY) {
         BaseShape::posY = posY;
     }
 
     int getType() const {
         return type;
+    }
+
+    double getPosX() const {
+        return posX;
+    }
+
+
+    double getPosY() const {
+        return posY;
     }
 
     void setType(int type) {
@@ -160,12 +169,11 @@ public:
 class Line : public BaseShape {
 protected:
     Pen pen;
-    Brush brush;
-    int x1, y1, x2, y2;
+    double x1, y1, x2, y2;
 public:
-    Line(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
-         const Brush &brush, int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                                               pen(pen), brush(brush), x1(x1), y1(y1), x2(x2), y2(y2) {}
+    Line(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+          double x1, double y1, double x2, double y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+                                                               pen(pen),  x1(x1), y1(y1), x2(x2), y2(y2) {}
 
     const Pen &getPen() const {
         return pen;
@@ -175,46 +183,73 @@ public:
         Line::pen = pen;
     }
 
-    const Brush &getBrush() const {
-        return brush;
-    }
-
-    void setBrush(const Brush &brush) {
-        Line::brush = brush;
-    }
-
-    int getX1() const {
+    double getX1() const {
         return x1;
     }
 
-    void setX1(int x1) {
+    void setX1(double x1) {
         Line::x1 = x1;
     }
 
-    int getY1() const {
+    double getY1() const {
         return y1;
     }
 
-    void setY1(int y1) {
+    void setY1(double y1) {
         Line::y1 = y1;
     }
 
-    int getX2() const {
+    double getX2() const {
         return x2;
     }
 
-    void setX2(int x2) {
+    void setX2(double x2) {
         Line::x2 = x2;
     }
 
-    int getY2() const {
+    double getY2() const {
         return y2;
     }
 
-    void setY2(int y2) {
+    void setY2(double y2) {
         Line::y2 = y2;
     }
 
 };
+class Ellipse:public BaseShape
+{
+protected:
+    Pen pen;
+   // Brush brush;
+    double a,b;
+public:
+    Ellipse(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+          double a, double b) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+                                                               pen(pen),  a(a), b(b){}
 
+    const Pen &getPen() const {
+        return pen;
+    }
+
+    void setPen(const Pen &pen) {
+        Ellipse::pen = pen;
+    }
+
+    double getA() const {
+        return a;
+    }
+
+    void setA(double a) {
+        Ellipse::a = a;
+    }
+
+    double getB() const {
+        return b;
+    }
+
+    void setB(double b) {
+        Ellipse::b = b;
+    }
+
+};
 #endif // DATASTRUCTURE_H
