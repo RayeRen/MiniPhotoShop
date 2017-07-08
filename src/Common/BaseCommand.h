@@ -1,4 +1,4 @@
- //
+//
 // Created by Raye on 2017/7/6.
 //
 
@@ -8,11 +8,12 @@
 
 #include "Params.h"
 #include "../Model/Model.h"
-#include "../ViewModel/ViewModel.h"
+
+class ViewModel;
 
 class BaseCommand {
 public:
-    BaseCommand(const shared_ptr<Model> &pModel,const shared_ptr<ViewMode> &pViewMode) : pModel(pModel),pViewModel(nullptr) {}
+    BaseCommand(const shared_ptr<Model> &pModel, const shared_ptr<ViewModel> &pViewModel = nullptr) : pModel(pModel),pViewModel(pViewModel) {}
 
     void setParams(const Params &params) {
         BaseCommand::params = params;

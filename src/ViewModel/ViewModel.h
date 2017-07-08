@@ -6,22 +6,18 @@
 #define MINIPHOTOSHOP_VIEWMODEL_H
 
 #include <memory>
-#include "../Common/BaseCommand.h"
-#include "Commands/AddLineCommand.h"
-#include "Commands/newcanvascommand.h"
 #include <QImage>
+#include "src/Common/Observable.h"
+#include "src/Model/Model.h"
 
 using namespace std;
+
+class BaseCommand;
 
 class ViewModel : public Observable,
                   public Observer {
 public:
-    ViewModel(shared_ptr<Model> pModel) :
-            addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
-            newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(this)))
-    {
-        displayImage=QImage(QSize(800,600),QImage::Format_ARGB32);
-    }
+    ViewModel(shared_ptr<Model> pModel);
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
 const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
