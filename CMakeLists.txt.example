@@ -58,7 +58,7 @@ set(RESOURCES
 # Shared libraries
 set(LIBRARIES
         Qt5::Widgets
-        Qt5::Network
+        Qt5::NetworkH
         )
 
 qt5_wrap_ui(UIC_SOURCES ${FORMS})
