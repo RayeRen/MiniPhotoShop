@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->MainDisplayWidget->SetState(&state);
 
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
-    ui->action_5->setCheckable(true);
+    ui->action_drawLine->setCheckable(true);
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
 }
 
@@ -84,10 +84,10 @@ void MainWindow::StateChanged()
    switch(state)
    {
     case STATE::INIT:
-        ui->action_5->setChecked(false);
+        ui->action_drawLine->setChecked(false);
         break;
     case STATE::DRAW_LINE_INIT:
-        ui->action_5->setChecked(true);
+        ui->action_drawLine->setChecked(true);
     break;
    }
 }

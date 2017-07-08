@@ -37,7 +37,7 @@ private:
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
-
+    QImage backGround;
 
 //    ViewModel(){};
 

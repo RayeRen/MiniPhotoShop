@@ -24,7 +24,171 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QToolButton" name="toolButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>85</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>51</red>
+              <green>51</green>
+              <blue>51</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Shadow">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>85</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>51</red>
+              <green>51</green>
+              <blue>51</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Shadow">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="Button">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>85</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Base">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Window">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Shadow">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>170</red>
+              <green>0</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
       <property name="widgetResizable">
@@ -81,25 +245,25 @@
     <property name="title">
      <string>文件</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="action_newCanvas"/>
+    <addaction name="action_openPic"/>
+    <addaction name="action_saveCanvas"/>
+    <addaction name="action_saveAsPic"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>绘制</string>
     </property>
-    <addaction name="action_5"/>
-    <addaction name="action_6"/>
+    <addaction name="action_drawLine"/>
+    <addaction name="action_drawEllipse"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
      <string>关于</string>
     </property>
-    <addaction name="action_7"/>
-    <addaction name="action_Qt"/>
-    <addaction name="action_8"/>
+    <addaction name="action_aboutPro"/>
+    <addaction name="action_aboutQt"/>
+    <addaction name="action_help"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -110,36 +274,36 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
-   <addaction name="action_5"/>
-   <addaction name="action_6"/>
-   <addaction name="action_7"/>
-   <addaction name="action_8"/>
-   <addaction name="action_Qt"/>
+   <addaction name="action_drawLine"/>
+   <addaction name="action_drawEllipse"/>
+   <addaction name="action_aboutPro"/>
+   <addaction name="action_help"/>
+   <addaction name="action_aboutQt"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action">
+  <action name="action_newCanvas">
    <property name="text">
     <string>新建工程</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="action_openPic">
    <property name="text">
     <string>打开图片</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="action_saveCanvas">
    <property name="text">
     <string>保存工程</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="action_saveAsPic">
    <property name="text">
     <string>另存为图片</string>
    </property>
   </action>
-  <action name="action_5">
+  <action name="action_drawLine">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>
@@ -148,7 +312,7 @@
     <string>画线</string>
    </property>
   </action>
-  <action name="action_6">
+  <action name="action_drawEllipse">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/ellipse.png</normaloff>:/img/img/ellipse.png</iconset>
@@ -157,7 +321,7 @@
     <string>画椭圆</string>
    </property>
   </action>
-  <action name="action_7">
+  <action name="action_aboutPro">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/information.png</normaloff>:/img/img/information.png</iconset>
@@ -166,7 +330,7 @@
     <string>关于此程序</string>
    </property>
   </action>
-  <action name="action_Qt">
+  <action name="action_aboutQt">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/qt.png</normaloff>:/img/img/qt.png</iconset>
@@ -175,7 +339,7 @@
     <string>关于Qt</string>
    </property>
   </action>
-  <action name="action_8">
+  <action name="action_help">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/help.png</normaloff>:/img/img/help.png</iconset>

@@ -7,5 +7,6 @@
         <file>img/qt.png</file>
         <file>img/ellipse.png</file>
         <file>img/line.png</file>
+        <file>img/background.png</file>
     </qresource>
 </RCC>
