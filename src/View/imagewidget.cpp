@@ -29,6 +29,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
 */
     if(image!=NULL&&!image->isNull())
     {
+        qDebug()<<"C"<<image->width()<<image->height();
         p.drawImage(QRectF(0,0,width(),height()),*image,QRectF(0,0,image->width(),image->height()));
     }
     switch(*state)
@@ -103,7 +104,9 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
          *state=STATE::INIT;
         Params para;
         int centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
-        para.setInts({centerX,centerY,mouseLastX-centerX,mouseLastY-centerY,mouseX-centerX,mouseY-centerY});
+        para.setDoubles({(double)centerX/realWidth,(double)centerY/realHeight,(double)(mouseLastX-centerX)/realWidth,
+                         (double)(mouseLastY-centerY)/realHeight,(double)(mouseX-centerX)/realWidth,
+                         (double)(mouseY-centerY)/realHeight});
         addLineCommand->setParams(para);
         addLineCommand->exec();
         qDebug()<<centerX<<centerY<<mouseLastX-centerX<<mouseLastY-centerY<<mouseX-centerX<<mouseY-centerY;
@@ -124,10 +127,12 @@ void ImageWidget::resizeEvent(QResizeEvent *event)
 {
     realWidth=event->size().width();
     realHeight=event->size().height();
+     qDebug()<<"B"<<realWidth<<realHeight;
     if(newCanvasCommand!=nullptr)
     {
         Params params;
         params.setInts({realWidth,realHeight});
+        qDebug()<<"A"<<realWidth<<realHeight;
         newCanvasCommand->setParams(params);
         newCanvasCommand->exec();
     }

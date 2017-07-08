@@ -4,7 +4,7 @@
 
 #include "Model.h"
 #include <QDebug>
-void Model::addLine(int centerX,int centerY,int x1,int y1,int x2,int y2)
+void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,double y2)
 {
     shared_ptr<Line> pLine;
     layouts.list.push_back(pLine=shared_ptr<Line>(new Line(centerX,

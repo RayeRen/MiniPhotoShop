@@ -40,8 +40,8 @@ void ViewModel::RefreshDisplayImage() {
                // QPen pen(Qt::red);
               //  pen.setStyle(Qt::SolidLine);
                 painter.setPen(tmpPen);
-                painter.drawLine(line->getPosX() + line->getX1(), line->getPosY() + line->getY1(),
-                                 line->getPosX() + line->getX2(), line->getPosY() + line->getY2());
+                painter.drawLine((line->getPosX() + line->getX1())*displayImage.width(), (line->getPosY() + line->getY1())*displayImage.height(),
+                                 (line->getPosX() + line->getX2())*displayImage.width(), (line->getPosY() + line->getY2())*displayImage.height());
             }
                 break;
             case SHAPE::ELLIPSE:
@@ -57,6 +57,7 @@ void ViewModel::RefreshDisplayImage() {
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height) {
     displayImage = QImage(QSize(width, height), QImage::Format_ARGB32);
+    RefreshDisplayImage();
 }
 
 ViewModel::ViewModel(shared_ptr<Model> pModel) :
