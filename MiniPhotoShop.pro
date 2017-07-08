@@ -47,7 +47,8 @@ HEADERS += \
     src/View/imagewidget.h \
     src/Common/DataStructure.h \
     src/ViewModel/Commands/newcanvascommand.h \
-    src/ViewModel/Commands/addellipsecommand.h
+    src/ViewModel/Commands/addellipsecommand.h \
+    src/ViewModel/Commands/penupdatecommand.h
 
 FORMS += \
     src/View/mainwindow.ui

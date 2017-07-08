@@ -22,3 +22,10 @@ void Model::addEllipse(double centerX,double centerY,double a,double b){
     params.setType(NOTIFY::UPDATE_IMAGE);
     notify(params);
 }
+
+ void Model::SetPenColor(unsigned char r,unsigned char g,unsigned char b)
+ {
+     pen.setForeR(r);
+     pen.setForeG(g);
+     pen.setForeB(b);
+ }

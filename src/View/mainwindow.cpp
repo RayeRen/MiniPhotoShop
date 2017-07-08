@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <Qdebug>
+#include <QDebug>
 #include <QMessageBox>
+#include <QColorDialog>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -14,8 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->MainDisplayWidget->SetState(&state);
 
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
+
     ui->action_drawLine->setCheckable(true);
+    ui->action_drawEllipse->setCheckable(true);
+
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
+    connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +38,11 @@ void MainWindow::setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseC
 
 }
 
+void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand)
+{
+    this->penUpdateCommand=penUpdateCommand;
+}
+
 void MainWindow::update(Params params)
 {
 
@@ -40,13 +51,14 @@ void MainWindow::update(Params params)
 void MainWindow::SetPen(const Pen* pen)
 {
     this->pen=pen;
-
+    ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(pen->getForeR()).arg(pen->getForeG()).arg(pen->getForeB()));
     ui->MainDisplayWidget->SetPen(pen);
 }
 
 void MainWindow::SetBrush(const Brush* brush)
 {
     this->brush=brush;
+    ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(brush->getBackR()).arg(brush->getBackG()).arg(brush->getBackB()));
 }
 
 void MainWindow::SetDisplayImage(const QImage* displayImage)
@@ -67,27 +79,59 @@ void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCom
 
 void MainWindow::menuTriggered(QAction* action)
 {
-    if(action->text()=="关于Qt")
+    if(action->text()==ui->action_aboutQt->text())
     {
         QMessageBox::aboutQt(NULL);
         return;
     }
-    if(action->text()=="画线")
+    if(action->text()==ui->action_drawLine->text())
     {
         state=STATE::DRAW_LINE_INIT;
+    }
+    if(action->text()==ui->action_drawEllipse->text())
+    {
+        state=STATE::DRAW_ELLIPSE_INIT;
     }
 
 }
 
 void MainWindow::StateChanged()
 {
-   switch(state)
-   {
+    switch(state)
+    {
     case STATE::INIT:
         ui->action_drawLine->setChecked(false);
+        ui->action_drawEllipse->setChecked(false);
         break;
     case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
-    break;
-   }
+
+        break;
+
+    case STATE::DRAW_ELLIPSE_INIT:
+
+        ui->action_drawEllipse->setChecked(true);
+        break;
+
+    }
+    QWidget::update();
+}
+
+void MainWindow::ButtonForeColorPressed()
+{
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
+    if(color.isValid())
+    {
+        ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+        Params params;
+        params.setType(COMMAND::UPDATE_PEN_COLOR);
+        params.setInts({static_cast<int>(color.red()),static_cast<int>(color.green()),static_cast<int>(color.blue())});
+        penUpdateCommand->setParams(params);
+        penUpdateCommand->exec();
+    }
+}
+
+void MainWindow::ButtonBackColorPressed()
+{
+
 }

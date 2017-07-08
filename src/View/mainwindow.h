@@ -24,6 +24,7 @@ public:
     void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand);
 
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
+    void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -35,10 +36,12 @@ private:
     const Brush* brush;
     const QImage* displayImage;
     int state;
-     shared_ptr<BaseCommand> newCanvasCommand;
+     shared_ptr<BaseCommand> newCanvasCommand,penUpdateCommand;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
+     void ButtonForeColorPressed();
+     void ButtonBackColorPressed();
 };
 
 #endif // MAINWINDOW_H

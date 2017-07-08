@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
-
+    pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());
 
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
