@@ -4,6 +4,7 @@
 #include <utility>
 #include <string>
 #include "../Constants.h"
+
 using namespace std;
 
 class Pen {
@@ -11,9 +12,13 @@ protected:
     unsigned char foreR, foreG, foreB;
     int penStyle, lineWidth;
 public:
+
     Pen() : foreR(0), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(1) {
 
     }
+
+    Pen(unsigned char foreR, unsigned char foreG, unsigned char foreB, int penStyle, int lineWidth) : foreR(foreR), foreG(foreG), foreB(foreB), penStyle(penStyle),lineWidth(lineWidth) {}
+
 
     unsigned char getForeR() const {
         return foreR;
@@ -61,7 +66,11 @@ protected:
     unsigned char backR, backG, backB;
     int brushStyle;
 public:
+
     Brush():backR(0), backG(0), backB(0),brushStyle(){}
+
+    Brush(unsigned char backR, unsigned char backG, unsigned char backB, int brushStyle) : backR(backR), backG(backG),backB(backB),brushStyle(brushStyle) {}
+
     unsigned char getBackR() const {
         return backR;
     }
@@ -102,6 +111,8 @@ protected:
     string name;
     double scaleX, scaleY, angle;
 public:
+    BaseShape(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle) : posX(posX), posY(posY), type(type), name(name), scaleX(scaleX), scaleY(scaleY), angle(angle) {}
+
     void setPosX(int posX) {
         BaseShape::posX = posX;
     }
@@ -145,32 +156,65 @@ public:
     void setAngle(double angle) {
         BaseShape::angle = angle;
     }
-
-public:
-    BaseShape(int posX, int posY, int type);
-
-    int getPosX() const;
-
-    int getPosY() const;
-
-    void setPos(pair<int, int> &Pos);
-
-    string getName() const;
 };
 
 class Line : public BaseShape {
-private:
+protected:
     Pen pen;
     Brush brush;
     int x1, y1, x2, y2;
 public:
-    Line(pair<int, int> &Pos, int type, const Pen &pen, const Brush &brush, pair<int, int> &XY1, pair<int, int> &XY2);
+    Line(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+         const Brush &brush, int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+                                                               pen(pen), brush(brush), x1(x1), y1(y1), x2(x2), y2(y2) {}
 
-    void setPen(Pen &pen);
+    const Pen &getPen() const {
+        return pen;
+    }
 
-    void setBrush(Brush &brush);
+    void setPen(const Pen &pen) {
+        Line::pen = pen;
+    }
 
-    void MoveTo(pair<int, int> &Pos);
+    const Brush &getBrush() const {
+        return brush;
+    }
+
+    void setBrush(const Brush &brush) {
+        Line::brush = brush;
+    }
+
+    int getX1() const {
+        return x1;
+    }
+
+    void setX1(int x1) {
+        Line::x1 = x1;
+    }
+
+    int getY1() const {
+        return y1;
+    }
+
+    void setY1(int y1) {
+        Line::y1 = y1;
+    }
+
+    int getX2() const {
+        return x2;
+    }
+
+    void setX2(int x2) {
+        Line::x2 = x2;
+    }
+
+    int getY2() const {
+        return y2;
+    }
+
+    void setY2(int y2) {
+        Line::y2 = y2;
+    }
 
 };
 
