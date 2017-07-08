@@ -83,7 +83,7 @@ void ViewModel::RefreshDisplayImage() {
             tmpPen.setStyle(static_cast<Qt::PenStyle>(rectPen.getPenStyle()));
             tmpPen.setWidth(rectPen.getLineWidth());
             painter.setPen(tmpPen);
-            painter.drawRect(QPoint((int)rect->getPosX(), (int)rect->getPosY(), (int)rect->getWidth(), (int)rect->getHeight()));
+            painter.drawRect(QRectF((int)rect->getPosX(), (int)rect->getPosY(), (int)rect->getWidth(), (int)rect->getHeight()));
             break;
 
         }
