@@ -5,12 +5,16 @@
 #include "ViewModel.h"
 #include "../Common/BaseCommand.h"
 #include "src/ViewModel/Commands/AddLineCommand.h"
+#include "src/ViewModel/Commands/addellipsecommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include <QPainter>
 #include <QDebug>
 
 const shared_ptr<BaseCommand> &ViewModel::getAddLineCommand() const {
     return addLineCommand;
+}
+const shared_ptr<BaseCommand> &ViewModel::getAddEllipseCommand() const{
+    return addEllipseCommand;
 }
 
 const shared_ptr<BaseCommand> &ViewModel::getNewCanvasCommand() const {
@@ -75,6 +79,7 @@ void ViewModel::NewCanvas(unsigned int width, unsigned int height) {
 
 ViewModel::ViewModel(shared_ptr<Model> pModel) :
         addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
+        addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
         newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))) {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);
 }

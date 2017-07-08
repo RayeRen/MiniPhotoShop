@@ -23,14 +23,16 @@ public:
     }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
-const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
+    const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
+
+    const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
     void RefreshDisplayImage();
     void NewCanvas(unsigned int width,unsigned int height);
 private:
-    shared_ptr<BaseCommand> addLineCommand,newCanvasCommand;
+    shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,newCanvasCommand;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;

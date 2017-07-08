@@ -21,6 +21,8 @@ public:
     ~MainWindow();
 
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand);
+    void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand);
+
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);

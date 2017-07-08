@@ -22,6 +22,10 @@ void MainWindow::setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand
 {
     ui->MainDisplayWidget->setAddLineCommand(addLineCommand);
 }
+void MainWindow::setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand){
+    ui->MainDisplayWidget->setAddEllipseCommand(addEllipseCommand);
+
+}
 
 void MainWindow::update(Params params)
 {
