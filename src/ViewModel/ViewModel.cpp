@@ -30,7 +30,7 @@ void ViewModel::update(Params params) {
 }
 
 void ViewModel::RefreshDisplayImage() {
-    if (layouts == NULL)
+    if (layouts == nullptr)
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);

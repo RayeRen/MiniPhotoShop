@@ -14,15 +14,8 @@ class Model : public Observable {
 private:
     Pen pen;
     Brush brush;
-    Model(){}
-    Model(const Model & model){}
-    void operator = (const Model& model){}
     Layouts layouts;
 public:
-    static Model& getInstance(){
-        static Model instance;
-        return instance;
-    }
     void addLine(){
     }
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);

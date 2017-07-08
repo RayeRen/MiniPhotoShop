@@ -17,10 +17,10 @@ class BaseCommand;
 class ViewModel : public Observable,
                   public Observer {
 public:
-    static ViewModel& getInstance(shared_ptr<Model> pModel){
-        static ViewModel instance(pModel);
-        return instance;
-    }
+//    static ViewModel& getInstance(shared_ptr<Model> pModel){
+//        static ViewModel instance(pModel);
+//        return instance;
+//    }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
@@ -31,17 +31,17 @@ public:
     const QImage* GetDisplayImage(){return &displayImage;}
     void RefreshDisplayImage();
     void NewCanvas(unsigned int width,unsigned int height);
+    ViewModel(shared_ptr<Model> pModel);
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,newCanvasCommand;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
 
-    ViewModel(shared_ptr<Model> pModel);
 
-    ViewModel(){};
+//    ViewModel(){};
 
-    void operator = (const ViewModel& viewModel){}
+//    void operator = (const ViewModel& viewModel){}
 };
 
 

@@ -5,8 +5,8 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    shared_ptr<Model> pModel(&Model::getInstance());
-    shared_ptr<ViewModel> pViewModel(&ViewModel::getInstance(pModel));
+    shared_ptr<Model> pModel(new Model());
+    shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
     shared_ptr<MainWindow> pMainWindows(new MainWindow);
 
     //add viewModel to the observer list of model
@@ -14,14 +14,15 @@ int main(int argc, char *argv[]) {
     //add view to the observer list of viewModel.
     pViewModel->addObserver(pMainWindows);
 
-    //bind the commands
+    //bind
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
+
+    pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->show();
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
-    pViewModel->SetLayouts(pModel->GetLayouts());
 
     return a.exec();
 }
