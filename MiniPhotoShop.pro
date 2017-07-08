@@ -48,7 +48,8 @@ HEADERS += \
     src/Common/DataStructure.h \
     src/ViewModel/Commands/newcanvascommand.h \
     src/ViewModel/Commands/addellipsecommand.h \
-    src/ViewModel/Commands/penupdatecommand.h
+    src/ViewModel/Commands/penupdatecommand.h \
+    src/ViewModel/Commands/AddRectCommand.h
 
 FORMS += \
     src/View/mainwindow.ui

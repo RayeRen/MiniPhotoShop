@@ -20,14 +20,11 @@ public:
     }
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
+    void addRect(double centerX, double centerY, double width, double height);
     void SetPen(Pen pen){this->pen=pen;}
-<<<<<<< HEAD
-    const Pen* GetPen()const{return &pen;}
-=======
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     const Pen* GetPen(){return &pen;}
     const Layouts* GetLayouts(){return &layouts;}
->>>>>>> 30b55d7c48bd4d84ac2a52ce3d8dd362dca6ac05
 };
 
 

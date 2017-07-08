@@ -17,6 +17,9 @@ const shared_ptr<BaseCommand> &ViewModel::getAddLineCommand() const {
 const shared_ptr<BaseCommand> &ViewModel::getAddEllipseCommand() const{
     return addEllipseCommand;
 }
+const shared_ptr<BaseCommand> &ViewModel::getAddRectCommand() const{
+    return addRectCommand;
+}
 
 const shared_ptr<BaseCommand> &ViewModel::getNewCanvasCommand() const {
     return newCanvasCommand;
@@ -74,6 +77,13 @@ void ViewModel::RefreshDisplayImage() {
         case SHAPE::PIXMAP:
             break;
         case SHAPE::RECT:
+            shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[i]));
+            Pen rectPen = rect->getPen();
+            QPen tmpPen(QColor(rectPen.getForeR(), rectPen.getForeG(), rectPen.getForeB()));
+            tmpPen.setStyle(static_cast<Qt::PenStyle>(rectPen.getPenStyle()));
+            tmpPen.setWidth(rectPen.getLineWidth());
+            painter.setPen(tmpPen);
+            painter.drawRect(QPoint((int)rect->getPosX(), (int)rect->getPosY(), (int)rect->getWidth(), (int)rect->getHeight()));
             break;
 
         }
