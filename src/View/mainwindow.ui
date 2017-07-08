@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>647</width>
+    <height>549</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mini PhotoShop</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../imgs.qrc">
+    <normaloff>:/img/img/icon.png</normaloff>:/img/img/icon.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="foreColorButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="penWidthSlider">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="backColorButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>822</width>
+         <height>822</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="ImageWidget" name="MainDisplayWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>800</width>
+            <height>800</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>800</width>
+            <height>800</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>647</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action_newCanvas"/>
+    <addaction name="action_openPic"/>
+    <addaction name="action_saveCanvas"/>
+    <addaction name="action_saveAsPic"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>绘制</string>
+    </property>
+    <addaction name="action_drawLine"/>
+    <addaction name="action_drawEllipse"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="action_aboutPro"/>
+    <addaction name="action_aboutQt"/>
+    <addaction name="action_help"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_drawLine"/>
+   <addaction name="action_drawEllipse"/>
+   <addaction name="action_aboutPro"/>
+   <addaction name="action_help"/>
+   <addaction name="action_aboutQt"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_newCanvas">
+   <property name="text">
+    <string>新建工程</string>
+   </property>
+  </action>
+  <action name="action_openPic">
+   <property name="text">
+    <string>打开图片</string>
+   </property>
+  </action>
+  <action name="action_saveCanvas">
+   <property name="text">
+    <string>保存工程</string>
+   </property>
+  </action>
+  <action name="action_saveAsPic">
+   <property name="text">
+    <string>另存为图片</string>
+   </property>
+  </action>
+  <action name="action_drawLine">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>画线</string>
+   </property>
+  </action>
+  <action name="action_drawEllipse">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/ellipse.png</normaloff>:/img/img/ellipse.png</iconset>
+   </property>
+   <property name="text">
+    <string>画椭圆</string>
+   </property>
+  </action>
+  <action name="action_aboutPro">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/information.png</normaloff>:/img/img/information.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于此程序</string>
+   </property>
+  </action>
+  <action name="action_aboutQt">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/qt.png</normaloff>:/img/img/qt.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于Qt</string>
+   </property>
+  </action>
+  <action name="action_help">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/help.png</normaloff>:/img/img/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ImageWidget</class>
+   <extends>QWidget</extends>
+   <header>src/View/imagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../imgs.qrc"/>
+ </resources>
+ <connections/>
+</ui>

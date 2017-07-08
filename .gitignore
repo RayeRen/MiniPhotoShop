@@ -40,5 +40,5 @@ CMakeLists.txt.user*
 # Clion
 .idea
 cmake-build-debug
-.git
 CMakeLists.txt
+bin/
