@@ -22,6 +22,7 @@ public:
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
+    void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
     const Pen* GetPen(){return &pen;}
     const Layouts* GetLayouts(){return &layouts;}
 };

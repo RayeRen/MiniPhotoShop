@@ -16,6 +16,9 @@ public:
             pModel->SetPenColor(static_cast<unsigned char>(ints[0]),static_cast<unsigned char>(ints[1]),
                     static_cast<unsigned char>(ints[2]));
             break;
+         case COMMAND::UPDATE_PEN_WIDTH:
+            pModel->SetPenWidth(ints[0]);
+            break;
         }
 
 

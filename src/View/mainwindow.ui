@@ -53,7 +53,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="penWidthSlider">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
