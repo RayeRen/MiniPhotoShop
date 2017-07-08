@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class LAYOUTS{
+class Layouts{
 protected:
     vector<shared_ptr<BaseShape*>>list;
 };

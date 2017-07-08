@@ -3,7 +3,7 @@
 
 #include <utility>
 #include <string>
-#include <src/Constants.h>
+#include "../Constants.h"
 
 using namespace std;
 
@@ -12,7 +12,13 @@ protected:
     unsigned char foreR, foreG, foreB;
     int penStyle, lineWidth;
 public:
+
+    Pen() : foreR(0), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(1) {
+
+    }
+
     Pen(unsigned char foreR, unsigned char foreG, unsigned char foreB, int penStyle, int lineWidth) : foreR(foreR), foreG(foreG), foreB(foreB), penStyle(penStyle),lineWidth(lineWidth) {}
+
 
     unsigned char getForeR() const {
         return foreR;
@@ -60,6 +66,9 @@ protected:
     unsigned char backR, backG, backB;
     int brushStyle;
 public:
+
+    Brush():backR(0), backG(0), backB(0),brushStyle(){}
+
     Brush(unsigned char backR, unsigned char backG, unsigned char backB, int brushStyle) : backR(backR), backG(backG),backB(backB),brushStyle(brushStyle) {}
 
     unsigned char getBackR() const {
