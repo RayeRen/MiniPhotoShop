@@ -3,15 +3,15 @@
 
 #include <utility>
 #include <string>
-
+#include "../Constants.h"
 using namespace std;
 
 class Pen {
 protected:
     unsigned char foreR, foreG, foreB;
-    int penStyle = 1, lineWidth = 4;
+    int penStyle, lineWidth;
 public:
-    Pen() : foreR(0), foreG(0), foreB(0),penStyle() {
+    Pen() : foreR(0), foreG(0), foreB(0),penStyle(PENSTYLE::SOLID),lineWidth(1) {
 
     }
 
@@ -61,7 +61,7 @@ protected:
     unsigned char backR, backG, backB;
     int brushStyle;
 public:
-    Brush():backR(0), backG(0), backB(0),brushStyle();
+    Brush():backR(0), backG(0), backB(0),brushStyle(){}
     unsigned char getBackR() const {
         return backR;
     }

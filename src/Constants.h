@@ -12,30 +12,17 @@ namespace SHAPE {
     };
 }
 
-//Pen
-namespace PEN {
-    enum {
-        COLOR,LINE_WEIGHT,STYLE
-    };
-}
-
 namespace PENSTYLE {
     enum {
         SOLID=1,DASH,DOT,DASH_DOT,DASH_DOT_DOT
     };
 }
 
-//Brush
-namespace BRUSH {
-    enum {
-        COLOR,STYLE
-    };
-}
-
 //Notify Type
 namespace NOTIFY{
 enum{
-    UPDATE_PEN,UPDATE_BRUSH,UPDATE_IMAGE
+    UPDATE_PEN_COLOR,UPDATE_PEN_WIDTH,UPDATE_PEN_STYLE,UPDATE_BRUSH_COLOR,
+    UPDATE_BRUSH_STYLE,UPDATE_IMAGE
 };
 }
 
@@ -44,6 +31,6 @@ namespace STATE{
 enum{
     INIT,DRAW_LINE
 };
-};
+}
 
 #endif //MINIPHOTOSHOP_CONSTANTS_H

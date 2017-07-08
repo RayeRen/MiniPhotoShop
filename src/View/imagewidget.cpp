@@ -32,12 +32,11 @@ void ImageWidget::paintEvent(QPaintEvent *event)
     case STATE::DRAW_LINE:
         if(pen!=NULL)
         {
-            QPen tmpPen(QColor(pen->foreR,pen->foreG,pen->foreB));
-            tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->penStyle));
-            tmpPen.setWidth(pen->lineWidth);
+            QPen tmpPen(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()));
+            tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->getPenStyle()));
+            tmpPen.setWidth(pen->getLineWidth());
             p.setPen(tmpPen);
             p.drawLine(mouseLastX,mouseLastY,mouseX,mouseY);
-            qDebug()<<pen->foreR<<pen->foreG<<pen->foreB<<pen->lineWidth;
         }
         break;
     }
