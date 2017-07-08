@@ -20,7 +20,8 @@ int main(int argc, char *argv[]) {
     pModel->SetPen(Pen());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->show();
-
+    pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
+    pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
 
     return a.exec();

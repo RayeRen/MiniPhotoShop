@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <Qdebug>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -43,4 +43,14 @@ void MainWindow::SetBrush(const Brush* brush)
 void MainWindow::SetDisplayImage(const QImage* displayImage)
 {
     this->displayImage=displayImage;
+    ui->MainDisplayWidget->SetImage(displayImage);
+}
+
+void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand)
+{
+    this->newCanvasCommand=newCanvasCommand;
+    Params params;
+    params.setInts({ui->MainDisplayWidget->width(),ui->MainDisplayWidget->height()});
+    newCanvasCommand->setParams(params);
+    newCanvasCommand->exec();
 }

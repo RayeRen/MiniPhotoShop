@@ -8,6 +8,7 @@
 #include <memory>
 #include "../Common/BaseCommand.h"
 #include "Commands/AddLineCommand.h"
+#include "Commands/newcanvascommand.h"
 #include <QImage>
 
 using namespace std;
@@ -16,16 +17,21 @@ class ViewModel : public Observable,
                   public Observer {
 public:
     ViewModel(shared_ptr<Model> pModel) :
-            addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))) {}
+            addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
+            newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(this)))
+    {
+        displayImage=QImage(QSize(800,600),QImage::Format_ARGB32);
+    }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
-
+const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
     void RefreshDisplayImage();
+    void NewCanvas(unsigned int width,unsigned int height);
 private:
-    shared_ptr<BaseCommand> addLineCommand;
+    shared_ptr<BaseCommand> addLineCommand,newCanvasCommand;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;

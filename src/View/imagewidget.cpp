@@ -8,6 +8,7 @@ ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 void ImageWidget::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
+    /*
     if(image!=NULL&&!image->isNull())
     {
         QRectF target,source(0,0,image->width(),image->height());
@@ -25,7 +26,11 @@ void ImageWidget::paintEvent(QPaintEvent *event)
 
         p.drawImage(target,*image,source);
     }
-
+*/
+    if(image!=NULL&&!image->isNull())
+    {
+        p.drawImage(QRectF(0,0,width(),height()),*image,QRectF(0,0,image->width(),image->height()));
+    }
     switch(*state)
     {
     case STATE::INIT:break;
@@ -101,6 +106,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         para.setInts({centerX,centerY,mouseLastX-centerX,mouseLastY-centerY,mouseX-centerX,mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
+        qDebug()<<centerX<<centerY<<mouseLastX-centerX<<mouseLastY-centerY<<mouseX-centerX<<mouseY-centerY;
         break;
 
     }

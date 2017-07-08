@@ -8,10 +8,11 @@
 
 #include "Params.h"
 #include "../Model/Model.h"
+#include "../ViewModel/ViewModel.h"
 
 class BaseCommand {
 public:
-    BaseCommand(const shared_ptr<Model> &pModel) : pModel(pModel) {}
+    BaseCommand(const shared_ptr<Model> &pModel,const shared_ptr<ViewMode> &pViewMode) : pModel(pModel),pViewModel(nullptr) {}
 
     void setParams(const Params &params) {
         BaseCommand::params = params;
@@ -22,6 +23,7 @@ public:
 protected:
     Params params;
     shared_ptr<Model> pModel;
+    shared_ptr<ViewModel> pViewModel;
 };
 
 

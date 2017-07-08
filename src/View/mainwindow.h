@@ -21,6 +21,7 @@ public:
     ~MainWindow();
 
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand);
+    void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -32,6 +33,7 @@ private:
     const Brush* brush;
     const QImage* displayImage;
     int state;
+     shared_ptr<BaseCommand> newCanvasCommand;
 };
 
 #endif // MAINWINDOW_H

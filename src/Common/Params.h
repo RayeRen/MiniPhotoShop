@@ -45,6 +45,16 @@ public:
         Params::strings = strings;
     }
 
+    void setType(int type)
+    {
+        this->type=type;
+    }
+
+    int getType() const
+    {
+        return type;
+    }
+
 private:
     int type;
     vector<int> ints;
