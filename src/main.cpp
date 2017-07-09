@@ -4,38 +4,13 @@
 #include <QElapsedTimer>
 #include<QTranslator>
 #include <src/ViewModel/ViewModel.h>
-#include <src/Common/Pixmap32b.h>
-#include <src/Common/Histogram3c.h>
 #include <QDebug>
 #include <iostream>
 using namespace std;
 #define SPLAHSCREENTIME 2000
-void testPixmap32b(){
-    char fileName[] = "D:\\1.bmp";
-    Pixmap32b pic(fileName);
 
-    if (pic.getFormat() == FMT_NULL)
-    {
-        cout << "Open File Failed" << endl;
-        return ;
-    }
-    //Test 1
-    if (!pic.SaveAsBMP24b("original_pic.bmp"))
-        qDebug() << QStringLiteral(" original_pic.bmp is created");
-
-    if (!pic.SaveAsGreyBMP8b("result_greyscale.bmp"))
-        qDebug() << QStringLiteral("8 bit grayscale: result_greyscale.bmp " );
-
-    int delY=10;
-    qDebug() << QStringLiteral("delY= 10");
-
-    pic.ChangeLuma(delY);
-
-    if (!pic.SaveAsBMP24b("result_Ychanged.bmp"))
-        qDebug() << QStringLiteral("Ychanged: result_Ychanged.bmp");
-}
-
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     QApplication a(argc, argv);
 
     QTranslator tran;
@@ -69,9 +44,6 @@ int main(int argc, char *argv[]) {
     while(timer.elapsed() < SPLAHSCREENTIME)
         a.processEvents();
     delete screen;
-
-    //Test For Pixmap32b.h
-    //testPixmap32b();
 
     pMainWindows->show();
     return a.exec();
