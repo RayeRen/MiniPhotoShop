@@ -4,7 +4,7 @@
 
 #ifndef MINIPHOTOSHOP_CONSTANTS_H
 #define MINIPHOTOSHOP_CONSTANTS_H
-
+#include <QColor>
 //Shape
 namespace SHAPE {
     enum {
@@ -31,7 +31,7 @@ namespace NOTIFY{
 enum{
 
     UPDATE_IMAGE,UPDATE_IMAGE_ADD,UPDATE_IMAGE_MINUS,ADD_IMAGE_FAILED,
-    NEW_LAYOUT
+    NEW_LAYOUT,DISPLAY_REFRESH
 };
 }
 
@@ -54,6 +54,14 @@ namespace PIXMAP{
 enum{
     FMT_NULL,FMT_RGB,FMT_YUV,FMT_GREY,FMT_BIN
 };
+}
+
+namespace SETTINGS{
+
+ static unsigned int   SELECTED_RECT_WIDTH=5,SELECTED_RECT_BORDER=10;
+ static QColor SELETCED_RECT_COLOR=Qt::blue;
+ static Qt::PenStyle SELECTED_RETC_STYLE=Qt::DashLine;
+
 }
 
 #endif //MINIPHOTOSHOP_CONSTANTS_H

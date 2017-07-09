@@ -27,6 +27,7 @@ public:
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
+   void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -39,7 +40,7 @@ private:
     const QImage* displayImage;
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
-     penUpdateCommand,brushUpdateCommand,addPicCommand;
+     penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
@@ -48,6 +49,7 @@ private:
      void PenWidthSliderChanged(int);
      void PenStyleComboBoxChanged(int);
      void BrushStyleComboBoxChanged(int);
+     void ListItemSelectionChanged();
 };
 
 #endif // MAINWINDOW_H

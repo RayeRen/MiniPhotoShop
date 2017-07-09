@@ -56,7 +56,8 @@ HEADERS += \
     src/ViewModel/Commands/newprojectcommand.h \
     src/ViewModel/Commands/saveprojectcommand.h \
     src/ViewModel/Commands/loadprojectcommand.h \
-    src/ViewModel/Commands/addpiccommand.h
+    src/ViewModel/Commands/addpiccommand.h \
+    src/ViewModel/Commands/layouttranscommand.h
 
 FORMS += \
     src/View/mainwindow.ui

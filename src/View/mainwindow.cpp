@@ -48,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
     ui->layoutListWidget->setIconSize(QSize( LISTICONSIZE, LISTICONSIZE));
     //ui->layoutListWidget->insertItem(0,item1);
+
+    connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
 
 MainWindow::~MainWindow()
@@ -90,6 +92,9 @@ void MainWindow::update(Params params)
         QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("layout"),ui->layoutListWidget);
         ui->layoutListWidget->insertItem(0,newItem);
     }
+        break;
+    case NOTIFY::DISPLAY_REFRESH:
+        ui->MainDisplayWidget->paintUpdate();
         break;
     }
 }
@@ -134,14 +139,14 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_drawLine->text())
     {
-        if(state==STATE::INIT)
+
             state=STATE::DRAW_LINE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
-        if(state==STATE::INIT)
+
             state=STATE::DRAW_ELLIPSE_INIT;
         StateChanged();
         return;
@@ -254,5 +259,17 @@ void MainWindow::BrushStyleComboBoxChanged(int index)
         brushUpdateCommand->setParams(params);
         brushUpdateCommand->exec();
 
+    }
+}
+
+void MainWindow::ListItemSelectionChanged()
+{
+    if(changeSelectedCommand!=nullptr)
+    {
+        qDebug()<<"ChangeSelected2"<<ui->layoutListWidget->count()<<ui->layoutListWidget->currentRow();
+        Params params;
+        params.setInts({ui->layoutListWidget->currentRow()});
+        changeSelectedCommand->setParams(params);
+        changeSelectedCommand->exec();
     }
 }

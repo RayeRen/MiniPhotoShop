@@ -163,7 +163,6 @@
               <height>800</height>
              </size>
             </property>
-            <zorder>listView</zorder>
            </widget>
           </item>
          </layout>
@@ -228,6 +227,9 @@
     <property name="title">
      <string>编辑</string>
     </property>
+    <addaction name="action_trans"/>
+    <addaction name="action_rotate"/>
+    <addaction name="action_scale"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -330,6 +332,21 @@
    </property>
    <property name="text">
     <string>画矩形</string>
+   </property>
+  </action>
+  <action name="action_trans">
+   <property name="text">
+    <string>平移</string>
+   </property>
+  </action>
+  <action name="action_rotate">
+   <property name="text">
+    <string>旋转</string>
+   </property>
+  </action>
+  <action name="action_scale">
+   <property name="text">
+    <string>缩放</string>
    </property>
   </action>
  </widget>

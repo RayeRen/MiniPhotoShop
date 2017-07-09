@@ -32,12 +32,13 @@ const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
     const shared_ptr<BaseCommand> &getsaveProjectCommand() const;
     const shared_ptr<BaseCommand> &getloadProjectCommand() const;
     const shared_ptr<BaseCommand> &getBrushUpdateCommand() const{return brushUpdateCommand;}
+    const shared_ptr<BaseCommand> &getChangeSelectedCommand() const{return changeSelectedCommand;}
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
     void RefreshDisplayImage(int index=-1);
     void NewCanvas(unsigned int width,unsigned int height);
-    void SetSelectedLayout(int selectedLayout){this->selectedLayout=selectedLayout;}
+    void SetSelectedLayout(int selectedLayout);
     int GetSelectedLayout(){return selectedLayout;}
     void SetPen(const Pen* pen){this->pen=pen;}
     void SetBrush(const Brush* brush){this->brush=brush;}
@@ -47,7 +48,7 @@ const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
-    newProjectCommand,saveProjectCommand,loadProjectCommand,
+    newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
     addPicCommand
     ;
     vector<shared_ptr<QImage>> displayBuffer;
