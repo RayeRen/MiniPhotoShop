@@ -2,12 +2,13 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QElapsedTimer>
-#include<QTranslator>
+#include <QTranslator>
 #include <src/ViewModel/ViewModel.h>
 #include <QDebug>
 #include <iostream>
 using namespace std;
 #define SPLAHSCREENTIME 2000
+
 
 int main(int argc, char *argv[])
 {

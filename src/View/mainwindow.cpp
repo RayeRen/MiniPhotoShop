@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
     connect(ui->brushStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(BrushStyleComboBoxChanged(int)));
+
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("无描边")),QString("no_pen"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("虚线")),QString("dash"));
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式4")),QString("dense4"));
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
     ui->brushStyleComboBox->setCurrentIndex(1);
+
 }
 
 MainWindow::~MainWindow()
