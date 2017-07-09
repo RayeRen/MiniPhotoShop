@@ -26,6 +26,7 @@ public:
     void SetState(int *state){this->state=state;}
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand){this->addLineCommand=addLineCommand;}
     void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand){this->addEllipseCommand=addEllipseCommand;}
+     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand){this->addRectCommand=addRectCommand;}
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand){this->newCanvasCommand=newCanvasCommand;}
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
@@ -37,6 +38,7 @@ private:
    shared_ptr<BaseCommand> addLineCommand;
    shared_ptr<BaseCommand> addEllipseCommand;
    shared_ptr<BaseCommand> newCanvasCommand;
+   shared_ptr<BaseCommand> addRectCommand;
    int mouseLastX,mouseLastY,mouseX,mouseY;
     int realWidth,realHeight;
 signals:

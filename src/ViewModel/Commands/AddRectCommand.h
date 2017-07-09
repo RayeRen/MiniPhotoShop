@@ -6,7 +6,7 @@
 class AddRectCommand:public BaseCommand
 {
 public:
-    AddRectCommand(const shared_ptr<Model> *pModel):BaseCommand(pModel){}
+    AddRectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
     void exec()
     {
         vector<int> ints=params.getInts();

@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     //bind
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
-
+pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->SetBrush(pModel->GetBrush());

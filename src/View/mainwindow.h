@@ -22,7 +22,7 @@ public:
 
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand);
     void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand);
-
+    void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand);
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}

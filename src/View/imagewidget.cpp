@@ -12,25 +12,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
-    /*
-    if(image!=NULL&&!image->isNull())
-    {
-        QRectF target,source(0,0,image->width(),image->height());
-        float tmp;
-        if(((float)width())/height()>((float)image->width())/image->height())
-        {
-            tmp=((float)height())/image->height();
-            target.setRect(width()/2-image->width()/2*tmp,0,image->width()*tmp,height());
-        }
-        else
-        {
-            tmp=((float)width())/image->width();
-            target.setRect(0,height()/2-image->height()/2*tmp,width(),image->height()*tmp);
-        }
 
-        p.drawImage(target,*image,source);
-    }
-*/
     if(image!=NULL&&!image->isNull())
     {
         p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
@@ -62,6 +44,20 @@ void ImageWidget::paintEvent(QPaintEvent *event)
             p.drawEllipse(QPoint(mouseLastX,mouseLastY),std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY));
         }
         break;
+    case STATE::DRAW_RECT:
+        if(pen!=NULL&&brush!=NULL)
+        {
+            QPen tmpPen(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()));
+            QBrush tmpBrush(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()));
+
+            tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->getPenStyle()));
+            tmpPen.setWidth(pen->getLineWidth());
+            tmpBrush.setStyle(static_cast<Qt::BrushStyle>(brush->getBrushStyle()));
+            p.setPen(tmpPen);
+            p.setBrush(tmpBrush);
+            p.drawRect(mouseLastX,mouseLastY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY));
+        }
+        break;
     }
 }
 
@@ -75,30 +71,6 @@ void ImageWidget::paintUpdate()
 {
     update();
 }
-/*
-void imageWidget::DrawTreeFromData(struct DrawData drawData,int margin,char *text)
-{
-    delete image;
-    image=new QImage(drawData.width+2*margin,drawData.height+2*margin,QImage::Format_RGB888);
-    QColor color(255,255,255);
-    image->fill(color);
-    struct Line *p=drawData.lines;
-
-    QPainter painter(image);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setPen(QColor(0,0,0));
-    if(text!=NULL)
-        painter.drawText(drawData.width/2,margin/3*2,text);
-    while(p!=NULL)
-    {
-        painter.drawLine(p->x1+margin,p->y1+margin,p->x2+margin,p->y2+margin);
-        p=p->next;
-    }
-    paintUpdate();
-}
-*/
-
-
 
 void ImageWidget::mousePressEvent(QMouseEvent *event)
 {
@@ -107,14 +79,18 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     case STATE::DRAW_LINE_INIT:
        *state=STATE::DRAW_LINE;
        emit StateChanged();
-        //*state=STATE::DRAW_ELLIPSE;
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
     case STATE::DRAW_ELLIPSE_INIT:
         *state=STATE::DRAW_ELLIPSE;
         emit StateChanged();
-         //*state=STATE::DRAW_ELLIPSE;
+         mouseX=mouseLastX=event->localPos().x();
+         mouseY=mouseLastY=event->localPos().y();
+         break;
+    case STATE::DRAW_RECT_INIT:
+        *state=STATE::DRAW_RECT;
+        emit StateChanged();
          mouseX=mouseLastX=event->localPos().x();
          mouseY=mouseLastY=event->localPos().y();
          break;
@@ -147,6 +123,14 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
         addEllipseCommand->setParams(para);
         addEllipseCommand->exec();
+        break;
+    case STATE::DRAW_RECT:
+        *state=STATE::INIT;
+        emit StateChanged();
+        centerX=mouseLastX,centerY=mouseLastY;
+        para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
+        addRectCommand->setParams(para);
+        addRectCommand->exec();
         break;
     }
     update();

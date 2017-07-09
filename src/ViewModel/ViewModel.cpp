@@ -6,6 +6,7 @@
 #include "../Common/BaseCommand.h"
 #include "src/ViewModel/Commands/AddLineCommand.h"
 #include "src/ViewModel/Commands/addellipsecommand.h"
+#include "src/ViewModel/Commands/addrectcommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"
@@ -120,6 +121,7 @@ void ViewModel::NewCanvas(unsigned int width, unsigned int height)
 ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
     addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
+     addRectCommand(shared_ptr<BaseCommand>(new AddRectCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),

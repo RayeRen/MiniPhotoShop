@@ -53,6 +53,12 @@ void MainWindow::setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseC
 
 }
 
+void MainWindow::setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand)
+{
+    ui->MainDisplayWidget->setAddRectCommand(addRectCommand);
+
+}
+
 void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand)
 {
     this->penUpdateCommand=penUpdateCommand;
@@ -119,6 +125,14 @@ void MainWindow::menuTriggered(QAction* action)
         }
         return;
     }
+    if(action->text()==ui->action_drawRect->text())
+    {
+        if(state==STATE::INIT)
+        {
+            state=STATE::DRAW_RECT_INIT;
+            StateChanged();
+        }
+    }
 
 }
 
@@ -129,18 +143,16 @@ void MainWindow::StateChanged()
     switch(state)
     {
     case STATE::INIT:
-
         break;
     case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
-
         break;
 
     case STATE::DRAW_ELLIPSE_INIT:
-
         ui->action_drawEllipse->setChecked(true);
         break;
-
+    case STATE::DRAW_RECT_INIT:
+        ui->action_drawRect->setChecked(true);
     }
     QWidget::update();
 }

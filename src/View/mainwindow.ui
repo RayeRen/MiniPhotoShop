@@ -193,6 +193,7 @@
     </property>
     <addaction name="action_drawLine"/>
     <addaction name="action_drawEllipse"/>
+    <addaction name="action_drawRect"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -214,6 +215,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_drawLine"/>
+   <addaction name="action_drawRect"/>
    <addaction name="action_drawEllipse"/>
    <addaction name="action_aboutPro"/>
    <addaction name="action_help"/>
@@ -292,6 +294,15 @@
    </property>
    <property name="text">
     <string>帮助</string>
+   </property>
+  </action>
+  <action name="action_drawRect">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/Rect.png</normaloff>:/img/img/Rect.png</iconset>
+   </property>
+   <property name="text">
+    <string>画矩形</string>
    </property>
   </action>
  </widget>
