@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QColorDialog>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -72,7 +73,12 @@ void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCom
 
 void MainWindow::update(Params params)
 {
-
+    switch(params.getType())
+    {
+    case NOTIFY::ADD_IMAGE_FAILED:
+        QMessageBox::critical(this,QString("错误"),QString("打开图片失败"));
+        break;
+    }
 }
 
 void MainWindow::SetPen(const Pen* pen)
@@ -134,7 +140,18 @@ void MainWindow::menuTriggered(QAction* action)
         StateChanged();
         return;
     }
-
+    if(action->text()==ui->action_openPic->text())
+    {
+        QFileDialog fileDialog(this);
+        QString aimPicFileName=fileDialog.getOpenFileName(this,"打开图片文件",".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
+        if(!aimPicFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimPicFileName.toStdString()});
+            addPicCommand->setParams(params);
+            addPicCommand->exec();
+        }
+    }
 }
 
 void MainWindow::StateChanged()

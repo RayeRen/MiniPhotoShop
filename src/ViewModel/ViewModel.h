@@ -25,7 +25,7 @@ public:
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
     const shared_ptr<BaseCommand> &getAddRectCommand() const;
-
+const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
     const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     const shared_ptr<BaseCommand> &getPenUpdateCommand() const;
     const shared_ptr<BaseCommand> &getNewProjectCommand() const;
@@ -47,7 +47,9 @@ public:
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
-    newProjectCommand,saveProjectCommand,loadProjectCommand;
+    newProjectCommand,saveProjectCommand,loadProjectCommand,
+    addPicCommand
+    ;
     vector<QImage> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;

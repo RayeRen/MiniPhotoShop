@@ -108,9 +108,9 @@ shared_ptr<QImage> Pixmap::Output()
         {
             color.setRed(*pr++);
             color.setGreen(*pg++);
-            color.setBlueF(*pb++);
+            color.setBlue(*pb++);
             color.setAlpha(*pa++);
-            image->setPixelColor(QPoint(x,y),color);
+            image->setPixelColor(x,y,color);
         }
     return image;
 }

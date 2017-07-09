@@ -6,6 +6,7 @@
 #include "../Common/BaseCommand.h"
 #include "src/ViewModel/Commands/AddLineCommand.h"
 #include "src/ViewModel/Commands/addellipsecommand.h"
+#include "src/ViewModel/Commands/addpiccommand.h"
 #include "src/ViewModel/Commands/addrectcommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
@@ -55,6 +56,9 @@ void ViewModel::update(Params params) {
     case NOTIFY::UPDATE_IMAGE_ADD:
         displayBuffer.push_back(QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         RefreshDisplayImage(ints[0]);
+        break;
+    case NOTIFY::ADD_IMAGE_FAILED:
+        notify(params);
         break;
     }
 }
@@ -108,6 +112,10 @@ void ViewModel::RefreshDisplayImage(int index) {
         }
             break;
         case SHAPE::PIXMAP:
+        {
+             shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
+             painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
+        }
             break;
         case SHAPE::RECT:
             shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[index]));
@@ -137,6 +145,7 @@ void ViewModel::NewCanvas(unsigned int width, unsigned int height)
 
 ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
+    addPicCommand(shared_ptr<BaseCommand>(new AddPicCommand(pModel))),
     addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
     addRectCommand(shared_ptr<BaseCommand>(new AddRectCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),

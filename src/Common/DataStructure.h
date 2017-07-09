@@ -342,6 +342,9 @@ public:
     int Load(const QImage &image);
     void FreePixmap();	//清空数据
     shared_ptr<QImage> Output();
+    unsigned int GetFormat(){return format;}
+    unsigned int GetWidth(){return width;}
+    unsigned int GetHeight(){return height;}
 
     const unsigned char *getR(unsigned int x, unsigned int y) const { if (x < width&&y < height) return r + y*width + x; return NULL; }//返回(x,y)坐标处的r值指针
     const unsigned char *getG(unsigned int x, unsigned int y) const { if (x < width&&y < height)return g + y*width + x; return NULL; } //返回(x,y)坐标处的g值指针

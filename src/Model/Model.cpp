@@ -234,3 +234,19 @@ void Model::addRect(double centerX, double centerY, double width, double height)
      in.close();
      return true;
  }
+
+ void Model::addImage(string fileName)
+ {
+     shared_ptr<Pixmap> newImage(new Pixmap(0,0,SHAPE::PIXMAP,string("image"),1.0,1.0,0.0,fileName));
+    if(newImage->GetFormat()==PIXMAP::FMT_NULL)
+    {
+        Params params;
+        params.setType(NOTIFY::ADD_IMAGE_FAILED);
+        notify(params);
+    }
+    layouts.list.push_back(newImage);
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)layouts.list.size()-1});
+    notify(params);
+ }
