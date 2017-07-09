@@ -30,14 +30,19 @@ const shared_ptr<BaseCommand> &ViewModel::getPenUpdateCommand() const {
 }
 
 void ViewModel::update(Params params) {
+    vector<int> ints=params.getInts();
     switch (params.getType()) {
     case NOTIFY::UPDATE_IMAGE:
-        RefreshDisplayImage();
+        RefreshDisplayImage(ints[0]);
+        break;
+    case NOTIFY::UPDATE_IMAGE_ADD:
+        displayBuffer.push_back(QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        RefreshDisplayImage(ints[0]);
         break;
     }
 }
 
-void ViewModel::RefreshDisplayImage() {
+void ViewModel::RefreshDisplayImage(int index) {
     if (layouts == nullptr)
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
@@ -45,27 +50,31 @@ void ViewModel::RefreshDisplayImage() {
     //painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
-    for (int i = 0; i < layouts->list.size(); i++)
+    if(index<0)
     {
-        switch ((layouts->list)[i]->getType())
+
+    }
+    else
+    {
+        QPainter painter(&displayBuffer[index]);
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
+        switch((layouts->list)[index]->getType())
         {
         case SHAPE::LINE:
         {
-            shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[i]));
+            shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[index]));
             Pen linePen = line->getPen();
             QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
             tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
             tmpPen.setWidth(linePen.getLineWidth());
-            qDebug()<<((line->getPosX() + line->getX1())*displayImage.width())<<((line->getPosY() + line->getY1())*displayImage.height())
-                   <<((line->getPosX() + line->getX2())*displayImage.width())<<((line->getPosY() + line->getY2())*displayImage.height());
             painter.setPen(tmpPen);
-            painter.drawLine((line->getPosX() + line->getX1())*displayImage.width(), (line->getPosY() + line->getY1())*displayImage.height(),
-                             (line->getPosX() + line->getX2())*displayImage.width(), (line->getPosY() + line->getY2())*displayImage.height());
+            painter.drawLine(line->getPosX() + line->getX1(), line->getPosY() + line->getY1(),
+                             line->getPosX() + line->getX2(), line->getPosY() + line->getY2());
         }
             break;
         case SHAPE::ELLIPSE:
         {
-            shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[i]));
+            shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[index]));
             Pen ellipsePen = ellipse->getPen();
             Brush ellipseBrush = ellipse->getBrush();
             QPen tmpPen(QColor(ellipsePen.getForeR(),ellipsePen.getForeG(),ellipsePen.getForeB()));
@@ -76,23 +85,29 @@ void ViewModel::RefreshDisplayImage() {
             tmpBrush.setStyle(static_cast<Qt::BrushStyle>(ellipseBrush.getBrushStyle()));
             painter.setPen(tmpPen);
             painter.setBrush(tmpBrush);
-            painter.drawEllipse(QPoint((int)ellipse->getPosX(),(int)ellipse->getPosY()),(int)ellipse->getA(),(int)ellipse->getB());
+            painter.drawEllipse(QPoint(ellipse->getPosX(),ellipse->getPosY()),ellipse->getA(),ellipse->getB());
         }
             break;
         case SHAPE::PIXMAP:
             break;
         case SHAPE::RECT:
-            shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[i]));
+            shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[index]));
             Pen rectPen = rect->getPen();
-            QPen tmpPen(QColor(rectPen.getForeR(), rectPen.getForeG(), rectPen.getForeB()));
+            Brush rectBrush = rect->getBrush();
+            QPen tmpPen(QColor(rectPen.getForeR(),rectPen.getForeG(),rectPen.getForeB()));
+            QBrush tmpBrush(QColor(rectBrush.getBackR(),rectBrush.getBackG(),rectBrush.getBackB()));
+
             tmpPen.setStyle(static_cast<Qt::PenStyle>(rectPen.getPenStyle()));
             tmpPen.setWidth(rectPen.getLineWidth());
+            tmpBrush.setStyle(static_cast<Qt::BrushStyle>(rectBrush.getBrushStyle()));
             painter.setPen(tmpPen);
-            painter.drawRect(QRectF((int)rect->getPosX(), (int)rect->getPosY(), (int)rect->getWidth(), (int)rect->getHeight()));
+            painter.setBrush(tmpBrush);
+            painter.drawRect(QRectF(rect->getPosX(), rect->getPosY(), rect->getWidth(),rect->getHeight()));
             break;
-
         }
     }
+    for(int i=0;i<displayBuffer.size();i++)
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
 }
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
@@ -105,7 +120,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
     addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
-    penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel)))
+    penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);
     backGround=QImage(":/img/img/background.png");

@@ -136,9 +136,9 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         //Params para;
         qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
-        para.setDoubles({(double)centerX/realWidth,(double)centerY/realHeight,(double)(mouseLastX-centerX)/realWidth,
-                         (double)(mouseLastY-centerY)/realHeight,(double)(mouseX-centerX)/realWidth,
-                         (double)(mouseY-centerY)/realHeight});
+        para.setInts({centerX,centerY,mouseLastX-centerX,
+                         mouseLastY-centerY,mouseX-centerX,
+                         mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
         break;
@@ -146,7 +146,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         *state=STATE::INIT;
         emit StateChanged();
         centerX=mouseLastX,centerY=mouseLastY;
-        para.setDoubles({(double)centerX,(double)centerY,(double)(std::abs(mouseX-mouseLastX)),(double)(std::abs(mouseY-mouseLastY))});
+        para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
         addEllipseCommand->setParams(para);
         addEllipseCommand->exec();
         break;

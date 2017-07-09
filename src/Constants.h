@@ -22,7 +22,7 @@ namespace PENSTYLE {
 namespace NOTIFY{
 enum{
 
-    UPDATE_IMAGE
+    UPDATE_IMAGE,UPDATE_IMAGE_ADD,UPDATE_IMAGE_MINUS
 };
 }
 

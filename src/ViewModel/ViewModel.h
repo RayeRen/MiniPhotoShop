@@ -31,16 +31,18 @@ public:
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
-    void RefreshDisplayImage();
+    void RefreshDisplayImage(int index=-1);
     void NewCanvas(unsigned int width,unsigned int height);
+    void SetSelectedLayout(int selectedLayout){this->selectedLayout=selectedLayout;}
+    int GetSelectedLayout(){return selectedLayout;}
     ViewModel(shared_ptr<Model> pModel);
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,addRectCommand,newCanvasCommand,penUpdateCommand;
-    vector<shared_ptr<QImage>> displayBuffer;
+    vector<QImage> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
     QImage backGround;
-
+    int selectedLayout;
 //    ViewModel(){};
 
 //    void operator = (const ViewModel& viewModel){}
