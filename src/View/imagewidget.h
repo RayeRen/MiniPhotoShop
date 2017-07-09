@@ -18,7 +18,6 @@ public:
     void mousePressEvent(QMouseEvent *event);        //单击
     void mouseReleaseEvent(QMouseEvent *event);      //释放
     void mouseMoveEvent(QMouseEvent *event);         //移动
-    void DrawTreeFromData(struct DrawData drawData, int margin, char *text=NULL);
     void paintUpdate(); //刷新
     void ClearImage();  //清空图片
      void SetImage(const QImage *image){this->image=image;update();}

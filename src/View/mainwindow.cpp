@@ -137,7 +137,7 @@ void MainWindow::ButtonForeColorPressed()
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
         Params params;
         params.setType(COMMAND::UPDATE_PEN_COLOR);
-        params.setInts({static_cast<int>(color.red()),static_cast<int>(color.green()),static_cast<int>(color.blue())});
+        params.setInts({color.red(),color.green(),color.blue()});
         penUpdateCommand->setParams(params);
         penUpdateCommand->exec();
     }
