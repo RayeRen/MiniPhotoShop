@@ -45,6 +45,7 @@ private:
      void ButtonBackColorPressed();
      void PenWidthSliderChanged(int);
      void PenStyleComboBoxChanged(int);
+     void BrushStyleComboBoxChanged(int);
 };
 
 #endif // MAINWINDOW_H

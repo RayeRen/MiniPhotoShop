@@ -24,10 +24,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
     connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
+    connect(ui->brushStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(BrushStyleComboBoxChanged(int)));
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("虚线")),QString("dash"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("点线")),QString("dash_dot"));
     ui->penStyleComboBox->insertItem(3,QString(QStringLiteral("点划线")),QString("dash_dot_dot"));
+
+ui->brushStyleComboBox->insertItem(0,QString(QStringLiteral("纯色填充")),QString("solid"));
+ui->brushStyleComboBox->insertItem(1,QString(QStringLiteral("填充样式1")),QString("dense1"));
+ui->brushStyleComboBox->insertItem(2,QString(QStringLiteral("填充样式2")),QString("dense2"));
+ui->brushStyleComboBox->insertItem(3,QString(QStringLiteral("填充样式3")),QString("dense3"));
+ui->brushStyleComboBox->insertItem(4,QString(QStringLiteral("填充样式4")),QString("dense4"));
+ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式5")),QString("dense5"));
+
 }
 
 MainWindow::~MainWindow()
@@ -187,6 +196,19 @@ void MainWindow::PenStyleComboBoxChanged(int index)
         params.setInts({index+1});
         penUpdateCommand->setParams(params);
         penUpdateCommand->exec();
+
+    }
+}
+
+void MainWindow::BrushStyleComboBoxChanged(int index)
+{
+    if(brushUpdateCommand!=nullptr)
+    {
+        Params params;
+        params.setType(COMMAND::UPDATE_BRUSH_STYLE);
+        params.setInts({index+1});
+        brushUpdateCommand->setParams(params);
+        brushUpdateCommand->exec();
 
     }
 }
