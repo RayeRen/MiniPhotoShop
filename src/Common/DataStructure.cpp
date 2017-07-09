@@ -24,7 +24,7 @@ Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, 
 }
 
 Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName)
-    :r(NULL),g(NULL),b(NULL),width(0),height(0),format(PIXMAP::FMT_NULL),BaseShape(posX, posY, type, name, scaleX, scaleY, angle)
+    :r(NULL),g(NULL),b(NULL),a(NULL),width(0),height(0),format(PIXMAP::FMT_NULL),BaseShape(posX, posY, type, name, scaleX, scaleY, angle)
 {
     QImage tmpImage(QString::fromStdString(fileName));
     tmpImage.convertToFormat(QImage::Format_ARGB32);
