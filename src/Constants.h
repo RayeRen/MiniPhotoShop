@@ -61,7 +61,7 @@ namespace SETTINGS{
  static unsigned int   SELECTED_RECT_WIDTH=5,SELECTED_RECT_BORDER=10;
  static QColor SELETCED_RECT_COLOR=Qt::blue;
  static Qt::PenStyle SELECTED_RETC_STYLE=Qt::DashLine;
- static double SCALE_STEP=0.01;
+ static double SCALE_STEP=0.01,ROTATE_STEP=0.2;
 
 }
 

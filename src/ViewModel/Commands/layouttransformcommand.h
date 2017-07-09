@@ -20,7 +20,8 @@ public:
             break;
         case COMMAND::LAYOUT_ROTATE:
         {
-
+            vector<double> doubles=params.getDoubles();
+            pViewModel->LayoutRotate(doubles[0]);
         }
             break;
         case COMMAND::LAYOUT_SCALE:

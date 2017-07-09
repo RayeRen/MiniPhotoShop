@@ -125,6 +125,13 @@ public:
         this->scaleY*=scaleY;
     }
 
+    void Rotate(double angle)
+    {
+        this->angle+=angle;
+        if(this->angle<0) this->angle+=360;
+        if(this->angle>360) this->angle-=360;
+    }
+
     void setPosX(int posX) {
         BaseShape::posX = posX;
     }

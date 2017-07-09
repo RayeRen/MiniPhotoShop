@@ -76,23 +76,23 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     switch(*state)
     {
     case STATE::DRAW_LINE_INIT:
-       *state=STATE::DRAW_LINE;
-       emit StateChanged();
+        *state=STATE::DRAW_LINE;
+        emit StateChanged();
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
     case STATE::DRAW_ELLIPSE_INIT:
         *state=STATE::DRAW_ELLIPSE;
         emit StateChanged();
-         mouseX=mouseLastX=event->localPos().x();
-         mouseY=mouseLastY=event->localPos().y();
-         break;
+        mouseX=mouseLastX=event->localPos().x();
+        mouseY=mouseLastY=event->localPos().y();
+        break;
     case STATE::DRAW_RECT_INIT:
         *state=STATE::DRAW_RECT;
         emit StateChanged();
-         mouseX=mouseLastX=event->localPos().x();
-         mouseY=mouseLastY=event->localPos().y();
-         break;
+        mouseX=mouseLastX=event->localPos().x();
+        mouseY=mouseLastY=event->localPos().y();
+        break;
     case STATE::MOVE_INIT:
         *state=STATE::MOVE;
         mouseX=event->localPos().x();
@@ -100,8 +100,14 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         emit StateChanged();
 
         break;
-     case STATE::SCALE_INIT:
+    case STATE::SCALE_INIT:
         *state=STATE::SCALE;
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+        emit StateChanged();
+        break;
+    case STATE::ROTATE_INIT:
+        *state=STATE::ROTATE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
         emit StateChanged();
@@ -123,8 +129,8 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
         para.setInts({centerX,centerY,mouseLastX-centerX,
-                         mouseLastY-centerY,mouseX-centerX,
-                         mouseY-centerY});
+                      mouseLastY-centerY,mouseX-centerX,
+                      mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
         break;
@@ -153,6 +159,10 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         *state=STATE::SCALE_INIT;
         emit StateChanged();
         break;
+    case STATE::ROTATE:
+        *state=STATE::ROTATE_INIT;
+        emit StateChanged();
+        break;
     }
     update();
 }
@@ -162,7 +172,7 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
     switch(*state)
     {
     case STATE::MOVE:
-        {
+    {
         Params params;
         params.setType(COMMAND::LAYOUT_MOVE);
         params.setInts({event->localPos().x()-mouseX,event->localPos().y()-mouseY});
@@ -174,10 +184,22 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
         break;
 
     case STATE::SCALE:
-        {
+    {
         Params params;
         params.setType(COMMAND::LAYOUT_SCALE);
         params.setDoubles({(double)((event->localPos().x()-mouseX))*SETTINGS::SCALE_STEP+1,(double)((event->localPos().y()-mouseY))*SETTINGS::SCALE_STEP+1});
+        layoutTransCommand->setParams(params);
+        layoutTransCommand->exec();
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+    }
+        break;
+
+    case STATE::ROTATE:
+    {
+        Params params;
+        params.setType(COMMAND::LAYOUT_ROTATE);
+        params.setDoubles({(double)((event->localPos().x()-mouseX))*SETTINGS::ROTATE_STEP});
         layoutTransCommand->setParams(params);
         layoutTransCommand->exec();
         mouseX=event->localPos().x();

@@ -187,6 +187,12 @@ void MainWindow::menuTriggered(QAction* action)
         state=STATE::SCALE_INIT;
         StateChanged();
     }
+
+    if(action->text()==ui->action_rotate->text())
+    {
+        state=STATE::ROTATE_INIT;
+        StateChanged();
+    }
 }
 
 void MainWindow::StateChanged()
