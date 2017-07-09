@@ -14,7 +14,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
     qDebug()<<centerX<<centerY<<x1<<y1<<x2<<y2;
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-    params.setInts({layouts.list.size()-1});
+    params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
 void Model::addEllipse(double centerX,double centerY,double a,double b){
@@ -23,7 +23,7 @@ void Model::addEllipse(double centerX,double centerY,double a,double b){
         centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,brush,a,b)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-     params.setInts({layouts.list.size()-1});
+     params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
 
@@ -34,7 +34,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
          centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
- params.setInts({layouts.list.size()-1});
+ params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
 

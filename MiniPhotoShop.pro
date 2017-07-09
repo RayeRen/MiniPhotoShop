@@ -31,7 +31,8 @@ SOURCES += \
     src/main.cpp \
     src/View/imagewidget.cpp \
     src/ViewModel/Commands/newcanvascommand.cpp \
-    src/ViewModel/Commands/addellipsecommand.cpp
+    src/ViewModel/Commands/addellipsecommand.cpp \
+    src/Common/DataStructure.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \

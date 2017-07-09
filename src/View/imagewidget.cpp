@@ -12,7 +12,6 @@ void ImageWidget::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
-
     if(image!=NULL&&!image->isNull())
     {
         p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));

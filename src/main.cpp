@@ -4,10 +4,13 @@
 #include <QElapsedTimer>
 #include<QTranslator>
 #include <src/ViewModel/ViewModel.h>
-
+#include <QDebug>
+#include <iostream>
+using namespace std;
 #define SPLAHSCREENTIME 2000
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     QApplication a(argc, argv);
 
     QTranslator tran;
@@ -26,7 +29,7 @@ int main(int argc, char *argv[]) {
     //bind
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
-pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
+    pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->SetBrush(pModel->GetBrush());
