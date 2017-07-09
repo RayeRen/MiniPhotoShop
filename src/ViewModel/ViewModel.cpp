@@ -31,6 +31,21 @@ const shared_ptr<BaseCommand> &ViewModel::getPenUpdateCommand() const {
     return penUpdateCommand;
 }
 
+const shared_ptr<BaseCommand> &ViewModel::getNewProjectCommand() const
+{
+    return newProjectCommand;
+}
+
+const shared_ptr<BaseCommand> &ViewModel::getsaveProjectCommand() const
+{
+    return saveProjectCommand;
+}
+
+const shared_ptr<BaseCommand> &ViewModel::getloadProjectCommand() const
+{
+    return loadProjectCommand;
+}
+
 void ViewModel::update(Params params) {
     vector<int> ints=params.getInts();
     switch (params.getType()) {

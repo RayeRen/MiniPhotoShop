@@ -28,6 +28,9 @@ public:
 
     const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     const shared_ptr<BaseCommand> &getPenUpdateCommand() const;
+    const shared_ptr<BaseCommand> &getNewProjectCommand() const;
+    const shared_ptr<BaseCommand> &getsaveProjectCommand() const;
+    const shared_ptr<BaseCommand> &getloadProjectCommand() const;
     const shared_ptr<BaseCommand> &getBrushUpdateCommand() const{return brushUpdateCommand;}
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
@@ -39,7 +42,8 @@ public:
     ViewModel(shared_ptr<Model> pModel);
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
-    addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand;
+    addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
+    newProjectCommand,saveProjectCommand,loadProjectCommand;
     vector<QImage> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;

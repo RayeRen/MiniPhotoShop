@@ -141,6 +141,11 @@ public:
         BaseShape::name = name;
     }
 
+    string getName()const
+    {
+        return name;
+    }
+
     double getScaleX() const {
         return scaleX;
     }
