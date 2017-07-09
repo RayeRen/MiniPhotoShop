@@ -33,8 +33,6 @@ void ImageWidget::paintEvent(QPaintEvent *event)
 */
     if(image!=NULL&&!image->isNull())
     {
-        qDebug()<<"Width"<<realWidth<<image->width();
-        qDebug()<<"Height"<<realHeight<<image->height();
         p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
     }
     switch(*state)

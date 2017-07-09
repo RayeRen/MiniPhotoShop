@@ -50,7 +50,8 @@ HEADERS += \
     src/ViewModel/Commands/addellipsecommand.h \
     src/ViewModel/Commands/penupdatecommand.h \
     src/ViewModel/Commands/AddRectCommand.h \
-    src/ViewModel/Commands/changedselectedcommand.h
+    src/ViewModel/Commands/changedselectedcommand.h \
+    src/ViewModel/Commands/brushupdatecommand.h
 
 FORMS += \
     src/View/mainwindow.ui

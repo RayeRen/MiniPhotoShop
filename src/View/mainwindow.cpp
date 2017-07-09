@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
+    connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("虚线")),QString("dash"));
@@ -93,14 +94,20 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_drawLine->text())
     {
-        state=STATE::DRAW_LINE_INIT;
-        StateChanged();
+        if(state==STATE::INIT)
+        {
+            state=STATE::DRAW_LINE_INIT;
+            StateChanged();
+        }
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
-        state=STATE::DRAW_ELLIPSE_INIT;
-        StateChanged();
+        if(state==STATE::INIT)
+        {
+            state=STATE::DRAW_ELLIPSE_INIT;
+            StateChanged();
+        }
         return;
     }
 
@@ -131,7 +138,7 @@ void MainWindow::StateChanged()
 
 void MainWindow::ButtonForeColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"Set Foreground Color");
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
     if(color.isValid())
     {
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
@@ -145,7 +152,17 @@ void MainWindow::ButtonForeColorPressed()
 
 void MainWindow::ButtonBackColorPressed()
 {
-
+    const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,"设置背景色");
+    if(color.isValid())
+    {
+        qDebug()<<"pressed";
+        ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+        Params params;
+        params.setType(COMMAND::UPDATE_BRUSH_COLOR);
+        params.setInts({color.red(),color.green(),color.blue()});
+        brushUpdateCommand->setParams(params);
+        brushUpdateCommand->exec();
+    }
 }
 
 void MainWindow::PenWidthSliderChanged(int value)

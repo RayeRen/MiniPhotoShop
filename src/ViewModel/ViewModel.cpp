@@ -8,6 +8,7 @@
 #include "src/ViewModel/Commands/addellipsecommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
+#include "src/ViewModel/Commands/brushupdatecommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -120,7 +121,9 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
     addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
-    penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),selectedLayout(-1)
+    penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
+    brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
+    selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);
     backGround=QImage(":/img/img/background.png");
