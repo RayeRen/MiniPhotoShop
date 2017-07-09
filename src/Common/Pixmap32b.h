@@ -34,9 +34,8 @@ public:
     Pixmap32b(const Pixmap32b &pixmap) :BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL) { Load(pixmap); }//拷贝构造函数
     Pixmap32b(const QImage *image):BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL){
         if(image->format()!=QImage::Format_ARGB32){
-//            QImage *newimage=&(image->convertToFormat(QImage::Format_ARGB32,image->colorTable()));
-//            LoadQImage(newimage);
-//            delete newimage;
+            QImage newimage=(image->convertToFormat(QImage::Format_ARGB32,image->colorTable()));
+            LoadQImage(&newimage);
         }else{
             LoadQImage(image);
         }

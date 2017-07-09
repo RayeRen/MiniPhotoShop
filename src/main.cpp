@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QElapsedTimer>
-#include<QTranslator>
+#include <QTranslator>
 #include <src/ViewModel/ViewModel.h>
 #include <src/Common/Pixmap32b.h>
 #include <src/Common/Histogram3c.h>
@@ -12,7 +12,8 @@ using namespace std;
 #define SPLAHSCREENTIME 2000
 void testPixmap32b(){
     char fileName[] = "D:\\1.bmp";
-    Pixmap32b pic(fileName);
+    QImage picQ(fileName);
+    Pixmap32b pic(&picQ);
 
     if (pic.getFormat() == FMT_NULL)
     {
@@ -33,6 +34,67 @@ void testPixmap32b(){
 
     if (!pic.SaveAsBMP24b("result_Ychanged.bmp"))
         qDebug() << QStringLiteral("Ychanged: result_Ychanged.bmp");
+
+    QImage newImage=pic.getQImage();
+    newImage.save("QImage.bmp");
+    //Test 2
+    Pixmap32b copySrc(pic);
+    pic.SaveAsBMP24b("src.bmp");
+    pic.HistoEqualizing();
+    pic.SaveAsBMP24b("Histogram_Equalizing.bmp");
+    copySrc.LogOperation();
+    copySrc.SaveAsBMP24b("Logarithmic_Operation.bmp");
+    cout << "Log and Histogram\n" << endl;
+    //Test 3
+    /*
+    int size, type, inverse = 0;
+    size = 1;
+    type = 1;//Rect
+    sprintf(fileName, "StructureElements\\%d_%d.bmp", size, type);
+    inverse = 1;// No
+    inverse--;
+    Pixmap32b stElement;
+
+    stElement.LoadBmpFile(fileName);
+    if (stElement.getFormat() == FMT_NULL)
+    {
+        qDebug() << "File:" << fileName << "Cannot open" ;
+        return ;
+    }
+    type=1;
+    unsigned int anX = stElement.getWidth() / 2, anY = stElement.getHeight() / 2;
+
+    stElement.ConvertToBin(100);
+    if (inverse)
+        stElement.InverseColor();
+    pic.ConvertToBin();
+    pic.SaveAsGreyBMP8b("src.bmp");
+    stElement.SaveAsGreyBMP8b("StructureElement.bmp");
+    Pixmap32b *res = pic.Dilation(&stElement, anX, anY, inverse);
+    if (res == NULL)
+    {
+        qDebug() << "The point is out of the range" ;
+        return ;
+    }
+
+    res->SaveAsGreyBMP8b("result_dilation.bmp");
+    delete res;
+
+    res = pic.Erosion(&stElement, anX, anY, inverse);
+    if (res != NULL)
+        res->SaveAsGreyBMP8b("result_erosion.bmp");
+    delete res;
+
+    res = pic.Opening(&stElement, anX, anY, inverse);
+    if (res != NULL)
+        res->SaveAsGreyBMP8b("result_opening.bmp");
+    delete res;
+
+    res = pic.Closing(&stElement, anX, anY, inverse);
+    if (res != NULL)
+        res->SaveAsGreyBMP8b("result_closing.bmp");
+    delete res;
+    qDebug() << "Morphology Ok!\n";*/
 }
 
 int main(int argc, char *argv[]) {
@@ -71,7 +133,7 @@ int main(int argc, char *argv[]) {
     delete screen;
 
     //Test For Pixmap32b.h
-    //testPixmap32b();
+    testPixmap32b();
 
     pMainWindows->show();
     return a.exec();

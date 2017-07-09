@@ -49,7 +49,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
-    //painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
+    painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
     if(index<0)
@@ -59,7 +59,9 @@ void ViewModel::RefreshDisplayImage(int index) {
     else
     {
         QPainter painter(&displayBuffer[index]);
-        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
+        painter.setCompositionMode(QPainter::CompositionMode_Source);
+        painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
+
         switch((layouts->list)[index]->getType())
         {
         case SHAPE::LINE:

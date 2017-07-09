@@ -69,7 +69,7 @@ int Pixmap32b::LoadQImage(const QImage *image){
 
     for(unsigned int y=0;y<this->height;y++){
         for(unsigned int x=0;x<this->width;x++){
-            QColor color=image->pixelColor(x,y);
+            QColor color=image->pixelColor(x,this->height-1-y);
             QRgb rgba=color.rgba();
             *colorBp++ = (UNUM8)qBlue(rgba);
             *colorGp++ = (UNUM8)qGreen(rgba);
@@ -81,22 +81,21 @@ int Pixmap32b::LoadQImage(const QImage *image){
 }
 QImage Pixmap32b::getQImage(){
     if(this->format!=FMT_NULL){
-        if(this->format==FMT_RGB){
-            QImage newImage(this->width,this->height,QImage::Format_ARGB32);
-            UNUM8 *colorRp = r, *colorGp = g, *colorBp = b, *colorAp = a;
-            for(unsigned int y=0;y<this->height;y++){
-                for(unsigned int x=0;x<this->width;x++){
-                    UNUM8 blue=*colorBp++ ;
-                    UNUM8 green=*colorGp++;
-                    UNUM8 red=*colorRp++  ;
-                    UNUM8 alpha=*colorAp++ ;
-                    QRgb rgba=qRgba(red,green,blue,alpha);
-                    newImage.setPixelColor(x,y,rgba);
-                }
+        QImage newImage(this->width,this->height,QImage::Format_ARGB32);
+        UNUM8 *colorRp = r, *colorGp = g, *colorBp = b, *colorAp = a;
+        for(unsigned int y=0;y<this->height;y++){
+            for(unsigned int x=0;x<this->width;x++){
+                UNUM8 blue=*colorBp++ ;
+                UNUM8 green=*colorGp++;
+                UNUM8 red=*colorRp++  ;
+                UNUM8 alpha=*colorAp++ ;
+                QRgb rgba=qRgba(red,green,blue,alpha);
+                newImage.setPixelColor(x,this->height-1-y,rgba);
             }
-            return newImage;
         }
+        return newImage;
     }
+
 }
 
 int  Pixmap32b::LoadBmpFile(const char * fileName)
