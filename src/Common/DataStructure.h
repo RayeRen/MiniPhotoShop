@@ -260,7 +260,7 @@ protected:
     double width, height;
 
 public:
-    Rect(ouble posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+    Rect(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
          double width, double height):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
                                       pen(pen), width(width), height(height){}
     const Pen &getPen() const {
