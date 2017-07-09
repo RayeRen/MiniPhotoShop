@@ -52,7 +52,10 @@ HEADERS += \
     src/ViewModel/Commands/penupdatecommand.h \
     src/ViewModel/Commands/AddRectCommand.h \
     src/ViewModel/Commands/changedselectedcommand.h \
-    src/ViewModel/Commands/brushupdatecommand.h
+    src/ViewModel/Commands/brushupdatecommand.h \
+    src/ViewModel/Commands/newprojectcommand.h \
+    src/ViewModel/Commands/saveprojectcommand.h \
+    src/ViewModel/Commands/loadprojectcommand.h
 
 FORMS += \
     src/View/mainwindow.ui
