@@ -32,8 +32,10 @@ int main(int argc, char *argv[])
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
     pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
-    pMainWindows->SetPen(pModel->GetPen());
-    pMainWindows->SetBrush(pModel->GetBrush());
+    pViewModel->SetPen(pModel->GetPen());
+    pViewModel->SetBrush(pModel->GetBrush());
+    pMainWindows->SetPen(pViewModel->GetPen());
+    pMainWindows->SetBrush(pViewModel->GetBrush());
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());

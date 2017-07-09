@@ -39,6 +39,10 @@ public:
     void NewCanvas(unsigned int width,unsigned int height);
     void SetSelectedLayout(int selectedLayout){this->selectedLayout=selectedLayout;}
     int GetSelectedLayout(){return selectedLayout;}
+    void SetPen(const Pen* pen){this->pen=pen;}
+    void SetBrush(const Brush* brush){this->brush=brush;}
+    const Pen* GetPen(){return pen;}
+    const Brush* GetBrush(){return brush;}
     ViewModel(shared_ptr<Model> pModel);
 private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
@@ -49,6 +53,8 @@ private:
     const Layouts* layouts;
     QImage backGround;
     int selectedLayout;
+    const Pen* pen;
+    const Brush* brush;
 //    ViewModel(){};
 
 //    void operator = (const ViewModel& viewModel){}
