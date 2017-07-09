@@ -243,6 +243,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_openPic"/>
    <addaction name="action_drawLine"/>
    <addaction name="action_drawRect"/>
    <addaction name="action_drawEllipse"/>
@@ -260,6 +261,10 @@
    </property>
   </action>
   <action name="action_openPic">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/file.png</normaloff>:/img/img/file.png</iconset>
+   </property>
    <property name="text">
     <string>打开图片</string>
    </property>

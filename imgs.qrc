@@ -12,5 +12,6 @@
         <file>img/Move.png</file>
         <file>img/Rotate.png</file>
         <file>img/Scale.png</file>
+        <file>img/file.png</file>
     </qresource>
 </RCC>
