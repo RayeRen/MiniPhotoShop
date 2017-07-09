@@ -141,6 +141,11 @@ public:
         BaseShape::name = name;
     }
 
+    string getName()const
+    {
+        return name;
+    }
+
     double getScaleX() const {
         return scaleX;
     }
@@ -321,6 +326,18 @@ public:
     void setHeight(int height){
         Rect::height = height;
     }
+};
+
+class Pixmap:public BaseShape
+{
+    unsigned int height, width, format;	//height为图像高度 width为图像宽度 format为状态
+    unsigned char  *r, *g, *b, *a;	//r、g、b、a为4个通道的数组 顺序为从左下到右上，先行后列
+public:
+    Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,unsigned int width, unsigned int height,unsigned char value=0);
+    Pixmap(const Pixmap &pixmap) :BaseShape(pixmap),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { Load(pixmap); }
+    ~Pixmap() { FreePixmap(); }
+    int Load(const Pixmap &pixmap);
+    void FreePixmap();	//清空数据
 };
 
 #endif // DATASTRUCTURE_H

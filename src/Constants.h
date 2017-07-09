@@ -49,4 +49,10 @@ enum{
 };
 }
 
+namespace PIXMAP{
+enum{
+    FMT_NULL,FMT_RGB,FMT_YUV,FMT_GREY,FMT_BIN
+};
+}
+
 #endif //MINIPHOTOSHOP_CONSTANTS_H

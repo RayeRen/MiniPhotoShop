@@ -31,6 +31,21 @@ const shared_ptr<BaseCommand> &ViewModel::getPenUpdateCommand() const {
     return penUpdateCommand;
 }
 
+const shared_ptr<BaseCommand> &ViewModel::getNewProjectCommand() const
+{
+    return newProjectCommand;
+}
+
+const shared_ptr<BaseCommand> &ViewModel::getsaveProjectCommand() const
+{
+    return saveProjectCommand;
+}
+
+const shared_ptr<BaseCommand> &ViewModel::getloadProjectCommand() const
+{
+    return loadProjectCommand;
+}
+
 void ViewModel::update(Params params) {
     vector<int> ints=params.getInts();
     switch (params.getType()) {
@@ -123,7 +138,7 @@ void ViewModel::NewCanvas(unsigned int width, unsigned int height)
 ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addLineCommand(shared_ptr<BaseCommand>(new AddLineCommand(pModel))),
     addEllipseCommand(shared_ptr<BaseCommand>(new AddEllipseCommand(pModel))),
-     addRectCommand(shared_ptr<BaseCommand>(new AddRectCommand(pModel))),
+    addRectCommand(shared_ptr<BaseCommand>(new AddRectCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),

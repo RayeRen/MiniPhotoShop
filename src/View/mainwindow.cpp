@@ -30,14 +30,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("虚线")),QString("dash"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("点线")),QString("dash_dot"));
     ui->penStyleComboBox->insertItem(3,QString(QStringLiteral("点划线")),QString("dash_dot_dot"));
-
 ui->brushStyleComboBox->insertItem(0,QString(QStringLiteral("纯色填充")),QString("solid"));
 ui->brushStyleComboBox->insertItem(1,QString(QStringLiteral("填充样式1")),QString("dense1"));
 ui->brushStyleComboBox->insertItem(2,QString(QStringLiteral("填充样式2")),QString("dense2"));
 ui->brushStyleComboBox->insertItem(3,QString(QStringLiteral("填充样式3")),QString("dense3"));
 ui->brushStyleComboBox->insertItem(4,QString(QStringLiteral("填充样式4")),QString("dense4"));
 ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式5")),QString("dense5"));
-
 }
 
 MainWindow::~MainWindow()
