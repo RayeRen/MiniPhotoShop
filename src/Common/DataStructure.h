@@ -113,6 +113,13 @@ protected:
 public:
     BaseShape(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle) : posX(posX), posY(posY), type(type), name(name), scaleX(scaleX), scaleY(scaleY), angle(angle) {}
 
+    void Move(int x ,int y)
+    {
+        posX+=x;
+        posY+=y;
+    }
+
+
     void setPosX(int posX) {
         BaseShape::posX = posX;
     }

@@ -42,6 +42,9 @@ const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
     int GetSelectedLayout(){return selectedLayout;}
     void SetPen(const Pen* pen){this->pen=pen;}
     void SetBrush(const Brush* brush){this->brush=brush;}
+    void LayoutMove(int x,int y);
+    void LayoutRotate(double angle);
+    void LayoutScale(double scaleX,double scaleY);
     const Pen* GetPen(){return pen;}
     const Brush* GetBrush(){return brush;}
     ViewModel(shared_ptr<Model> pModel);

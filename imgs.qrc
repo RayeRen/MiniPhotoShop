@@ -9,5 +9,8 @@
         <file>img/line.png</file>
         <file>img/background.png</file>
         <file>img/Rect.png</file>
+        <file>img/Move.png</file>
+        <file>img/Rotate.png</file>
+        <file>img/Scale.png</file>
     </qresource>
 </RCC>

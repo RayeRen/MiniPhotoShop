@@ -86,11 +86,10 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::NEW_LAYOUT:
     {
-        qDebug()<<"Count"<<ui->layoutListWidget->count();
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("layout"),ui->layoutListWidget);
-        ui->layoutListWidget->insertItem(0,newItem);
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("图层 %1").arg(ui->layoutListWidget->count()),ui->layoutListWidget);
+        ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
     }
         break;
     case NOTIFY::DISPLAY_REFRESH:
@@ -213,7 +212,6 @@ void MainWindow::ButtonBackColorPressed()
     const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,"设置背景色");
     if(color.isValid())
     {
-        qDebug()<<"pressed";
         ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
         Params params;
         params.setType(COMMAND::UPDATE_BRUSH_COLOR);
@@ -266,7 +264,6 @@ void MainWindow::ListItemSelectionChanged()
 {
     if(changeSelectedCommand!=nullptr)
     {
-        qDebug()<<"ChangeSelected2"<<ui->layoutListWidget->count()<<ui->layoutListWidget->currentRow();
         Params params;
         params.setInts({ui->layoutListWidget->currentRow()});
         changeSelectedCommand->setParams(params);

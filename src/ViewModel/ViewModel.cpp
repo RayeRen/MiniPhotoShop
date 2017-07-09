@@ -230,3 +230,21 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
     params.setType(NOTIFY::DISPLAY_REFRESH);
     notify(params);
 }
+
+void ViewModel::LayoutMove(int x,int y)
+{
+    if(selectedLayout>=0)
+    {
+        (layouts->list)[selectedLayout]->Move(x,y);
+    }
+}
+
+void ViewModel::LayoutRotate(double angle)
+{
+
+}
+
+void ViewModel::LayoutScale(double scaleX,double scaleY)
+{
+
+}
