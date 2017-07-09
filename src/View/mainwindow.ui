@@ -127,8 +127,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>822</width>
-         <height>822</height>
+         <width>812</width>
+         <height>812</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -166,7 +166,7 @@
      <x>0</x>
      <y>0</y>
      <width>647</width>
-     <height>25</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -232,6 +232,15 @@
    </property>
   </action>
   <action name="action_drawLine">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>

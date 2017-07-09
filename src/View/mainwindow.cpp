@@ -88,21 +88,26 @@ void MainWindow::menuTriggered(QAction* action)
     if(action->text()==ui->action_drawLine->text())
     {
         state=STATE::DRAW_LINE_INIT;
+        StateChanged();
+        return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
         state=STATE::DRAW_ELLIPSE_INIT;
+        StateChanged();
+        return;
     }
 
 }
 
 void MainWindow::StateChanged()
 {
+    ui->action_drawLine->setChecked(false);
+    ui->action_drawEllipse->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
-        ui->action_drawLine->setChecked(false);
-        ui->action_drawEllipse->setChecked(false);
+
         break;
     case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
@@ -120,7 +125,7 @@ void MainWindow::StateChanged()
 
 void MainWindow::ButtonForeColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"Set Foreground Color");
     if(color.isValid())
     {
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
