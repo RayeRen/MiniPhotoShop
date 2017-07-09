@@ -39,3 +39,10 @@ void Model::addRect(double centerX, double centerY, double width, double height)
      pen.setForeG(g);
      pen.setForeB(b);
  }
+
+ void Model::SetBrushColor(unsigned char r,unsigned char g,unsigned char b)
+ {
+     brush.setBackR(r);
+     brush.setBackG(g);
+     brush.setBackB(b);
+ }
