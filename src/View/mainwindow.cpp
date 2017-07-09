@@ -96,6 +96,9 @@ void MainWindow::update(Params params)
     case NOTIFY::DISPLAY_REFRESH:
         ui->MainDisplayWidget->paintUpdate();
         break;
+    case NOTIFY::NO_LAYOUT_SELECTED:
+        QMessageBox::information(this,QString("提示"),QString("请在右侧图层列表选择需要操作的图层"));
+        break;
     }
 }
 

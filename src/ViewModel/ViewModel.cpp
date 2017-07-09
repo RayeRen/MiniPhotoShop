@@ -243,6 +243,12 @@ void ViewModel::LayoutMove(int x,int y)
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
     }
+    else
+    {
+        Params params;
+        params.setType(NOTIFY::NO_LAYOUT_SELECTED);
+        notify(params);
+    }
 }
 
 void ViewModel::LayoutRotate(double angle)
