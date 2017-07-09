@@ -62,9 +62,13 @@ void ViewModel::update(Params params) {
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.push_back(pImage);
         RefreshDisplayImage(ints[0]);
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*pImage,QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::NEW_LAYOUT);
-        newParams.setPtrs({shared_ptr<void>(pImage)});
+        newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
     }
 

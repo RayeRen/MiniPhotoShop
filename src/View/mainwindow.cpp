@@ -88,7 +88,7 @@ void MainWindow::update(Params params)
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("layout"),ui->layoutListWidget);
-        ui->layoutListWidget->insertItem(ui->layoutListWidget->count(),newItem);
+        ui->layoutListWidget->insertItem(0,newItem);
     }
         break;
     }
