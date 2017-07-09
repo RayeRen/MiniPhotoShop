@@ -1,22 +1,22 @@
 /*
-*	Histogram3cÀà 3Í¨µÀÖ±·½Í¼
+*	Histogram3cç±» 3é€šé“ç›´æ–¹å›¾
 */
 #ifndef HISTOGRAM3C_H
 #define HISTOGRAM3C_H
 
 #include "Pixmap32b.h"
 
-enum {SELECT_R=1,SELECT_G=2,SELECT_B=4,SELECT_GREY=8};	//±ê¼ÇĞèÒª¼ÆÊıµÄÍ¨µÀ
+enum {SELECT_R=1,SELECT_G=2,SELECT_B=4,SELECT_GREY=8};	//æ ‡è®°éœ€è¦è®¡æ•°çš„é€šé“
 
 class Histogram3c
 {
-	unsigned int *hgR, *hgG, *hgB;	//3Í¨µÀÑÕÉ«¼ÆÊı
+	unsigned int *hgR, *hgG, *hgB;	//3é€šé“é¢œè‰²è®¡æ•°
 public:
 	Histogram3c();
 	Histogram3c(Pixmap32b &pixmap,unsigned char select=SELECT_R|SELECT_G|SELECT_B);
 	~Histogram3c() { FreeHistogram3c(); }
 	void FreeHistogram3c();
-	void LoadPixmap(Pixmap32b &pixmap, unsigned char select = SELECT_R | SELECT_G | SELECT_B);	//¶ÔPixmap32bÀà¼ÆËãÖ±·½Í¼
+	void LoadPixmap(Pixmap32b &pixmap, unsigned char select = SELECT_R | SELECT_G | SELECT_B);	//å¯¹Pixmap32bç±»è®¡ç®—ç›´æ–¹å›¾
 	unsigned int* CalcHistogram(unsigned int total,const unsigned char *color);
 	unsigned int getRCount(unsigned char r) const;
 	unsigned int getGCount(unsigned char g) const;

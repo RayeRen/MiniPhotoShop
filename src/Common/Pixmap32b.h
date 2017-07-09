@@ -1,6 +1,6 @@
 /*
-*	Pixmap32bÀà 32Î»Î»Í¼
-*	Ö§³ÖRGB¡¢YUVÑÕÉ«¸ñÊ½ÒÔ¼°»Ò½×¡¢¶şÖµÍ¼Ïñ¸ñÊ½
+*	Pixmap32bç±» 32ä½ä½å›¾
+*	æ”¯æŒRGBã€YUVé¢œè‰²æ ¼å¼ä»¥åŠç°é˜¶ã€äºŒå€¼å›¾åƒæ ¼å¼
 */
 #ifndef PIXMAP32B_H
 #define PIXMAP32B_H
@@ -11,14 +11,14 @@
 #include <cmath>
 #include <QImage>
 #include "DataStructure.h"
-typedef unsigned char UNUM8;	//8Î»ÎŞ·ûºÅÊı
-typedef unsigned short UNUM16;	//16Î»ÎŞ·ûºÅÊı
-typedef unsigned int UNUM32;	//32Î»ÎŞ·ûºÅÊı
-typedef signed char SNUM8;		//8Î»ÓĞ·ûºÅÊı
-typedef signed short SNUM16;	//16Î»ÓĞ·ûºÅÊı
-typedef signed int SNUM32;		//32Î»ÓĞ·ûºÅÊı
+typedef unsigned char UNUM8;	//8ä½æ— ç¬¦å·æ•°
+typedef unsigned short UNUM16;	//16ä½æ— ç¬¦å·æ•°
+typedef unsigned int UNUM32;	//32ä½æ— ç¬¦å·æ•°
+typedef signed char SNUM8;		//8ä½æœ‰ç¬¦å·æ•°
+typedef signed short SNUM16;	//16ä½æœ‰ç¬¦å·æ•°
+typedef signed int SNUM32;		//32ä½æœ‰ç¬¦å·æ•°
 
-enum { FMT_NULL, FMT_RGB, FMT_YUV,FMT_GREY,FMT_BIN};	//±íÊ¾Pixmap32b×´Ì¬ FMT_NULLÎªÎŞÊı¾İ FMT_RGBÎªRGBA¸ñÊ½Êı¾İ FMT_YUVÎªYUV¸ñÊ½Êı¾İ(YUV·Ö±ğ¶ÔÓ¦r,b,gÊı×é) FMT_BINÎª¶şÖµÍ¼Ïñ£¨RGBA·½Ê½´æ´¢£©
+enum { FMT_NULL, FMT_RGB, FMT_YUV,FMT_GREY,FMT_BIN};	//è¡¨ç¤ºPixmap32bçŠ¶æ€ FMT_NULLä¸ºæ— æ•°æ® FMT_RGBä¸ºRGBAæ ¼å¼æ•°æ® FMT_YUVä¸ºYUVæ ¼å¼æ•°æ®(YUVåˆ†åˆ«å¯¹åº”r,b,gæ•°ç»„) FMT_BINä¸ºäºŒå€¼å›¾åƒï¼ˆRGBAæ–¹å¼å­˜å‚¨ï¼‰
 
 typedef struct {
 	UNUM8 r, g, b, a,empty;
@@ -26,17 +26,17 @@ typedef struct {
 
 class Pixmap32b:public BaseShape
 {
-	unsigned int height, width, format;	//heightÎªÍ¼Ïñ¸ß¶È widthÎªÍ¼Ïñ¿í¶È formatÎª×´Ì¬
-	UNUM8 *r, *g, *b, *a;	//r¡¢g¡¢b¡¢aÎª4¸öÍ¨µÀµÄÊı×é Ë³ĞòÎª´Ó×óÏÂµ½ÓÒÉÏ£¬ÏÈĞĞºóÁĞ
+	unsigned int height, width, format;	//heightä¸ºå›¾åƒé«˜åº¦ widthä¸ºå›¾åƒå®½åº¦ formatä¸ºçŠ¶æ€
+	UNUM8 *r, *g, *b, *a;	//rã€gã€bã€aä¸º4ä¸ªé€šé“çš„æ•°ç»„ é¡ºåºä¸ºä»å·¦ä¸‹åˆ°å³ä¸Šï¼Œå…ˆè¡Œååˆ—
 public:
-    Pixmap32b(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL) { LoadBmpFile(fileName); }	//´ÓÍ¼Æ¬ÎÄ¼şÔØÈë
-	Pixmap32b(unsigned int width, unsigned int height,unsigned char value=0);	//ĞÂ½¨height*width´óĞ¡£¬³õÊ¼ÑÕÉ«ÎªºÚÉ«µÄÍ¼Æ¬£¬RGB¸ñÊ½
-    Pixmap32b(const Pixmap32b &pixmap) :BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL) { Load(pixmap); }//¿½±´¹¹Ôìº¯Êı
+    Pixmap32b(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL) { LoadBmpFile(fileName); }	//ä»å›¾ç‰‡æ–‡ä»¶è½½å…¥
+	Pixmap32b(unsigned int width, unsigned int height,unsigned char value=0);	//æ–°å»ºheight*widthå¤§å°ï¼Œåˆå§‹é¢œè‰²ä¸ºé»‘è‰²çš„å›¾ç‰‡ï¼ŒRGBæ ¼å¼
+    Pixmap32b(const Pixmap32b &pixmap) :BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL) { Load(pixmap); }//æ‹·è´æ„é€ å‡½æ•°
     Pixmap32b(const QImage *image):BaseShape(0, 0, SHAPE::PIXMAP, string("Pixmap"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(FMT_NULL){
         if(image->format()!=QImage::Format_ARGB32){
-            QImage *newimage=&(image->convertToFormat(QImage::Format_ARGB32,image->colorTable()));
-            LoadQImage(newimage);
-            delete newimage;
+//            QImage *newimage=&(image->convertToFormat(QImage::Format_ARGB32,image->colorTable()));
+//            LoadQImage(newimage);
+//            delete newimage;
         }else{
             LoadQImage(image);
         }
@@ -47,68 +47,68 @@ public:
     int LoadQImage(const QImage *image);
     QImage getQImage();
 
-	int LoadBmpFile(const char * fileName);	//³¢ÊÔ´ÓÍ¼Æ¬ÎÄ¼şÔØÈëÊı¾İ
-	int Load(const Pixmap32b &pixmap);	//¿½±´¹¹Ôìº¯Êı
-	int SaveAsBMP24b(const char * fileName) const;	//´æ´¢Îª24Î»BMPÍ¼Æ¬
-	int SaveAsGreyBMP8b(const char * fileName) const;	//´æ´¢Îª8Î»»Ò¶ÈÍ¼Æ¬
-	void FreePixmap32b();	//Çå¿ÕÊı¾İ
+	int LoadBmpFile(const char * fileName);	//å°è¯•ä»å›¾ç‰‡æ–‡ä»¶è½½å…¥æ•°æ®
+	int Load(const Pixmap32b &pixmap);	//æ‹·è´æ„é€ å‡½æ•°
+	int SaveAsBMP24b(const char * fileName) const;	//å­˜å‚¨ä¸º24ä½BMPå›¾ç‰‡
+	int SaveAsGreyBMP8b(const char * fileName) const;	//å­˜å‚¨ä¸º8ä½ç°åº¦å›¾ç‰‡
+	void FreePixmap32b();	//æ¸…ç©ºæ•°æ®
 
-	int ConvertFormat(unsigned int newFormat, int thre=-1);	//×ª»»¸ñÊ½
-	int ConvertToYUV();	//×ª»¯ÎªYUVÑÕÉ«¸ñÊ½
-	int ConvertToRGB();	//×ª»¯ÎªRGBÑÕÉ«¸ñÊ½
-	int ConvertToGrey();	//ÓÃYUVÖĞµÄYÍ¨µÀÌî³äRGB£¬×ª»»Îª»Ò½×Í¼Ïñ
-	unsigned char OtsuGetThre();	//»ñµÃ´ó½ò·¨ãĞÖµ
-	int ConvertToBin(int thre=-1);	//¶şÖµ»¯£¬Èôthre²»ÔÚ0~255Ö®¼ä£¬ÔòÏÈ½øĞĞ´ó½ò·¨ÇóãĞÖµ²Ù×÷
-	void ChangeLuma(int del);	//¸Ä±äYUVÍ¨µÀÖĞµÄYÖµ£¬²¢»Ö¸´Ô­¸ñÊ½
-	int InverseColor();	//·´É«
-	int LogOperation();	//¶ÔÊı²Ù×÷
-	int HistoEqualizing();	//Ö±·½Í¼¾ùºâ
-	Pixel32b NearestInterpolation(double x,double y) const;	//×îÁÚ½ü²åÖµ
-	Pixel32b BilinearInterpolation(double x,double y) const;	//Ë«ÏßĞÔ²åÖµ
-	static double Gaussian(double x,double r);//¼ÆËã¸ßË¹·Ö²¼ 
+	int ConvertFormat(unsigned int newFormat, int thre=-1);	//è½¬æ¢æ ¼å¼
+	int ConvertToYUV();	//è½¬åŒ–ä¸ºYUVé¢œè‰²æ ¼å¼
+	int ConvertToRGB();	//è½¬åŒ–ä¸ºRGBé¢œè‰²æ ¼å¼
+	int ConvertToGrey();	//ç”¨YUVä¸­çš„Yé€šé“å¡«å……RGBï¼Œè½¬æ¢ä¸ºç°é˜¶å›¾åƒ
+	unsigned char OtsuGetThre();	//è·å¾—å¤§æ´¥æ³•é˜ˆå€¼
+	int ConvertToBin(int thre=-1);	//äºŒå€¼åŒ–ï¼Œè‹¥threä¸åœ¨0~255ä¹‹é—´ï¼Œåˆ™å…ˆè¿›è¡Œå¤§æ´¥æ³•æ±‚é˜ˆå€¼æ“ä½œ
+	void ChangeLuma(int del);	//æ”¹å˜YUVé€šé“ä¸­çš„Yå€¼ï¼Œå¹¶æ¢å¤åŸæ ¼å¼
+	int InverseColor();	//åè‰²
+	int LogOperation();	//å¯¹æ•°æ“ä½œ
+	int HistoEqualizing();	//ç›´æ–¹å›¾å‡è¡¡
+	Pixel32b NearestInterpolation(double x,double y) const;	//æœ€é‚»è¿‘æ’å€¼
+	Pixel32b BilinearInterpolation(double x,double y) const;	//åŒçº¿æ€§æ’å€¼
+	static double Gaussian(double x,double r);//è®¡ç®—é«˜æ–¯åˆ†å¸ƒ 
 	
-	static int AffineTrans(const Pixmap32b *src,Pixmap32b *dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//¸ù¾İ¾ØÕó½øĞĞ·ÂÉä±ä»»  ×ø±ê(x,y,1)×ªÖÃ matrix 3*3¾ØÕóË³Ğò (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
-	Pixmap32b *Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//Æ½ÒÆ
-	Pixmap32b *Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//Ğı×ª
-	Pixmap32b *Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//¾µÏñ
-	Pixmap32b *Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//Ëõ·Å
-	Pixmap32b *Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//Ğ±ÇĞ
+	static int AffineTrans(const Pixmap32b *src,Pixmap32b *dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//æ ¹æ®çŸ©é˜µè¿›è¡Œä»¿å°„å˜æ¢  åæ ‡(x,y,1)è½¬ç½® matrix 3*3çŸ©é˜µé¡ºåº (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
+	Pixmap32b *Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//å¹³ç§»
+	Pixmap32b *Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//æ—‹è½¬
+	Pixmap32b *Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//é•œåƒ
+	Pixmap32b *Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//ç¼©æ”¾
+	Pixmap32b *Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//æ–œåˆ‡
 
-	Pixmap32b *Dilation(const Pixmap32b *stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//ÅòÕÍ
-	Pixmap32b *Erosion(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//¸¯Ê´
-	Pixmap32b *Opening(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//¿ªÔËËã
-	Pixmap32b *Closing(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//±ÕÔËËã
+	Pixmap32b *Dilation(const Pixmap32b *stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//è†¨èƒ€
+	Pixmap32b *Erosion(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//è…èš€
+	Pixmap32b *Opening(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//å¼€è¿ç®—
+	Pixmap32b *Closing(const Pixmap32b * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//é—­è¿ç®—
 
-	Pixmap32b *AddBorder(unsigned int borderWidth,int mode=0) const;	//¾µÏñ±ßÔµÀ©Õ¹
-	Pixmap32b *Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//¾í»ı
-	Pixmap32b *LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//À­ÆÕÀ­Ë¹Í¼ÏñÔöÇ¿
-	Pixmap32b *BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//Ë«±ßÂË²¨ 
+	Pixmap32b *AddBorder(unsigned int borderWidth,int mode=0) const;	//é•œåƒè¾¹ç¼˜æ‰©å±•
+	Pixmap32b *Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//å·ç§¯
+	Pixmap32b *LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//æ‹‰æ™®æ‹‰æ–¯å›¾åƒå¢å¼º
+	Pixmap32b *BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//åŒè¾¹æ»¤æ³¢ 
 
-	unsigned int getWidth() const { return width; }	//·µ»ØÍ¼Æ¬¿í¶È
-	unsigned int getHeight() const { return height; }	//·µ»ØÍ¼Æ¬¸ß¶È
+	unsigned int getWidth() const { return width; }	//è¿”å›å›¾ç‰‡å®½åº¦
+	unsigned int getHeight() const { return height; }	//è¿”å›å›¾ç‰‡é«˜åº¦
 
-	const unsigned char *getRHead() const { return r; }	//·µ»ØrÊı×é
-	const unsigned char *getGHead() const { return g; }	//·µ»ØgÊı×é
-	const unsigned char *getBHead() const { return b; }	//·µ»ØbÊı×é
-	const unsigned char *getAHead() const { return a; }	//·µ»ØaÊı×é
+	const unsigned char *getRHead() const { return r; }	//è¿”å›ræ•°ç»„
+	const unsigned char *getGHead() const { return g; }	//è¿”å›gæ•°ç»„
+	const unsigned char *getBHead() const { return b; }	//è¿”å›bæ•°ç»„
+	const unsigned char *getAHead() const { return a; }	//è¿”å›aæ•°ç»„
 
-	unsigned char *getRHead() { return r; }	//·Ç³£Á¿°æ ·µ»ØrÊı×é
-	unsigned char *getGHead() { return g; }	//·Ç³£Á¿°æ ·µ»ØgÊı×é
-	unsigned char *getBHead() { return b; }	//·Ç³£Á¿°æ ·µ»ØbÊı×é
-	unsigned char *getAHead() { return a; }	//·Ç³£Á¿°æ ·µ»ØaÊı×é
+	unsigned char *getRHead() { return r; }	//éå¸¸é‡ç‰ˆ è¿”å›ræ•°ç»„
+	unsigned char *getGHead() { return g; }	//éå¸¸é‡ç‰ˆ è¿”å›gæ•°ç»„
+	unsigned char *getBHead() { return b; }	//éå¸¸é‡ç‰ˆ è¿”å›bæ•°ç»„
+	unsigned char *getAHead() { return a; }	//éå¸¸é‡ç‰ˆ è¿”å›aæ•°ç»„
 
-	unsigned int getFormat() const { return format; }	//·µ»Ø¸ñÊ½
+	unsigned int getFormat() const { return format; }	//è¿”å›æ ¼å¼
 
-	const unsigned char *getR(unsigned int x, unsigned int y) const { if (x < width&&y < height) return r + y*width + x; return NULL; }//·µ»Ø(x,y)×ø±ê´¦µÄrÖµÖ¸Õë
-	const unsigned char *getG(unsigned int x, unsigned int y) const { if (x < width&&y < height)return g + y*width + x; return NULL; } //·µ»Ø(x,y)×ø±ê´¦µÄgÖµÖ¸Õë
-	const unsigned char *getB(unsigned int x, unsigned int y) const { if (x < width&&y < height) return b + y*width + x; return NULL; } //·µ»Ø(x,y)×ø±ê´¦µÄbÖµÖ¸Õë
-	const unsigned char *getA(unsigned int x, unsigned int y) const { if (x < width&&y < height) return a + y*width + x; return NULL; } //·µ»Ø(x,y)×ø±ê´¦µÄaÖµÖ¸Õë
-	Pixel32b getPixel(unsigned int x,unsigned int y) const;	//»ñµÃ(x,y)´¦µÄÏñËØµãÑÕÉ«
+	const unsigned char *getR(unsigned int x, unsigned int y) const { if (x < width&&y < height) return r + y*width + x; return NULL; }//è¿”å›(x,y)åæ ‡å¤„çš„rå€¼æŒ‡é’ˆ
+	const unsigned char *getG(unsigned int x, unsigned int y) const { if (x < width&&y < height)return g + y*width + x; return NULL; } //è¿”å›(x,y)åæ ‡å¤„çš„gå€¼æŒ‡é’ˆ
+	const unsigned char *getB(unsigned int x, unsigned int y) const { if (x < width&&y < height) return b + y*width + x; return NULL; } //è¿”å›(x,y)åæ ‡å¤„çš„bå€¼æŒ‡é’ˆ
+	const unsigned char *getA(unsigned int x, unsigned int y) const { if (x < width&&y < height) return a + y*width + x; return NULL; } //è¿”å›(x,y)åæ ‡å¤„çš„aå€¼æŒ‡é’ˆ
+	Pixel32b getPixel(unsigned int x,unsigned int y) const;	//è·å¾—(x,y)å¤„çš„åƒç´ ç‚¹é¢œè‰²
 	
-	unsigned char *getR(unsigned int x, unsigned int y) { if (x < width&&y < height) return r + y*width + x; return NULL; } //·Ç³£Á¿°æ ·µ»Ø(x,y)×ø±ê´¦µÄrÖµÖ¸Õë
-	unsigned char *getG(unsigned int x, unsigned int y) { if (x < width&&y < height) return g + y*width + x; return NULL; }//·Ç³£Á¿°æ ·µ»Ø(x,y)×ø±ê´¦µÄgÖµÖ¸Õë
-	unsigned char *getB(unsigned int x, unsigned int y) { if (x < width&&y < height) return b + y*width + x; return NULL; }//·Ç³£Á¿°æ ·µ»Ø(x,y)×ø±ê´¦µÄbÖµÖ¸Õë
-	unsigned char *getA(unsigned int x, unsigned int y) { if (x < width&&y < height) return a + y*width + x; return NULL; }//·Ç³£Á¿°æ ·µ»Ø(x,y)×ø±ê´¦µÄaÖµÖ¸Õë
+	unsigned char *getR(unsigned int x, unsigned int y) { if (x < width&&y < height) return r + y*width + x; return NULL; } //éå¸¸é‡ç‰ˆ è¿”å›(x,y)åæ ‡å¤„çš„rå€¼æŒ‡é’ˆ
+	unsigned char *getG(unsigned int x, unsigned int y) { if (x < width&&y < height) return g + y*width + x; return NULL; }//éå¸¸é‡ç‰ˆ è¿”å›(x,y)åæ ‡å¤„çš„gå€¼æŒ‡é’ˆ
+	unsigned char *getB(unsigned int x, unsigned int y) { if (x < width&&y < height) return b + y*width + x; return NULL; }//éå¸¸é‡ç‰ˆ è¿”å›(x,y)åæ ‡å¤„çš„bå€¼æŒ‡é’ˆ
+	unsigned char *getA(unsigned int x, unsigned int y) { if (x < width&&y < height) return a + y*width + x; return NULL; }//éå¸¸é‡ç‰ˆ è¿”å›(x,y)åæ ‡å¤„çš„aå€¼æŒ‡é’ˆ
 
 };
 

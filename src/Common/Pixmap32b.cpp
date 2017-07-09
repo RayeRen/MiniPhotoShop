@@ -5,12 +5,12 @@
 #ifndef PI
 #define PI 3.141592
 #endif
-//typedef unsigned char UNUM8;	//8Î»ÎŞ·ûºÅÊı
-//typedef unsigned short UNUM16;	//16Î»ÎŞ·ûºÅÊı
-//typedef unsigned int UNUM32;	//32Î»ÎŞ·ûºÅÊı
-//typedef signed char SNUM8;		//8Î»ÓĞ·ûºÅÊı
-//typedef signed short SNUM16;	//16Î»ÓĞ·ûºÅÊı
-//typedef signed int SNUM32;		//32Î»ÓĞ·ûºÅÊı
+//typedef unsigned char UNUM8;	//8ä½æ— ç¬¦å·æ•°
+//typedef unsigned short UNUM16;	//16ä½æ— ç¬¦å·æ•°
+//typedef unsigned int UNUM32;	//32ä½æ— ç¬¦å·æ•°
+//typedef signed char SNUM8;		//8ä½æœ‰ç¬¦å·æ•°
+//typedef signed short SNUM16;	//16ä½æœ‰ç¬¦å·æ•°
+//typedef signed int SNUM32;		//32ä½æœ‰ç¬¦å·æ•°
 typedef struct strBmpFileHeader
 {
 	UNUM16 bfType, bfReserved1, bfReserved2;
@@ -101,9 +101,9 @@ QImage Pixmap32b::getQImage(){
 
 int  Pixmap32b::LoadBmpFile(const char * fileName)
 {
-	BmpFileHeader fileHeader;	//ÎÄ¼şÍ·
-	BmpFileInformation fileInfo;	//ĞÅÏ¢¶Î
-	UNUM8* palette = NULL;	//µ÷É«°å
+	BmpFileHeader fileHeader;	//æ–‡ä»¶å¤´
+	BmpFileInformation fileInfo;	//ä¿¡æ¯æ®µ
+	UNUM8* palette = NULL;	//è°ƒè‰²æ¿
 	FreePixmap32b();
 	a = b = g = r = NULL;
 	height = width = 0;
@@ -111,19 +111,19 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 	if (fileName == NULL)
 		return 1;
 	if ((fp = fopen(fileName, "rb")) == NULL)
-		return 1;	//´íÎó£ºÎŞ·¨´ò¿ªÎÄ¼ş
+		return 1;	//é”™è¯¯ï¼šæ— æ³•æ‰“å¼€æ–‡ä»¶
 	fread(&fileHeader.bfType, 2, 1, fp);
 	if (fileHeader.bfType != 0x4d42)
 	{
 		fclose(fp);
-		return 1;	//´íÎó£º²»ÊÇ±ê×¼BMPÎÄ¼ş
+		return 1;	//é”™è¯¯ï¼šä¸æ˜¯æ ‡å‡†BMPæ–‡ä»¶
 	}
-	//¶ÁÈ¡ÎÄ¼şÍ·
+	//è¯»å–æ–‡ä»¶å¤´
 	fread(&fileHeader.bfSize, 4, 1, fp);
 	fread(&fileHeader.bfReserved1, 2, 1, fp);
 	fread(&fileHeader.bfReserved2, 2, 1, fp);
 	fread(&fileHeader.bfOffBits, 4, 1, fp);
-	//¶ÁÈ¡ĞÅÏ¢¶Îv
+	//è¯»å–ä¿¡æ¯æ®µv
 	fread(&fileInfo.biSize, 4, 1, fp);
 	fread(&fileInfo.biWidth, 4, 1, fp);
 	fread(&fileInfo.biHeight, 4, 1, fp);
@@ -138,10 +138,10 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 	if (fileInfo.biCompression != 0)
 	{
 		fclose(fp);
-		return -1;	//´íÎó£º·ÇBI_RGB¸ñÊ½
+		return -1;	//é”™è¯¯ï¼šéBI_RGBæ ¼å¼
 	}
 
-	int rowN, tmp, paletteN = 0;	//tmpÎªÃ¿ĞĞÓĞĞ§×Ö½ÚÊı rowNÎªÃ¿ĞĞÊµ¼Ê×Ö½ÚÊı
+	int rowN, tmp, paletteN = 0;	//tmpä¸ºæ¯è¡Œæœ‰æ•ˆå­—èŠ‚æ•° rowNä¸ºæ¯è¡Œå®é™…å­—èŠ‚æ•°
 	switch (fileInfo.biBitCount)
 	{
 	case 1:
@@ -172,18 +172,18 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 		break;
 	default:
 		fclose(fp);
-		return 1;	//´íÎó£ºÑÕÉ«±ÈÌØÊıÖµ·Ç·¨
+		return 1;	//é”™è¯¯ï¼šé¢œè‰²æ¯”ç‰¹æ•°å€¼éæ³•
 	}
 
 	fseek(fp, 14L + fileInfo.biSize, SEEK_SET);
-	//¶ÁÈ¡µ÷É«°å
+	//è¯»å–è°ƒè‰²æ¿
 	if (paletteN != 0)
 	{
 		palette = (UNUM8*)malloc(sizeof(UNUM8)*paletteN * 4);
 		fread(palette, sizeof(UNUM8) * 4, paletteN, fp);
 	}
 
-	//³õÊ¼»¯pixmap
+	//åˆå§‹åŒ–pixmap
 	width = fileInfo.biWidth;
 	height = abs(fileInfo.biHeight);
 	r = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
@@ -195,11 +195,11 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 
 	fseek(fp, fileHeader.bfOffBits, SEEK_SET);
 	unsigned int x;
-	int offset;//offsetÎªµ±Ç°¶ÁÈ¡×Ö½ÚµÄÆ«ÒÆÁ¿
+	int offset;//offsetä¸ºå½“å‰è¯»å–å­—èŠ‚çš„åç§»é‡
 
 	if (paletteN != 0)
 	{
-		//ÈôÓĞµ÷É«°å
+		//è‹¥æœ‰è°ƒè‰²æ¿
 		for (unsigned int y = 0; y < height; y++)
 		{
 			UNUM8 tmpData, data;
@@ -215,7 +215,7 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 				}
 				while (x < fileInfo.biWidth&&offset >= 0)
 				{
-					//»ñÈ¡ÑÕÉ«Ë÷ÒıºÅ
+					//è·å–é¢œè‰²ç´¢å¼•å·
 					data = tmpData >> offset;
 					if (fileInfo.biBitCount == 1)
 						data &= 0x1;
@@ -226,7 +226,7 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 					}
 					offset -= fileInfo.biBitCount;
 					x++;
-					//ÉèÖÃÑÕÉ«
+					//è®¾ç½®é¢œè‰²
 					*colorBp++ = *(palette + data * 4);
 					*colorGp++ = *(palette + data * 4 + 1);
 					*colorRp++ = *(palette + data * 4 + 2);
@@ -237,14 +237,14 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 	}
 	else
 	{
-		//ÈôÎŞµ÷É«°å
+		//è‹¥æ— è°ƒè‰²æ¿
 		int bufN = (tmp % 4) ? (4 - tmp % 4) : 0;
 		UNUM32 buf;
 		UNUM16 color16;
 		switch (fileInfo.biBitCount)
 		{
 		case 16:
-			//16Î»É«´¦Àí
+			//16ä½è‰²å¤„ç†
 			for (unsigned int y = 0; y < height; y++, fread(&buf, bufN, 1, fp))
 				for (unsigned int x = 0; x < width; x++)
 				{
@@ -256,7 +256,7 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 				}
 			break;
 		case 24:
-			//24Î»É«´¦Àí
+			//24ä½è‰²å¤„ç†
 			for (unsigned int y = 0; y < height; y++, fread(&buf, bufN, 1, fp))
 				for (unsigned int x = 0; x < width; x++)
 				{
@@ -267,7 +267,7 @@ int  Pixmap32b::LoadBmpFile(const char * fileName)
 				}
 			break;
 		case 32:
-			//32Î»É«´¦Àí
+			//32ä½è‰²å¤„ç†
 			for (unsigned int y = 0; y < height; y++, fread(&buf, bufN, 1, fp))
 				for (unsigned int x = 0; x < width; x++)
 				{
@@ -654,7 +654,7 @@ int Pixmap32b::HistoEqualizing()
 	unsigned int *his = histo.getRHead(), size = width*height;
 	if (!size)
 		return 1;
-	double *hisDis = (double*)malloc(sizeof(double) * 256), *hisCumu = (double*)malloc(sizeof(double) * 256);	//hisDisÎª¸ÃÖµ³öÏÖ¸ÅÂÊ hisCumuÎªÀÛ»ı¸ÅÂÊ
+	double *hisDis = (double*)malloc(sizeof(double) * 256), *hisCumu = (double*)malloc(sizeof(double) * 256);	//hisDisä¸ºè¯¥å€¼å‡ºç°æ¦‚ç‡ hisCumuä¸ºç´¯ç§¯æ¦‚ç‡
 	for (unsigned int i = 0; i < 256; i++)
 	{
 		if (i > maxY&&his[i] > 0)
