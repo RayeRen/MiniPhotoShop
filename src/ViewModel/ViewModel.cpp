@@ -52,22 +52,19 @@ void ViewModel::update(Params params) {
     switch (params.getType()) {
     case NOTIFY::UPDATE_IMAGE:
     {
-         vector<int> ints=params.getInts();
+        vector<int> ints=params.getInts();
         RefreshDisplayImage(ints[0]);
     }
         break;
     case NOTIFY::UPDATE_IMAGE_ADD:
     {
         vector<int> ints=params.getInts();
-        qDebug()<<displayImage.width()<<displayImage.height();
-        QImage image1(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
-        displayBuffer.push_back(image1);
+        shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        displayBuffer.push_back(pImage);
         RefreshDisplayImage(ints[0]);
         Params newParams;
         newParams.setType(NOTIFY::NEW_LAYOUT);
-        QImage* newImage=&(displayBuffer[displayBuffer.size()-1]);
-        shared_ptr<void> ptr=shared_ptr<void>(newImage);
-        newParams.setPtrs({ptr});
+        newParams.setPtrs({shared_ptr<void>(pImage)});
         notify(newParams);
     }
 
@@ -93,7 +90,7 @@ void ViewModel::RefreshDisplayImage(int index) {
     }
     else
     {
-        QPainter painter(&displayBuffer[index]);
+        QPainter painter(&(*displayBuffer[index]));
         painter.setCompositionMode(QPainter::CompositionMode_Source);
         painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
 
@@ -150,7 +147,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         }
     }
     for(int i=0;i<displayBuffer.size();i++)
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
 }
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
