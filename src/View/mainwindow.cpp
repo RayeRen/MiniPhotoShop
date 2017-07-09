@@ -91,6 +91,16 @@ void MainWindow::update(Params params)
         ui->layoutListWidget->insertItem(0,newItem);
     }
         break;
+    case NOTIFY::DELETE_LAYOUT:{
+        vector<int> ints=params.getInts();
+
+        QListWidgetItem * deletedWidget=ui->layoutListWidget->item(ints[0]);
+        qDebug()<<"Remove:"<<ints[0];
+        ui->layoutListWidget->removeItemWidget(deletedWidget);
+        qDebug()<<"After Delete Count"<<ui->layoutListWidget->count();
+
+    }
+        break;
     }
 }
 
@@ -164,6 +174,19 @@ void MainWindow::menuTriggered(QAction* action)
             addPicCommand->setParams(params);
             addPicCommand->exec();
         }
+    }
+    if(action->text()==ui->action_aboutPro->text()){
+        //temporal use to test undo redo
+        Params params;
+        undoCommand->setParams(params);
+        undoCommand->exec();
+    }
+    if(action->text()==ui->action_help->text()){
+        //temporal use to test undo redo
+
+        Params params;
+        redoCommand->setParams(params);
+        redoCommand->exec();
     }
 }
 

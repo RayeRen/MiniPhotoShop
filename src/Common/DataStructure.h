@@ -329,6 +329,7 @@ public:
     }
 };
 
+
 class Pixmap:public BaseShape
 {
     unsigned int height, width, format;	//height为图像高度 width为图像宽度 format为状态
@@ -351,5 +352,22 @@ public:
     const unsigned char *getB(unsigned int x, unsigned int y) const { if (x < width&&y < height) return b + y*width + x; return NULL; } //返回(x,y)坐标处的b值指针
     const unsigned char *getA(unsigned int x, unsigned int y) const { if (x < width&&y < height) return a + y*width + x; return NULL; } //返回(x,y)坐标处的a值指针
 };
-
+class DoneInfo{
+    int layoutindex;
+    shared_ptr<BaseShape> shape;
+public:
+    DoneInfo(int layoutindex,shared_ptr<BaseShape> shape):layoutindex(layoutindex),shape(shape){}
+    int getlayoutindex()const{
+        return layoutindex;
+    }
+    void setlayoutindex(int layoutindex){
+        this->layoutindex=layoutindex;
+    }
+    shared_ptr<BaseShape> getshape() const{
+        return shape;
+    }
+    void setshape(shared_ptr<BaseShape> shape){
+        this->shape=shape;
+    }
+};
 #endif // DATASTRUCTURE_H

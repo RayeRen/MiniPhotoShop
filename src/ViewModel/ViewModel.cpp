@@ -11,6 +11,8 @@
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"
+#include "src/ViewModel/Commands/undocommand.h"
+#include "src/ViewModel/Commands/redocommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -70,9 +72,20 @@ void ViewModel::update(Params params) {
         newParams.setType(NOTIFY::NEW_LAYOUT);
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
+        break;
     }
-
-
+    case NOTIFY::UPDATE_IMAGE_MINUS:{
+        qDebug()<<"minus";
+        vector<int> ints=params.getInts();
+        qDebug()<<"Remove Minus:"<<ints[0];
+        vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
+        displayBuffer.erase(it);
+        RefreshDisplayImage();
+        Params newParams;
+        newParams.setType(NOTIFY::DELETE_LAYOUT);
+        newParams.setInts({ints[0]});
+        notify(newParams);
+    }
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
@@ -85,6 +98,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
+   // painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -168,6 +182,8 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
+    undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
+    redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);

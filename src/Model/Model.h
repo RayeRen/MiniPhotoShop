@@ -15,15 +15,20 @@ private:
     Pen pen;
     Brush brush;
     Layouts layouts;
-
+    int NowDoneIndex,MaxDoneIndex;
+    vector<DoneInfo> DoneList;
     void ClearModel();
 public:
+    Model();
     void addLine(){
     }
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
+    void addDoneEvent(int layoutindex,shared_ptr<BaseShape> shape);
+    void redo();
+    void undo();
     bool newProject(bool isSavedPre);
     bool saveProject(string path)const;
     bool loadProject(string path);

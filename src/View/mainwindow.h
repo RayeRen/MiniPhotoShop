@@ -27,6 +27,9 @@ public:
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
+    void setUndoCommand(const shared_ptr<BaseCommand> &undoCommand){this->undoCommand=undoCommand;}
+    void setRedoCommand(const shared_ptr<BaseCommand> &redoCommand){this->redoCommand=redoCommand;}
+
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -39,7 +42,7 @@ private:
     const QImage* displayImage;
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
-     penUpdateCommand,brushUpdateCommand,addPicCommand;
+     penUpdateCommand,brushUpdateCommand,addPicCommand,undoCommand,redoCommand;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
