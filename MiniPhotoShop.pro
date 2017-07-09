@@ -31,7 +31,9 @@ SOURCES += \
     src/main.cpp \
     src/View/imagewidget.cpp \
     src/ViewModel/Commands/newcanvascommand.cpp \
-    src/ViewModel/Commands/addellipsecommand.cpp
+    src/ViewModel/Commands/addellipsecommand.cpp \
+    src/Common/Histogram3c.cpp \
+    src/Common/Pixmap32b.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -49,7 +51,9 @@ HEADERS += \
     src/ViewModel/Commands/newcanvascommand.h \
     src/ViewModel/Commands/addellipsecommand.h \
     src/ViewModel/Commands/penupdatecommand.h \
-    src/ViewModel/Commands/AddRectCommand.h
+    src/ViewModel/Commands/AddRectCommand.h \
+    src/Common/Histogram3c.h \
+    src/Common/Pixmap32b.h
 
 FORMS += \
     src/View/mainwindow.ui
