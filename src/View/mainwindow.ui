@@ -78,6 +78,9 @@
        </widget>
       </item>
       <item>
+       <widget class="QComboBox" name="penStyleComboBox"/>
+      </item>
+      <item>
        <widget class="QPushButton" name="backColorButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -101,6 +104,9 @@
          <string/>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QFontComboBox" name="fontComboBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -127,8 +133,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>812</width>
-         <height>812</height>
+         <width>822</width>
+         <height>822</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -166,7 +172,7 @@
      <x>0</x>
      <y>0</y>
      <width>647</width>
-     <height>17</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
