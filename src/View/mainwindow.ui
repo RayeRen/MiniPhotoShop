@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>647</width>
-    <height>549</height>
+    <width>913</width>
+    <height>721</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,6 +106,9 @@
        </widget>
       </item>
       <item>
+       <widget class="QComboBox" name="brushStyleComboBox"/>
+      </item>
+      <item>
        <widget class="QFontComboBox" name="fontComboBox"/>
       </item>
       <item>
@@ -133,7 +136,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>822</width>
+         <width>872</width>
          <height>822</height>
         </rect>
        </property>
@@ -171,7 +174,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>647</width>
+     <width>913</width>
      <height>25</height>
     </rect>
    </property>
@@ -190,6 +193,7 @@
     </property>
     <addaction name="action_drawLine"/>
     <addaction name="action_drawEllipse"/>
+    <addaction name="action_drawRect"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -211,6 +215,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_drawLine"/>
+   <addaction name="action_drawRect"/>
    <addaction name="action_drawEllipse"/>
    <addaction name="action_aboutPro"/>
    <addaction name="action_help"/>
@@ -289,6 +294,15 @@
    </property>
    <property name="text">
     <string>帮助</string>
+   </property>
+  </action>
+  <action name="action_drawRect">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/Rect.png</normaloff>:/img/img/Rect.png</iconset>
+   </property>
+   <property name="text">
+    <string>画矩形</string>
    </property>
   </action>
  </widget>

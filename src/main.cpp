@@ -16,23 +16,23 @@ void testPixmap32b(){
 
     if (pic.getFormat() == FMT_NULL)
     {
-        cout << "文件打开失败" << endl;
+        cout << "Open File Failed" << endl;
         return ;
     }
     //Test 1
     if (!pic.SaveAsBMP24b("original_pic.bmp"))
-        cout << "\n原图已输出至程序根目录下 original_pic.bmp 文件" << endl;
+        qDebug() << QStringLiteral(" original_pic.bmp is created");
 
     if (!pic.SaveAsGreyBMP8b("result_greyscale.bmp"))
-        cout << "\n8位灰度图已输出至程序根目录下 result_greyscale.bmp 文件" << endl;
+        qDebug() << QStringLiteral("8 bit grayscale: result_greyscale.bmp " );
 
     int delY=10;
-    cout << "\n请输入Y值变化量(有效范围-255~255):10" << endl;
+    qDebug() << QStringLiteral("delY= 10");
 
     pic.ChangeLuma(delY);
 
     if (!pic.SaveAsBMP24b("result_Ychanged.bmp"))
-        cout << "\nY值改变之后的24位图已输出至程序根目录下 result_Ychanged.bmp 文件\n" << endl;
+        qDebug() << QStringLiteral("Ychanged: result_Ychanged.bmp");
 }
 
 int main(int argc, char *argv[]) {
@@ -54,14 +54,14 @@ int main(int argc, char *argv[]) {
     //bind
     pMainWindows->setAddLineCommand(pViewModel->getAddLineCommand());
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
-
+    pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
     pMainWindows->SetBrush(pModel->GetBrush());
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());
-
+    pMainWindows->setBrushUpdateCommand(pViewModel->getBrushUpdateCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
     delete screen;
 
     //Test For Pixmap32b.h
-    testPixmap32b();
+    //testPixmap32b();
 
     pMainWindows->show();
     return a.exec();

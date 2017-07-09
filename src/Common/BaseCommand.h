@@ -16,9 +16,7 @@ public:
     BaseCommand(const shared_ptr<Model> &pModel, const shared_ptr<ViewModel> &pViewModel = nullptr) : pModel(pModel),pViewModel(pViewModel) {}
 
     void setParams(const Params &params) {
-        qDebug()<<"Begin1";
         BaseCommand::params = params;
-        qDebug()<<"Begin2";
     }
 
     virtual void exec() = 0;

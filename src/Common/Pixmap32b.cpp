@@ -77,6 +77,7 @@ int Pixmap32b::LoadQImage(const QImage *image){
             *colorAp++ = (UNUM8)qAlpha(rgba);
         }
     }
+    return 0;
 }
 QImage Pixmap32b::getQImage(){
     if(this->format!=FMT_NULL){

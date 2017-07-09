@@ -12,9 +12,9 @@ class AddEllipseCommand: public BaseCommand
 public:
     AddEllipseCommand(const shared_ptr<Model> &pModel) : BaseCommand(pModel) {}
     void exec() {
-        vector<double> doubles=params.getDoubles();
+        vector<int> ints=params.getInts();
         //centerX,centerY,a,b
-        pModel->addEllipse(doubles[0],doubles[1],doubles[2],doubles[3]);
+        pModel->addEllipse(ints[0],ints[1],ints[2],ints[3]);
     }
 };
 

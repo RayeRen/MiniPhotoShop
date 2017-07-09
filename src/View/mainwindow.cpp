@@ -19,14 +19,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->action_drawLine->setCheckable(true);
     ui->action_drawEllipse->setCheckable(true);
+    ui->action_drawRect->setCheckable(true);
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
+    connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
+    connect(ui->brushStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(BrushStyleComboBoxChanged(int)));
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("虚线")),QString("dash"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("点线")),QString("dash_dot"));
     ui->penStyleComboBox->insertItem(3,QString(QStringLiteral("点划线")),QString("dash_dot_dot"));
+
+ui->brushStyleComboBox->insertItem(0,QString(QStringLiteral("纯色填充")),QString("solid"));
+ui->brushStyleComboBox->insertItem(1,QString(QStringLiteral("填充样式1")),QString("dense1"));
+ui->brushStyleComboBox->insertItem(2,QString(QStringLiteral("填充样式2")),QString("dense2"));
+ui->brushStyleComboBox->insertItem(3,QString(QStringLiteral("填充样式3")),QString("dense3"));
+ui->brushStyleComboBox->insertItem(4,QString(QStringLiteral("填充样式4")),QString("dense4"));
+ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式5")),QString("dense5"));
+
 }
 
 MainWindow::~MainWindow()
@@ -40,6 +51,12 @@ void MainWindow::setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand
 }
 void MainWindow::setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand){
     ui->MainDisplayWidget->setAddEllipseCommand(addEllipseCommand);
+
+}
+
+void MainWindow::setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand)
+{
+    ui->MainDisplayWidget->setAddRectCommand(addRectCommand);
 
 }
 
@@ -93,13 +110,22 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_drawLine->text())
     {
-        state=STATE::DRAW_LINE_INIT;
+        if(state==STATE::INIT)
+            state=STATE::DRAW_LINE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
-        state=STATE::DRAW_ELLIPSE_INIT;
+        if(state==STATE::INIT)
+            state=STATE::DRAW_ELLIPSE_INIT;
+        StateChanged();
+        return;
+    }
+    if(action->text()==ui->action_drawRect->text())
+    {
+        if(state==STATE::INIT)
+            state=STATE::DRAW_RECT_INIT;
         StateChanged();
         return;
     }
@@ -110,34 +136,33 @@ void MainWindow::StateChanged()
 {
     ui->action_drawLine->setChecked(false);
     ui->action_drawEllipse->setChecked(false);
+    ui->action_drawRect->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
-
         break;
     case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
-
         break;
 
     case STATE::DRAW_ELLIPSE_INIT:
-
         ui->action_drawEllipse->setChecked(true);
         break;
-
+    case STATE::DRAW_RECT_INIT:
+        ui->action_drawRect->setChecked(true);
     }
     QWidget::update();
 }
 
 void MainWindow::ButtonForeColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"Set Foreground Color");
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
     if(color.isValid())
     {
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
         Params params;
         params.setType(COMMAND::UPDATE_PEN_COLOR);
-        params.setInts({static_cast<int>(color.red()),static_cast<int>(color.green()),static_cast<int>(color.blue())});
+        params.setInts({color.red(),color.green(),color.blue()});
         penUpdateCommand->setParams(params);
         penUpdateCommand->exec();
     }
@@ -145,7 +170,17 @@ void MainWindow::ButtonForeColorPressed()
 
 void MainWindow::ButtonBackColorPressed()
 {
-
+    const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,"设置背景色");
+    if(color.isValid())
+    {
+        qDebug()<<"pressed";
+        ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+        Params params;
+        params.setType(COMMAND::UPDATE_BRUSH_COLOR);
+        params.setInts({color.red(),color.green(),color.blue()});
+        brushUpdateCommand->setParams(params);
+        brushUpdateCommand->exec();
+    }
 }
 
 void MainWindow::PenWidthSliderChanged(int value)
@@ -170,6 +205,19 @@ void MainWindow::PenStyleComboBoxChanged(int index)
         params.setInts({index+1});
         penUpdateCommand->setParams(params);
         penUpdateCommand->exec();
+
+    }
+}
+
+void MainWindow::BrushStyleComboBoxChanged(int index)
+{
+    if(brushUpdateCommand!=nullptr)
+    {
+        Params params;
+        params.setType(COMMAND::UPDATE_BRUSH_STYLE);
+        params.setInts({index+1});
+        brushUpdateCommand->setParams(params);
+        brushUpdateCommand->exec();
 
     }
 }

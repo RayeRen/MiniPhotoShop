@@ -8,5 +8,6 @@
         <file>img/ellipse.png</file>
         <file>img/line.png</file>
         <file>img/background.png</file>
+        <file>img/Rect.png</file>
     </qresource>
 </RCC>

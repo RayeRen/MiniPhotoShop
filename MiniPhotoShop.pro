@@ -53,7 +53,9 @@ HEADERS += \
     src/ViewModel/Commands/penupdatecommand.h \
     src/ViewModel/Commands/AddRectCommand.h \
     src/Common/Histogram3c.h \
-    src/Common/Pixmap32b.h
+    src/Common/Pixmap32b.h \
+    src/ViewModel/Commands/changedselectedcommand.h \
+    src/ViewModel/Commands/brushupdatecommand.h
 
 FORMS += \
     src/View/mainwindow.ui

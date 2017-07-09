@@ -6,11 +6,11 @@
 class AddRectCommand:public BaseCommand
 {
 public:
-    AddRectCommand(const shared_ptr<Model> *pModel):BaseCommand(pModel){}
+    AddRectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
     void exec()
     {
-        vector<double> doubles=params.getDoubles();
-        pModel->addRect(doubles[0],doubles[1],doubles[2],doubles[3]);
+        vector<int> ints=params.getInts();
+        pModel->addRect(ints[0],ints[1],ints[2],ints[3]);
     }
 };
 
