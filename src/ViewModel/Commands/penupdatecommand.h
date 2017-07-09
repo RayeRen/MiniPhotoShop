@@ -19,6 +19,9 @@ public:
          case COMMAND::UPDATE_PEN_WIDTH:
             pModel->SetPenWidth(ints[0]);
             break;
+         case COMMAND::UPDATE_PEN_STYLE:
+            pModel->SetPenStyle(ints[0]);
+            break;
         }
 
 

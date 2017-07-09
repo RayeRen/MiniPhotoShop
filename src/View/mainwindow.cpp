@@ -24,9 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
     ui->penStyleComboBox->insertItem(0,QString("实线"),QString("solid"));
-    ui->penStyleComboBox->insertItem(0,QString("虚线"),QString("dash"));
-    ui->penStyleComboBox->insertItem(0,QString("点划线"),QString("dash_dot"));
-    ui->penStyleComboBox->insertItem(0,QString("点点划线"),QString("dash_dot_dot"));
+    ui->penStyleComboBox->insertItem(1,QString("虚线"),QString("dash"));
+    ui->penStyleComboBox->insertItem(2,QString("点线"),QString("dash_dot"));
+    ui->penStyleComboBox->insertItem(3,QString("点划线"),QString("dash_dot_dot"));
 }
 
 MainWindow::~MainWindow()
@@ -162,9 +162,13 @@ void MainWindow::PenWidthSliderChanged(int value)
 
 void MainWindow::PenStyleComboBoxChanged(int index)
 {
-    switch(index)
+    if(penUpdateCommand!=nullptr)
     {
-    case 0:
-        break;
+        Params params;
+        params.setType(COMMAND::UPDATE_PEN_STYLE);
+        params.setInts({index+1});
+        penUpdateCommand->setParams(params);
+        penUpdateCommand->exec();
+
     }
 }

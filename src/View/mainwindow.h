@@ -42,7 +42,8 @@ private:
      void StateChanged();
      void ButtonForeColorPressed();
      void ButtonBackColorPressed();
-     void PenWidthSliderChanged(int value);
+     void PenWidthSliderChanged(int);
+     void PenStyleComboBoxChanged(int);
 };
 
 #endif // MAINWINDOW_H
