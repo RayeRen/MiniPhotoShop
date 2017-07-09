@@ -3,7 +3,8 @@
 
 #include <string>
 #include "../Constants.h"
-
+#include <QImage>
+#include <memory>
 using namespace std;
 
 class Pen {
@@ -172,8 +173,8 @@ protected:
     int x1, y1, x2, y2;
 public:
     Line(int posX,int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
-          int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                                               pen(pen),  x1(x1), y1(y1), x2(x2), y2(y2) {}
+         int x1, int y1, int x2, int y2) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+        pen(pen),  x1(x1), y1(y1), x2(x2), y2(y2) {}
 
     const Pen &getPen() const {
         return pen;
@@ -224,8 +225,8 @@ protected:
     int a,b;
 public:
     Ellipse(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
-          int a, int b) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                                               pen(pen),brush(brush),  a(a), b(b){}
+            int a, int b) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+        pen(pen),brush(brush),  a(a), b(b){}
     void setBrushColor(unsigned char r,unsigned char g,unsigned char b)
     {
         brush.setBackR(r);
@@ -280,7 +281,7 @@ protected:
 public:
     Rect(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
          int width, int height):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                    pen(pen),brush(brush), width(width), height(height){}
+        pen(pen),brush(brush), width(width), height(height){}
 
     const Pen &getPen() const {
         return pen;
@@ -329,10 +330,18 @@ class Pixmap:public BaseShape
     unsigned char  *r, *g, *b, *a;	//r、g、b、a为4个通道的数组 顺序为从左下到右上，先行后列
 public:
     Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,unsigned int width, unsigned int height,unsigned char value=0);
+    Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName);
     Pixmap(const Pixmap &pixmap) :BaseShape(pixmap),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { Load(pixmap); }
     ~Pixmap() { FreePixmap(); }
     int Load(const Pixmap &pixmap);
+    int Load(const QImage &image);
     void FreePixmap();	//清空数据
+    shared_ptr<QImage> Output();
+
+    const unsigned char *getR(unsigned int x, unsigned int y) const { if (x < width&&y < height) return r + y*width + x; return NULL; }//返回(x,y)坐标处的r值指针
+    const unsigned char *getG(unsigned int x, unsigned int y) const { if (x < width&&y < height)return g + y*width + x; return NULL; } //返回(x,y)坐标处的g值指针
+    const unsigned char *getB(unsigned int x, unsigned int y) const { if (x < width&&y < height) return b + y*width + x; return NULL; } //返回(x,y)坐标处的b值指针
+    const unsigned char *getA(unsigned int x, unsigned int y) const { if (x < width&&y < height) return a + y*width + x; return NULL; } //返回(x,y)坐标处的a值指针
 };
 
 #endif // DATASTRUCTURE_H

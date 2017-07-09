@@ -1,6 +1,7 @@
 #include "../Common/DataStructure.h"
 #include <cstdlib>
-#include <memory.h>
+//#include <memory.h>
+
 typedef unsigned char UNUM8;	//8位无符号数
 typedef unsigned short UNUM16;	//16位无符号数
 typedef unsigned int UNUM32;	//32位无符号数
@@ -22,6 +23,15 @@ Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, 
     format = PIXMAP::FMT_RGB;
 }
 
+Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName)
+    :r(NULL),g(NULL),b(NULL),width(0),height(0),format(PIXMAP::FMT_NULL),BaseShape(posX, posY, type, name, scaleX, scaleY, angle)
+{
+    QImage tmpImage(QString::fromStdString(fileName));
+    tmpImage.convertToFormat(QImage::Format_ARGB32);
+    if(!tmpImage.isNull())
+        Load(tmpImage);
+}
+
 int Pixmap::Load(const Pixmap &pixmap)
 {
     if ((format = pixmap.format) != PIXMAP::FMT_NULL)
@@ -40,6 +50,7 @@ int Pixmap::Load(const Pixmap &pixmap)
     }
     else
         FreePixmap();
+    return 0;
 }
 
 void Pixmap::FreePixmap()
@@ -55,4 +66,51 @@ void Pixmap::FreePixmap()
     width = 0;
     height = 0;
     format = PIXMAP::FMT_NULL;
+}
+
+int Pixmap::Load(const QImage &image)
+{
+    if(image.isNull())
+        return 1;
+    FreePixmap();
+    width=image.width();
+    height=image.height();
+    r = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+    g = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+    b = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+    a = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+    format=PIXMAP::FMT_RGB;
+    QColor color;
+    unsigned char *pr=r,*pg=g,*pb=b,*pa=a;
+
+    for(int x=0;x<width;x++)
+        for(int y=0;y<height;y++)
+        {
+            color=image.pixelColor(QPoint(x,y));
+            *pr++=color.red();
+            *pg++=color.green();
+            *pb++=color.blue();
+            *pa++=color.alpha();
+        }
+
+}
+
+shared_ptr<QImage> Pixmap::Output()
+{
+    if(format==PIXMAP::FMT_NULL||height==0||width==0)
+        return nullptr;
+    shared_ptr<QImage> image(new QImage(QSize(width,height),QImage::Format_ARGB32));
+    QColor color;
+    unsigned char *pr=r,*pg=g,*pb=b,*pa=a;
+
+    for(int x=0;x<width;x++)
+        for(int y=0;y<height;y++)
+        {
+            color.setRed(*pr++);
+            color.setGreen(*pg++);
+            color.setBlueF(*pb++);
+            color.setAlpha(*pa++);
+            image->setPixelColor(QPoint(x,y),color);
+        }
+    return image;
 }
