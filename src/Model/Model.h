@@ -25,8 +25,10 @@ public:
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
     void SetPenStyle(int newStyle){pen.setPenStyle(newStyle);}
-    const Pen* GetPen(){return &pen;}
+    void SetBrushColor(unsigned char r,unsigned char g,unsigned char b);
+    void SetBrushStyle(int newStyle){brush.setBrushStyle(newStyle);}
     const Brush* GetBrush(){return &brush;}
+    const Pen* GetPen(){return &pen;}
     const Layouts* GetLayouts(){return &layouts;}
 };
 

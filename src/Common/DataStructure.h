@@ -226,6 +226,17 @@ public:
     Ellipse(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
           double a, double b) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
                                                                pen(pen),brush(brush),  a(a), b(b){}
+    void setBrushColor(unsigned char r,unsigned char g,unsigned char b)
+    {
+        brush.setBackR(r);
+        brush.setBackG(g);
+        brush.setBackB(b);
+    }
+
+    void setBrushStyle(int newStyle)
+    {
+        brush.setBrushStyle(newStyle);
+    }
 
     const Pen &getPen() const {
         return pen;
@@ -263,14 +274,32 @@ class Rect:public BaseShape
 {
 protected:
     Pen pen;
+    Brush brush;
     double width, height;
 
 public:
-    Rect(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+    Rect(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
          double width, double height):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                      pen(pen), width(width), height(height){}
+                    pen(pen),brush(brush), width(width), height(height){}
+
     const Pen &getPen() const {
         return pen;
+
+    }
+    void setBrushColor(unsigned char r,unsigned char g,unsigned char b)
+    {
+        brush.setBackR(r);
+        brush.setBackG(g);
+        brush.setBackB(b);
+    }
+
+    void setBrushStyle(int newStyle)
+    {
+        brush.setBrushStyle(newStyle);
+    }
+
+    const Brush &getBrush()const{
+        return brush;
     }
 
     void setPen(const Pen &pen) {

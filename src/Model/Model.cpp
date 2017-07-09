@@ -27,7 +27,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
 {
     shared_ptr<Rect> pRect;
     layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
-         centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,width,height)));
+         centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE);
     notify(params);
@@ -38,4 +38,11 @@ void Model::addRect(double centerX, double centerY, double width, double height)
      pen.setForeR(r);
      pen.setForeG(g);
      pen.setForeB(b);
+ }
+
+ void Model::SetBrushColor(unsigned char r,unsigned char g,unsigned char b)
+ {
+     brush.setBackR(r);
+     brush.setBackG(g);
+     brush.setBackB(b);
  }

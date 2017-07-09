@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mini PhotoShop</string>
+   <string>Mini PhotoShop v1.0</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../imgs.qrc">
