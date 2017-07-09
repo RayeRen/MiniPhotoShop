@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     pMainWindows->setBrushUpdateCommand(pViewModel->getBrushUpdateCommand());
     pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
      pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
+      pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

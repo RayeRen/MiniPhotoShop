@@ -26,6 +26,7 @@ public:
     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand);
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
+    void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
    void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
     void SetPen(const Pen* pen);

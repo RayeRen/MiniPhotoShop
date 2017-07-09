@@ -12,6 +12,7 @@
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"
 #include "src/ViewModel/Commands/changedselectedcommand.h"
+#include "src/ViewModel/Commands/layouttransformcommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -211,6 +212,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     addRectCommand(shared_ptr<BaseCommand>(new AddRectCommand(pModel))),
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
     changeSelectedCommand(shared_ptr<BaseCommand>(new ChangeSelectedCommand(pModel,shared_ptr<ViewModel>(this)))),
+    layoutTransCommand(shared_ptr<BaseCommand>(new LayoutTransCommand(pModel,shared_ptr<ViewModel>(this)))),
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
     selectedLayout(-1)
@@ -236,6 +238,10 @@ void ViewModel::LayoutMove(int x,int y)
     if(selectedLayout>=0)
     {
         (layouts->list)[selectedLayout]->Move(x,y);
+        RefreshDisplayImage(selectedLayout);
+        Params params;
+        params.setType(NOTIFY::DISPLAY_REFRESH);
+        notify(params);
     }
 }
 

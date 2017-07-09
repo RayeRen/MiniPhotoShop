@@ -227,7 +227,7 @@
     <property name="title">
      <string>编辑</string>
     </property>
-    <addaction name="action_trans"/>
+    <addaction name="action_move"/>
     <addaction name="action_rotate"/>
     <addaction name="action_scale"/>
    </widget>
@@ -246,7 +246,7 @@
    <addaction name="action_drawLine"/>
    <addaction name="action_drawRect"/>
    <addaction name="action_drawEllipse"/>
-   <addaction name="action_trans"/>
+   <addaction name="action_move"/>
    <addaction name="action_rotate"/>
    <addaction name="action_scale"/>
    <addaction name="action_aboutPro"/>
@@ -337,7 +337,7 @@
     <string>画矩形</string>
    </property>
   </action>
-  <action name="action_trans">
+  <action name="action_move">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/Move.png</normaloff>:/img/img/Move.png</iconset>

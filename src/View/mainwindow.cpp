@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->action_drawLine->setCheckable(true);
     ui->action_drawEllipse->setCheckable(true);
     ui->action_drawRect->setCheckable(true);
+    ui->action_move->setCheckable(true);
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
@@ -139,21 +140,21 @@ void MainWindow::menuTriggered(QAction* action)
     if(action->text()==ui->action_drawLine->text())
     {
 
-            state=STATE::DRAW_LINE_INIT;
+        state=STATE::DRAW_LINE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
 
-            state=STATE::DRAW_ELLIPSE_INIT;
+        state=STATE::DRAW_ELLIPSE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawRect->text())
     {
-        if(state==STATE::INIT)
-            state=STATE::DRAW_RECT_INIT;
+
+        state=STATE::DRAW_RECT_INIT;
         StateChanged();
         return;
     }
@@ -168,6 +169,13 @@ void MainWindow::menuTriggered(QAction* action)
             addPicCommand->setParams(params);
             addPicCommand->exec();
         }
+        return;
+    }
+    if(action->text()==ui->action_move->text())
+    {
+        state=STATE::MOVE_INIT;
+        StateChanged();
+        return;
     }
 }
 
@@ -176,19 +184,24 @@ void MainWindow::StateChanged()
     ui->action_drawLine->setChecked(false);
     ui->action_drawEllipse->setChecked(false);
     ui->action_drawRect->setChecked(false);
+    ui->action_move->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
         break;
-    case STATE::DRAW_LINE_INIT:
+    case STATE::DRAW_LINE_INIT:case STATE::DRAW_LINE:
         ui->action_drawLine->setChecked(true);
         break;
 
-    case STATE::DRAW_ELLIPSE_INIT:
+    case STATE::DRAW_ELLIPSE_INIT:case STATE::DRAW_ELLIPSE:
         ui->action_drawEllipse->setChecked(true);
         break;
-    case STATE::DRAW_RECT_INIT:
+    case STATE::DRAW_RECT_INIT:case STATE::DRAW_RECT:
         ui->action_drawRect->setChecked(true);
+        break;
+      case STATE::MOVE_INIT:case STATE::MOVE:
+        ui->action_move->setChecked(true);
+        break;
     }
     QWidget::update();
 }
@@ -269,4 +282,9 @@ void MainWindow::ListItemSelectionChanged()
         changeSelectedCommand->setParams(params);
         changeSelectedCommand->exec();
     }
+}
+
+void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand)
+{
+    ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
 }

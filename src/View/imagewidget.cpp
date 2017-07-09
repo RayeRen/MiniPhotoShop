@@ -93,6 +93,12 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
          mouseX=mouseLastX=event->localPos().x();
          mouseY=mouseLastY=event->localPos().y();
          break;
+    case STATE::MOVE_INIT:
+        *state=STATE::MOVE;
+        emit StateChanged();
+        mouseX=mouseLastX=event->localPos().x();
+        mouseY=mouseLastY=event->localPos().y();
+        break;
     }
     update();
 }
@@ -104,7 +110,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
     switch(*state)
     {
     case STATE::DRAW_LINE:
-        *state=STATE::INIT;
+        *state=STATE::DRAW_LINE_INIT;
         emit StateChanged();
         //Params para;
         qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
@@ -116,7 +122,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         addLineCommand->exec();
         break;
     case STATE::DRAW_ELLIPSE:
-        *state=STATE::INIT;
+        *state=STATE::DRAW_ELLIPSE_INIT;
         emit StateChanged();
         centerX=mouseLastX,centerY=mouseLastY;
         para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
@@ -124,12 +130,16 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         addEllipseCommand->exec();
         break;
     case STATE::DRAW_RECT:
-        *state=STATE::INIT;
+        *state=STATE::DRAW_RECT_INIT;
         emit StateChanged();
         centerX=mouseLastX,centerY=mouseLastY;
         para.setInts({centerX,centerY,mouseX-mouseLastX,mouseY-mouseLastY});
         addRectCommand->setParams(para);
         addRectCommand->exec();
+        break;
+    case STATE::MOVE:
+        *state=STATE::MOVE_INIT;
+        emit StateChanged();
         break;
     }
     update();
@@ -137,9 +147,25 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    mouseX=event->localPos().x();
-    mouseY=event->localPos().y();
-    update();
+    switch(*state)
+    {
+    case STATE::MOVE:
+        {
+        Params params;
+        params.setType(COMMAND::LAYOUT_MOVE);
+        params.setInts({event->localPos().x()-mouseX,event->localPos().y()-mouseY});
+        layoutTransCommand->setParams(params);
+        layoutTransCommand->exec();
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+    }
+        break;
+    default:
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+        update();
+
+    }
 }
 
 void ImageWidget::resizeEvent(QResizeEvent *event)
