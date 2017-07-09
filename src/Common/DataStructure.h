@@ -119,6 +119,11 @@ public:
         posY+=y;
     }
 
+    void Scale(double scaleX,double scaleY)
+    {
+        this->scaleX*=scaleX;
+        this->scaleY*=scaleY;
+    }
 
     void setPosX(int posX) {
         BaseShape::posX = posX;

@@ -95,9 +95,16 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
          break;
     case STATE::MOVE_INIT:
         *state=STATE::MOVE;
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
         emit StateChanged();
-        mouseX=mouseLastX=event->localPos().x();
-        mouseY=mouseLastY=event->localPos().y();
+
+        break;
+     case STATE::SCALE_INIT:
+        *state=STATE::SCALE;
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+        emit StateChanged();
         break;
     }
     update();
@@ -141,6 +148,11 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         *state=STATE::MOVE_INIT;
         emit StateChanged();
         break;
+
+    case STATE::SCALE:
+        *state=STATE::SCALE_INIT;
+        emit StateChanged();
+        break;
     }
     update();
 }
@@ -154,6 +166,18 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
         Params params;
         params.setType(COMMAND::LAYOUT_MOVE);
         params.setInts({event->localPos().x()-mouseX,event->localPos().y()-mouseY});
+        layoutTransCommand->setParams(params);
+        layoutTransCommand->exec();
+        mouseX=event->localPos().x();
+        mouseY=event->localPos().y();
+    }
+        break;
+
+    case STATE::SCALE:
+        {
+        Params params;
+        params.setType(COMMAND::LAYOUT_SCALE);
+        params.setDoubles({(double)((event->localPos().x()-mouseX))*SETTINGS::SCALE_STEP+1,(double)((event->localPos().y()-mouseY))*SETTINGS::SCALE_STEP+1});
         layoutTransCommand->setParams(params);
         layoutTransCommand->exec();
         mouseX=event->localPos().x();

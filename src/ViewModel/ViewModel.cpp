@@ -258,5 +258,18 @@ void ViewModel::LayoutRotate(double angle)
 
 void ViewModel::LayoutScale(double scaleX,double scaleY)
 {
-
+    if(selectedLayout>=0)
+    {
+        (layouts->list)[selectedLayout]->Scale(scaleX,scaleY);
+        RefreshDisplayImage(selectedLayout);
+        Params params;
+        params.setType(NOTIFY::DISPLAY_REFRESH);
+        notify(params);
+    }
+    else
+    {
+        Params params;
+        params.setType(NOTIFY::NO_LAYOUT_SELECTED);
+        notify(params);
+    }
 }

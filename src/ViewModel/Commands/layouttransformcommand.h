@@ -19,8 +19,15 @@ public:
         }
             break;
         case COMMAND::LAYOUT_ROTATE:
+        {
+
+        }
             break;
         case COMMAND::LAYOUT_SCALE:
+        {
+            vector<double> doubles=params.getDoubles();
+            pViewModel->LayoutScale(doubles[0],doubles[1]);
+        }
             break;
         }
     }

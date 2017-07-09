@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->action_drawEllipse->setCheckable(true);
     ui->action_drawRect->setCheckable(true);
     ui->action_move->setCheckable(true);
+    ui->action_scale->setCheckable(true);
+    ui->action_rotate->setCheckable(true);
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
@@ -180,6 +182,11 @@ void MainWindow::menuTriggered(QAction* action)
         StateChanged();
         return;
     }
+    if(action->text()==ui->action_scale->text())
+    {
+        state=STATE::SCALE_INIT;
+        StateChanged();
+    }
 }
 
 void MainWindow::StateChanged()
@@ -188,6 +195,8 @@ void MainWindow::StateChanged()
     ui->action_drawEllipse->setChecked(false);
     ui->action_drawRect->setChecked(false);
     ui->action_move->setChecked(false);
+    ui->action_scale->setChecked(false);
+    ui->action_rotate->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
@@ -205,6 +214,14 @@ void MainWindow::StateChanged()
       case STATE::MOVE_INIT:case STATE::MOVE:
         ui->action_move->setChecked(true);
         break;
+
+    case STATE::SCALE_INIT:case STATE::SCALE:
+      ui->action_scale->setChecked(true);
+      break;
+
+    case STATE::ROTATE_INIT:case STATE::ROTATE:
+      ui->action_rotate->setChecked(true);
+      break;
     }
     QWidget::update();
 }
