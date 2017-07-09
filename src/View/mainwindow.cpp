@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
@@ -23,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
-    ui->penStyleComboBox->insertItem(0,QString("实线"),QString("solid"));
-    ui->penStyleComboBox->insertItem(1,QString("虚线"),QString("dash"));
-    ui->penStyleComboBox->insertItem(2,QString("点线"),QString("dash_dot"));
-    ui->penStyleComboBox->insertItem(3,QString("点划线"),QString("dash_dot_dot"));
+    ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("实线")),QString("solid"));
+    ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("虚线")),QString("dash"));
+    ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("点线")),QString("dash_dot"));
+    ui->penStyleComboBox->insertItem(3,QString(QStringLiteral("点划线")),QString("dash_dot_dot"));
 }
 
 MainWindow::~MainWindow()
@@ -65,6 +65,7 @@ void MainWindow::SetBrush(const Brush* brush)
 {
     this->brush=brush;
     ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(brush->getBackR()).arg(brush->getBackG()).arg(brush->getBackB()));
+    ui->MainDisplayWidget->SetBrush(brush);
 }
 
 void MainWindow::SetDisplayImage(const QImage* displayImage)

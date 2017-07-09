@@ -66,7 +66,7 @@ protected:
     int brushStyle;
 public:
 
-    Brush():backR(0), backG(0), backB(0),brushStyle(){}
+    Brush():backR(0), backG(0), backB(0),brushStyle(0){}
 
     Brush(unsigned char backR, unsigned char backG, unsigned char backB, int brushStyle) : backR(backR), backG(backG),backB(backB),brushStyle(brushStyle) {}
 
@@ -220,12 +220,12 @@ class Ellipse:public BaseShape
 {
 protected:
     Pen pen;
-   // Brush brush;
+    Brush brush;
     double a,b;
 public:
-    Ellipse(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,
+    Ellipse(double posX, double posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
           double a, double b) : BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
-                                                               pen(pen),  a(a), b(b){}
+                                                               pen(pen),brush(brush),  a(a), b(b){}
 
     const Pen &getPen() const {
         return pen;
@@ -233,6 +233,12 @@ public:
 
     void setPen(const Pen &pen) {
         Ellipse::pen = pen;
+    }
+    const Brush &getBrush()const{
+        return brush;
+    }
+    void setBrush(const Brush &brush){
+        Ellipse::brush=brush;
     }
 
     double getA() const {

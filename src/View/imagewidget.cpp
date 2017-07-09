@@ -51,12 +51,16 @@ void ImageWidget::paintEvent(QPaintEvent *event)
         }
         break;
     case STATE::DRAW_ELLIPSE:
-        if(pen!=NULL)
+        if(pen!=NULL&&brush!=NULL)
         {
             QPen tmpPen(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()));
+            QBrush tmpBrush(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()));
+
             tmpPen.setStyle(static_cast<Qt::PenStyle>(pen->getPenStyle()));
             tmpPen.setWidth(pen->getLineWidth());
+            tmpBrush.setStyle(static_cast<Qt::BrushStyle>(brush->getBrushStyle()));
             p.setPen(tmpPen);
+            p.setBrush(tmpBrush);
             p.drawEllipse(QPoint(mouseLastX,mouseLastY),std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY));
         }
         break;

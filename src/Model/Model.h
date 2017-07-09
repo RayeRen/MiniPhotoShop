@@ -26,6 +26,7 @@ public:
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
     void SetPenStyle(int newStyle){pen.setPenStyle(newStyle);}
     const Pen* GetPen(){return &pen;}
+    const Brush* GetBrush(){return &brush;}
     const Layouts* GetLayouts(){return &layouts;}
 };
 

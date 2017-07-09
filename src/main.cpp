@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     pViewModel->SetLayouts(pModel->GetLayouts());
     pMainWindows->SetPen(pModel->GetPen());
+    pMainWindows->SetBrush(pModel->GetBrush());
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());

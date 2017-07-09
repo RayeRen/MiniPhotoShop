@@ -67,10 +67,15 @@ void ViewModel::RefreshDisplayImage() {
         {
             shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[i]));
             Pen ellipsePen = ellipse->getPen();
+            Brush ellipseBrush = ellipse->getBrush();
             QPen tmpPen(QColor(ellipsePen.getForeR(),ellipsePen.getForeG(),ellipsePen.getForeB()));
+            QBrush tmpBrush(QColor(ellipseBrush.getBackR(),ellipseBrush.getBackG(),ellipseBrush.getBackB()));
+
             tmpPen.setStyle(static_cast<Qt::PenStyle>(ellipsePen.getPenStyle()));
             tmpPen.setWidth(ellipsePen.getLineWidth());
+            tmpBrush.setStyle(static_cast<Qt::BrushStyle>(ellipseBrush.getBrushStyle()));
             painter.setPen(tmpPen);
+            painter.setBrush(tmpBrush);
             painter.drawEllipse(QPoint((int)ellipse->getPosX(),(int)ellipse->getPosY()),(int)ellipse->getA(),(int)ellipse->getB());
         }
             break;
