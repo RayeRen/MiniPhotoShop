@@ -95,6 +95,16 @@ void MainWindow::update(Params params)
         ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
     }
         break;
+    case NOTIFY::REFRESH_PREVIEW:
+    {
+        vector<int> ints=params.getInts();
+        vector<shared_ptr<void>> ptrs=params.getPtrs();
+        shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
+        QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
+        item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
+             qDebug()<<"item"<<ints[0];
+    }
+        break;
     case NOTIFY::DISPLAY_REFRESH:
         ui->MainDisplayWidget->paintUpdate();
         break;

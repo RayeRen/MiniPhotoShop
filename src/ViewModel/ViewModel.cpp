@@ -56,7 +56,19 @@ void ViewModel::update(Params params) {
     case NOTIFY::UPDATE_IMAGE:
     {
         vector<int> ints=params.getInts();
-        RefreshDisplayImage(ints[0]);
+        //RefreshDisplayImage(ints[0]);
+
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[ints[0]],QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+
+        qDebug()<<"UPDATE_IMAGE";
+        newParams.setType(NOTIFY::REFRESH_PREVIEW);
+        newParams.setInts({ints[0]});
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
     }
         break;
     case NOTIFY::UPDATE_IMAGE_ADD:
@@ -168,7 +180,7 @@ void ViewModel::RefreshDisplayImage(int index) {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
                 painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER,-SETTINGS::SELECTED_RECT_BORDER,
-                                   pixmap->GetWidth()+SETTINGS::SELECTED_RECT_BORDER*2, pixmap->GetHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
+                                       pixmap->GetWidth()+SETTINGS::SELECTED_RECT_BORDER*2, pixmap->GetHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
             }
         }
             break;
@@ -190,7 +202,7 @@ void ViewModel::RefreshDisplayImage(int index) {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
                 painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER,-SETTINGS::SELECTED_RECT_BORDER,
-                                   rect->getWidth()+SETTINGS::SELECTED_RECT_BORDER*2, rect->getHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
+                                       rect->getWidth()+SETTINGS::SELECTED_RECT_BORDER*2, rect->getHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
             }
             break;
         }
@@ -226,9 +238,22 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
 {
     int oldValue=this->selectedLayout;
     this->selectedLayout=selectedLayout;
-        RefreshDisplayImage(oldValue);
+    RefreshDisplayImage(oldValue);
     if(selectedLayout>=0)
         RefreshDisplayImage(selectedLayout);
+
+    if(oldValue>=0)
+    {
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[oldValue],QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+        newParams.setType(NOTIFY::REFRESH_PREVIEW);
+        newParams.setInts({oldValue});
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
+    }
     Params params;
     params.setType(NOTIFY::DISPLAY_REFRESH);
     notify(params);
@@ -240,6 +265,17 @@ void ViewModel::LayoutMove(int x,int y)
     {
         (layouts->list)[selectedLayout]->Move(x,y);
         RefreshDisplayImage(selectedLayout);
+
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+        newParams.setType(NOTIFY::REFRESH_PREVIEW);
+        newParams.setInts({selectedLayout});
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
+
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
@@ -258,6 +294,17 @@ void ViewModel::LayoutRotate(double angle)
     {
         (layouts->list)[selectedLayout]->Rotate(angle);
         RefreshDisplayImage(selectedLayout);
+
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+        newParams.setType(NOTIFY::REFRESH_PREVIEW);
+        newParams.setInts({selectedLayout});
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
+
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
@@ -276,6 +323,17 @@ void ViewModel::LayoutScale(double scaleX,double scaleY)
     {
         (layouts->list)[selectedLayout]->Scale(scaleX,scaleY);
         RefreshDisplayImage(selectedLayout);
+
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+        newParams.setType(NOTIFY::REFRESH_PREVIEW);
+        newParams.setInts({selectedLayout});
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
+
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
