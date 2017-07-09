@@ -55,7 +55,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
             tmpBrush.setStyle(static_cast<Qt::BrushStyle>(brush->getBrushStyle()));
             p.setPen(tmpPen);
             p.setBrush(tmpBrush);
-            p.drawRect(mouseLastX,mouseLastY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY));
+            p.drawRect(mouseLastX,mouseLastY,mouseX-mouseLastX,mouseY-mouseLastY);
         }
         break;
     }
@@ -128,7 +128,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         *state=STATE::INIT;
         emit StateChanged();
         centerX=mouseLastX,centerY=mouseLastY;
-        para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
+        para.setInts({centerX,centerY,mouseX-mouseLastX,mouseY-mouseLastY});
         addRectCommand->setParams(para);
         addRectCommand->exec();
         break;
