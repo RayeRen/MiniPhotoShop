@@ -48,14 +48,31 @@ const shared_ptr<BaseCommand> &ViewModel::getloadProjectCommand() const
 }
 
 void ViewModel::update(Params params) {
-    vector<int> ints=params.getInts();
+
     switch (params.getType()) {
     case NOTIFY::UPDATE_IMAGE:
+    {
+        vector<int> ints=params.getInts();
         RefreshDisplayImage(ints[0]);
+    }
         break;
     case NOTIFY::UPDATE_IMAGE_ADD:
-        displayBuffer.push_back(QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+    {
+        vector<int> ints=params.getInts();
+        shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        displayBuffer.push_back(pImage);
         RefreshDisplayImage(ints[0]);
+        shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+        QPainter painter(&(*preview));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*pImage,QRectF(0,0,displayImage.width(),displayImage.height()));
+        Params newParams;
+        newParams.setType(NOTIFY::NEW_LAYOUT);
+        newParams.setPtrs({shared_ptr<void>(preview)});
+        notify(newParams);
+    }
+
+
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
@@ -77,7 +94,7 @@ void ViewModel::RefreshDisplayImage(int index) {
     }
     else
     {
-        QPainter painter(&displayBuffer[index]);
+        QPainter painter(&(*displayBuffer[index]));
         painter.setCompositionMode(QPainter::CompositionMode_Source);
         painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
 
@@ -113,8 +130,8 @@ void ViewModel::RefreshDisplayImage(int index) {
             break;
         case SHAPE::PIXMAP:
         {
-             shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
-             painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
+            shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
+            painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
         }
             break;
         case SHAPE::RECT:
@@ -134,7 +151,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         }
     }
     for(int i=0;i<displayBuffer.size();i++)
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
 }
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)

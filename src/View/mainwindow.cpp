@@ -5,6 +5,8 @@
 #include <QColorDialog>
 #include <QFileDialog>
 
+#define LISTICONSIZE 150
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -43,7 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式4")),QString("dense4"));
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
     ui->brushStyleComboBox->setCurrentIndex(1);
-
+    //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
+    ui->layoutListWidget->setIconSize(QSize( LISTICONSIZE, LISTICONSIZE));
+    //ui->layoutListWidget->insertItem(0,item1);
 }
 
 MainWindow::~MainWindow()
@@ -77,6 +81,15 @@ void MainWindow::update(Params params)
     {
     case NOTIFY::ADD_IMAGE_FAILED:
         QMessageBox::critical(this,QString("错误"),QString("打开图片失败"));
+        break;
+    case NOTIFY::NEW_LAYOUT:
+    {
+        qDebug()<<"Count"<<ui->layoutListWidget->count();
+        vector<shared_ptr<void>> ptrs=params.getPtrs();
+        shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("layout"),ui->layoutListWidget);
+        ui->layoutListWidget->insertItem(0,newItem);
+    }
         break;
     }
 }

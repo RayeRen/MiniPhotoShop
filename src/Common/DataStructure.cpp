@@ -92,7 +92,6 @@ int Pixmap::Load(const QImage &image)
             *pb++=color.blue();
             *pa++=color.alpha();
         }
-
 }
 
 shared_ptr<QImage> Pixmap::Output()
