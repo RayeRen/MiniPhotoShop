@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->action_drawLine->setCheckable(true);
     ui->action_drawEllipse->setCheckable(true);
+    ui->action_drawRect->setCheckable(true);
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
@@ -110,28 +111,23 @@ void MainWindow::menuTriggered(QAction* action)
     if(action->text()==ui->action_drawLine->text())
     {
         if(state==STATE::INIT)
-        {
             state=STATE::DRAW_LINE_INIT;
-            StateChanged();
-        }
+        StateChanged();
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
         if(state==STATE::INIT)
-        {
             state=STATE::DRAW_ELLIPSE_INIT;
-            StateChanged();
-        }
+        StateChanged();
         return;
     }
     if(action->text()==ui->action_drawRect->text())
     {
         if(state==STATE::INIT)
-        {
             state=STATE::DRAW_RECT_INIT;
-            StateChanged();
-        }
+        StateChanged();
+        return;
     }
 
 }
@@ -140,6 +136,7 @@ void MainWindow::StateChanged()
 {
     ui->action_drawLine->setChecked(false);
     ui->action_drawEllipse->setChecked(false);
+    ui->action_drawRect->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
