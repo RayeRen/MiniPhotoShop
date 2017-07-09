@@ -48,14 +48,30 @@ const shared_ptr<BaseCommand> &ViewModel::getloadProjectCommand() const
 }
 
 void ViewModel::update(Params params) {
-    vector<int> ints=params.getInts();
+
     switch (params.getType()) {
     case NOTIFY::UPDATE_IMAGE:
+    {
+         vector<int> ints=params.getInts();
         RefreshDisplayImage(ints[0]);
+    }
         break;
     case NOTIFY::UPDATE_IMAGE_ADD:
-        displayBuffer.push_back(QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+    {
+        vector<int> ints=params.getInts();
+        qDebug()<<displayImage.width()<<displayImage.height();
+        QImage image1(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
+        displayBuffer.push_back(image1);
         RefreshDisplayImage(ints[0]);
+        Params newParams;
+        newParams.setType(NOTIFY::NEW_LAYOUT);
+        QImage* newImage=&(displayBuffer[displayBuffer.size()-1]);
+        shared_ptr<void> ptr=shared_ptr<void>(newImage);
+        newParams.setPtrs({ptr});
+        notify(newParams);
+    }
+
+
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
@@ -113,8 +129,8 @@ void ViewModel::RefreshDisplayImage(int index) {
             break;
         case SHAPE::PIXMAP:
         {
-             shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
-             painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
+            shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
+            painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
         }
             break;
         case SHAPE::RECT:
