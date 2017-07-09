@@ -22,6 +22,6 @@ A light and simple mini photoshop.
 # Update Logs
 - `v1.0` Add *draw line*, *draw ellipse*, *change pen color*, *change pen weight*
 
-#License
-MiniPhotoShop is open-sourced software licensed under the MIT license.
+# License
+MiniPhotoShop is open-sourced software licensed under the LGPL.
 
