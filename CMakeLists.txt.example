@@ -13,7 +13,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(Qt5Widgets)
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Xml)
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
 
 include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
@@ -58,7 +57,6 @@ set(RESOURCES
 # Shared libraries
 set(LIBRARIES
         Qt5::Widgets
-        Qt5::Network
         )
 
 qt5_wrap_ui(UIC_SOURCES ${FORMS})

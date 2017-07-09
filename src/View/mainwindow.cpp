@@ -22,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
+    connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
+    ui->penStyleComboBox->insertItem(0,QString("实线"),QString("solid"));
+    ui->penStyleComboBox->insertItem(1,QString("虚线"),QString("dash"));
+    ui->penStyleComboBox->insertItem(2,QString("点线"),QString("dash_dot"));
+    ui->penStyleComboBox->insertItem(3,QString("点划线"),QString("dash_dot_dot"));
 }
 
 MainWindow::~MainWindow()
@@ -88,21 +93,26 @@ void MainWindow::menuTriggered(QAction* action)
     if(action->text()==ui->action_drawLine->text())
     {
         state=STATE::DRAW_LINE_INIT;
+        StateChanged();
+        return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
         state=STATE::DRAW_ELLIPSE_INIT;
+        StateChanged();
+        return;
     }
 
 }
 
 void MainWindow::StateChanged()
 {
+    ui->action_drawLine->setChecked(false);
+    ui->action_drawEllipse->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
-        ui->action_drawLine->setChecked(false);
-        ui->action_drawEllipse->setChecked(false);
+
         break;
     case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
@@ -120,7 +130,7 @@ void MainWindow::StateChanged()
 
 void MainWindow::ButtonForeColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"Set Foreground Color");
     if(color.isValid())
     {
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
@@ -141,7 +151,6 @@ void MainWindow::PenWidthSliderChanged(int value)
 {
     if(penUpdateCommand!=nullptr)
     {
-        qDebug()<<"Changed";
         Params params;
         params.setType(COMMAND::UPDATE_PEN_WIDTH);
         params.setInts({value});
@@ -149,4 +158,17 @@ void MainWindow::PenWidthSliderChanged(int value)
         penUpdateCommand->exec();
     }
 
+}
+
+void MainWindow::PenStyleComboBoxChanged(int index)
+{
+    if(penUpdateCommand!=nullptr)
+    {
+        Params params;
+        params.setType(COMMAND::UPDATE_PEN_STYLE);
+        params.setInts({index+1});
+        penUpdateCommand->setParams(params);
+        penUpdateCommand->exec();
+
+    }
 }

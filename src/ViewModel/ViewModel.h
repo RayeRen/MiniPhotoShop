@@ -24,7 +24,7 @@ public:
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
-    const shared_ptr<BaseCommand> &getAddRectCommad() const;
+    const shared_ptr<BaseCommand> &getAddRectCommand() const;
 
     const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     const shared_ptr<BaseCommand> &getPenUpdateCommand() const;

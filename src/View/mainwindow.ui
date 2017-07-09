@@ -78,6 +78,9 @@
        </widget>
       </item>
       <item>
+       <widget class="QComboBox" name="penStyleComboBox"/>
+      </item>
+      <item>
        <widget class="QPushButton" name="backColorButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -101,6 +104,9 @@
          <string/>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QFontComboBox" name="fontComboBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -232,6 +238,15 @@
    </property>
   </action>
   <action name="action_drawLine">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../imgs.qrc">
      <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>

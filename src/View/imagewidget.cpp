@@ -1,10 +1,11 @@
 #include "imagewidget.h"
-#include <qDebug>
 #include <cmath>
+#include <QDebug>
 
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {
     image=new QImage;
+    setCursor(QCursor(Qt::CrossCursor));
 }
 
 void ImageWidget::paintEvent(QPaintEvent *event)
