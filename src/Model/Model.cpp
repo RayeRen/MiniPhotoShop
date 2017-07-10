@@ -17,7 +17,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
     layouts.list.push_back(pLine=shared_ptr<Line>(new Line(centerX,
         centerY,SHAPE::LINE,string("Line"),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
     qDebug()<<centerX<<centerY<<x1<<y1<<x2<<y2;
-    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(pLine));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Line(*pLine)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
     params.setInts({(int)layouts.list.size()-1});
@@ -27,7 +27,7 @@ void Model::addEllipse(double centerX,double centerY,double a,double b){
     shared_ptr<Ellipse> pEllipse;
     layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(centerX,
         centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,brush,a,b)));
-    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(pEllipse));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Ellipse(*pEllipse)));
 
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
@@ -40,7 +40,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     shared_ptr<Rect> pRect;
     layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
          centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
-    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(pRect));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Rect(*pRect)));
 
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
