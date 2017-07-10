@@ -100,166 +100,364 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
      return layouts.list.empty();
  }
 
- bool Model::newProject(bool isSavedPre)
+ void Model::newProject()
  {
-     if(!isSavedPre)
-         return false;
-
      if(!isProjectEmpty())
          ClearModel();
-     return true;
  }
 
- bool Model::saveProject(string path)const
+ void Model::saveProject(string path)const
  {
-     ofstream out;
-     Pen pen;
-     Brush brush;
-     shared_ptr<Line> line;
-     shared_ptr<Ellipse> ellipse;
-     shared_ptr<Rect> rect;
+     fstream out;
      int i;
      int num = layouts.list.capacity() - 1;
 
-     out.open(path);
+     out.open(path, ios::out | ios::binary);
      if(!out)
      {
-         return false;
+         return;
      }
 
-     out << "This is a mpsd project" << endl;
+     string head("This is a mpsd project file");
+     out.write(head.c_str(), head.size());
      for(i = 0; i < num; i++)
      {
-         out << layouts.list[i]->getType();
-         switch(layouts.list[i]->getType())
+         int type = layouts.list[i]->getType();
+         out.write(reinterpret_cast<char*>(&type), sizeof(int));
+         switch(type)
          {
          case SHAPE::LINE:
+         {
+             shared_ptr<Line> line;
              line = shared_ptr<Line>(static_pointer_cast<Line>(layouts.list[i]));
-             out << line->getPosX() << line->getPosY() << line->getName() << line->getScaleX() << line->getScaleY() << line->getAngle();
+             //BaseShape Data
+             int PosX, PosY;
+             double ScaleX, ScaleY, Angle;
+             PosX = line->getPosX();
+             PosY = line->getPosY();
+             ScaleX = line->getScaleX();
+             ScaleY = line->getScaleY();
+             Angle = line->getAngle();
+             out.write(reinterpret_cast<char*>(&PosX), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PosY), sizeof(int));
+             out.write(reinterpret_cast<char*>(&ScaleX), sizeof(double));
+             out.write(reinterpret_cast<char*>(&ScaleY), sizeof(double));
+             out.write(reinterpret_cast<char*>(&Angle), sizeof(double));
+
+             //Line Pen
+             Pen pen;
+             unsigned char R, G, B;
+             int LineWidth;
+             int PenStyle;
              pen = line->getPen();
-             out << pen.getForeR() << pen.getForeG() << pen.getForeB() << pen.getLineWidth() << pen.getPenStyle();
-             out << line->getX1() << line->getY1() << line->getX2() << line->getY2() << endl;
+             R = pen.getForeR();
+             G = pen.getForeG();
+             B = pen.getForeB();
+             LineWidth = pen.getLineWidth();
+             PenStyle = pen.getPenStyle();
+             out.write(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&LineWidth), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PenStyle), sizeof(int));
+
+             //Line Coordinates
+             int X1, Y1, X2, Y2;
+             X1 = line->getX1();
+             Y1 = line->getY1();
+             X2 = line->getX2();
+             Y2 = line->getY2();
+             out.write(reinterpret_cast<char*>(&X1), sizeof(int));
+             out.write(reinterpret_cast<char*>(&Y1), sizeof(int));
+             out.write(reinterpret_cast<char*>(&X2), sizeof(int));
+             out.write(reinterpret_cast<char*>(&Y2), sizeof(int));
              break;
+        }
 
          case SHAPE::ELLIPSE:
+         {
+             shared_ptr<Ellipse> ellipse;
              ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>(layouts.list[i]));
-             out << ellipse->getPosX() << ellipse->getPosY() << ellipse->getName() << ellipse->getScaleX() << ellipse->getScaleY() << ellipse->getAngle();
+             //BaseShape Data
+             int PosX, PosY;
+             double ScaleX, ScaleY, Angle;
+             PosX = ellipse->getPosX();
+             PosY = ellipse->getPosY();
+             ScaleX = ellipse->getScaleX();
+             ScaleY = ellipse->getScaleY();
+             Angle = ellipse->getAngle();
+             out.write(reinterpret_cast<char*>(&PosX), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PosY), sizeof(int));
+             out.write(reinterpret_cast<char*>(&ScaleX), sizeof(double));
+             out.write(reinterpret_cast<char*>(&ScaleY), sizeof(double));
+             out.write(reinterpret_cast<char*>(&Angle), sizeof(double));
+
+             //Ellipse Pen
+             Pen pen;
+             unsigned char R, G, B;
+             int LineWidth;
+             int PenStyle;
              pen = ellipse->getPen();
-             out << pen.getForeR() << pen.getForeG() << pen.getForeB() << pen.getLineWidth() << pen.getPenStyle();
+             R = pen.getForeR();
+             G = pen.getForeG();
+             B = pen.getForeB();
+             LineWidth = pen.getLineWidth();
+             PenStyle = pen.getPenStyle();
+             out.write(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&LineWidth), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PenStyle), sizeof(int));
+
+             //Ellipse Brush
+             Brush brush;
+             int BrushStyle;
              brush = ellipse->getBrush();
-             out << brush.getBackR() << brush.getBackG() << brush.getBackB() << brush.getBrushStyle();
-             out << ellipse->getA() << ellipse->getB() << endl;
+             R = brush.getBackR();
+             G = brush.getBackG();
+             B = brush.getBackB();
+             BrushStyle = brush.getBrushStyle();
+             out.write(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&BrushStyle), sizeof(int));
+
+             //Ellipse Coordinates
+             int a, b;
+             a = ellipse->getA();
+             b = ellipse->getB();
+             out.write(reinterpret_cast<char*>(&a), sizeof(int));
+             out.write(reinterpret_cast<char*>(&b), sizeof(int));
              break;
+         }
 
          case SHAPE::RECT:
+         {
+             shared_ptr<Rect> rect;
              rect = shared_ptr<Rect>(static_pointer_cast<Rect>(layouts.list[i]));
-             out << rect->getPosX() << rect->getPosY() << rect->getName() << rect->getScaleX() << rect->getScaleY() << rect->getAngle();
-             pen = rect->getPen();
-             out << pen.getForeR() << pen.getForeG() << pen.getForeB() << pen.getLineWidth() << pen.getPenStyle();
-             brush = rect->getBrush();
-             out << brush.getBackR() << brush.getBackG() << brush.getBackB() << brush.getBrushStyle();
-             out << rect->getWidth() << rect->getHeight() << endl;
-             break;
+             //BaseShape Data
+             int PosX, PosY;
+             double ScaleX, ScaleY, Angle;
+             PosX = rect->getPosX();
+             PosY = rect->getPosY();
+             ScaleX = rect->getScaleX();
+             ScaleY = rect->getScaleY();
+             Angle = rect->getAngle();
+             out.write(reinterpret_cast<char*>(&PosX), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PosY), sizeof(int));
+             out.write(reinterpret_cast<char*>(&ScaleX), sizeof(double));
+             out.write(reinterpret_cast<char*>(&ScaleY), sizeof(double));
+             out.write(reinterpret_cast<char*>(&Angle), sizeof(double));
 
+             //Rectangle Pen
+             Pen pen;
+             unsigned char R, G, B;
+             int LineWidth;
+             int PenStyle;
+             pen = rect->getPen();
+             R = pen.getForeR();
+             G = pen.getForeG();
+             B = pen.getForeB();
+             LineWidth = pen.getLineWidth();
+             PenStyle = pen.getPenStyle();
+             out.write(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&LineWidth), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PenStyle), sizeof(int));
+
+             //Rectangle Brush
+             Brush brush;
+             int BrushStyle;
+             brush = rect->getBrush();
+             R = brush.getBackR();
+             G = brush.getBackG();
+             B = brush.getBackB();
+             BrushStyle = brush.getBrushStyle();
+             out.write(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             out.write(reinterpret_cast<char*>(&BrushStyle), sizeof(int));
+
+             //Rectangle Coordinates
+             int Width, Height;
+             Width = rect->getWidth();
+             Height = rect->getHeight();
+             out.write(reinterpret_cast<char*>(&Width), sizeof(int));
+             out.write(reinterpret_cast<char*>(&Height), sizeof(int));
+             break;
+         }
          case SHAPE::PIXMAP:
              break;
          }
      }
 
      out.close();
-     return true;
  }
 
- bool Model::loadProject(string path)
+ void Model::loadProject(string path)
  {
-     ifstream in;
+     fstream in;
      int type;
      char head[30];
-     char t;
      int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle;
      unsigned char R, G, B;
      double scaleX, scaleY, angle;
-     string name;
-     Params params;
-     Pen pen;
-     Brush brush;
-     shared_ptr<Line> pLine;
-     shared_ptr<Ellipse> pEllipse;
-     shared_ptr<Rect> pRect;
 
      if(!isProjectEmpty())
          ClearModel();
 
-     in.open(path);
+     in.open(path, ios::in | ios::binary);
      if(!in)
-         return false;
+         return;
 
-     in.getline(head, 30, '\n');
-     if(strcmp(head, "This is a mpsd project") != 0)
-         return false;
+     in.read(head, sizeof("This is a mpsd project file"));
+     if(strcmp(head, "This is a mpsd project file") != 0)
+         return;
 
      while(!in.eof())
      {
-         in >> type;
+         in.read(reinterpret_cast<char*>(&type), sizeof(int));
          switch(type)
          {
          case SHAPE::LINE:
-             in >> PosX >> PosY >> name >> scaleX >> scaleY >> angle;
-             in >> R >> G >> B >> lineWidth >> penStyle;
+         {
+             //BaseShape Data
+             in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
+             in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
+             in.read(reinterpret_cast<char*>(&scaleX), sizeof(double));
+             in.read(reinterpret_cast<char*>(&scaleY), sizeof(double));
+             in.read(reinterpret_cast<char*>(&angle), sizeof(double));
+
+             //Line Pen
+             in.read(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&lineWidth), sizeof(int));
+             in.read(reinterpret_cast<char*>(&penStyle), sizeof(int));
+             //Set Pen
+             Pen pen;
              pen.setForeR(R);
              pen.setForeG(G);
              pen.setForeB(B);
              pen.setLineWidth(lineWidth);
              pen.setPenStyle(penStyle);
-             in >> x1 >> y1 >> x2 >> y2 >> t;
+
+             //Line Coordinates
+             in.read(reinterpret_cast<char*>(&x1), sizeof(int));
+             in.read(reinterpret_cast<char*>(&y1), sizeof(int));
+             in.read(reinterpret_cast<char*>(&x2), sizeof(int));
+             in.read(reinterpret_cast<char*>(&y2), sizeof(int));
+
+             //New Layout
+             shared_ptr<Line> pLine;
              layouts.list.push_back(pLine=shared_ptr<Line>(new Line(PosX,
-                 PosY,SHAPE::LINE,name,scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
+                 PosY,SHAPE::LINE,string("Line"),scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
+             Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
-
+        }
          case SHAPE::ELLIPSE:
-             in >> PosX >> PosY >> name >> scaleX >> scaleY >> angle;
-             in >> R >> G >> B >> lineWidth >> penStyle;
+         {
+             //BaseShape Data
+             in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
+             in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
+             in.read(reinterpret_cast<char*>(&scaleX), sizeof(double));
+             in.read(reinterpret_cast<char*>(&scaleY), sizeof(double));
+             in.read(reinterpret_cast<char*>(&angle), sizeof(double));
+
+             //Ellipse Pen
+             in.read(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&lineWidth), sizeof(int));
+             in.read(reinterpret_cast<char*>(&penStyle), sizeof(int));
+             //Set Pen
+             Pen pen;
              pen.setForeR(R);
              pen.setForeG(G);
              pen.setForeB(B);
              pen.setLineWidth(lineWidth);
              pen.setPenStyle(penStyle);
-             in >> R >> G >> B >> brushstyle;
+
+             //Ellipse Brush
+             in.read(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&brushstyle), sizeof(int));
+             //Set Brush
+             Brush brush;
              brush.setBackR(R);
              brush.setBackG(G);
              brush.setBackB(B);
              brush.setBrushStyle(brushstyle);
-             in >> a >> b >> t;
+
+             //Ellipse Coordinates
+             in.read(reinterpret_cast<char*>(&a), sizeof(int));
+             in.read(reinterpret_cast<char*>(&b), sizeof(int));
+
+             //New Layout
+             shared_ptr<Ellipse> pEllipse;
              layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(PosX,
-                 PosY,SHAPE::ELLIPSE,name,scaleX,scaleY,angle,pen,brush,a,b)));
+                 PosY,SHAPE::ELLIPSE,string("Ellipse"),scaleX,scaleY,angle,pen,brush,a,b)));
+             Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-              params.setInts({(int)layouts.list.size()-1});
+             params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
+         }
 
          case SHAPE::RECT:
-             in >> PosX >> PosY >> name >> scaleX >> scaleY >> angle;
-             in >> R >> G >> B >> lineWidth >> penStyle;
+         {
+             //BaseShape Data
+             in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
+             in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
+             in.read(reinterpret_cast<char*>(&scaleX), sizeof(double));
+             in.read(reinterpret_cast<char*>(&scaleY), sizeof(double));
+             in.read(reinterpret_cast<char*>(&angle), sizeof(double));
+
+             //Rectangle Pen
+             in.read(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&lineWidth), sizeof(int));
+             in.read(reinterpret_cast<char*>(&penStyle), sizeof(int));
+             //Set Pen
+             Pen pen;
              pen.setForeR(R);
              pen.setForeG(G);
              pen.setForeB(B);
              pen.setLineWidth(lineWidth);
              pen.setPenStyle(penStyle);
-             in >> R >> G >> B >> brushstyle;
+
+             //Rectangle Brush
+             in.read(reinterpret_cast<char*>(&R), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&G), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&B), sizeof(unsigned char));
+             in.read(reinterpret_cast<char*>(&brushstyle), sizeof(int));
+             //Set Brush
+             Brush brush;
              brush.setBackR(R);
              brush.setBackG(G);
              brush.setBackB(B);
              brush.setBrushStyle(brushstyle);
-             in >> width >> height >> t;
+
+             //Rectangle Coordinates
+             in.read(reinterpret_cast<char*>(&width), sizeof(int));
+             in.read(reinterpret_cast<char*>(&height), sizeof(int));
+
+             //New Layout
+             shared_ptr<Rect> pRect;
              layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(PosX,
-                  PosY, SHAPE::RECT, name,scaleX,scaleY,angle,pen,brush,width,height)));
+                  PosY, SHAPE::RECT,string("Rectangle"),scaleX,scaleY,angle,pen,brush,width,height)));
+             Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
+         }
 
          case SHAPE::PIXMAP:
              break;
@@ -267,7 +465,7 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
      }
 
      in.close();
-     return true;
+     return;
  }
 
  void Model::addImage(string fileName)

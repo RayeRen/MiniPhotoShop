@@ -32,9 +32,9 @@ public:
 
     void redo();
     void undo();
-    bool newProject(bool isSavedPre);
-    bool saveProject(string path)const;
-    bool loadProject(string path);
+    void newProject();
+    void saveProject(string path)const;
+    void loadProject(string path);
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
