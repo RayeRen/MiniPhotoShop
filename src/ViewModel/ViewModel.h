@@ -32,10 +32,16 @@ public:
     const shared_ptr<BaseCommand> &getsaveProjectCommand() const;
     const shared_ptr<BaseCommand> &getloadProjectCommand() const;
     const shared_ptr<BaseCommand> &getBrushUpdateCommand() const{return brushUpdateCommand;}
+    const shared_ptr<BaseCommand> &getRedoCommand() const{return redoCommand;}
+    const shared_ptr<BaseCommand> &getUndoCommand() const{return undoCommand;}
     const shared_ptr<BaseCommand> &getChangeSelectedCommand() const{return changeSelectedCommand;}
     const shared_ptr<BaseCommand> &getLayoutTransCommand() const{return layoutTransCommand;}
 
+
     virtual void update(Params params);
+
+
+
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
     void RefreshDisplayImage(int index=-1);
@@ -54,7 +60,7 @@ private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
     newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
-    addPicCommand,layoutTransCommand
+    addPicCommand,layoutTransCommand,undoCommand,redoCommand
     ;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;

@@ -32,7 +32,8 @@ public:
     void setLoadProjectCommand(const shared_ptr<BaseCommand> &loadProjectCommand){this->loadProjectCommand=loadProjectCommand;}
     void setNewProjectCommand(const shared_ptr<BaseCommand> &newProjectCommand){this->newProjectCommand=newProjectCommand;}
     void setSaveProjectCommand(const shared_ptr<BaseCommand> &saveProjectCommand){this->saveProjectCommand=saveProjectCommand;}
-
+    void setUndoCommand(const shared_ptr<BaseCommand> &undoCommand){this->undoCommand=undoCommand;}
+    void setRedoCommand(const shared_ptr<BaseCommand> &redoCommand){this->redoCommand=redoCommand;}
 
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
@@ -49,8 +50,8 @@ private:
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
-     loadProjectCommand,saveProjectCommand,newProjectCommand
-     ;
+     loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand;
+
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();

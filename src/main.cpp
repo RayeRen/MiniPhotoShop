@@ -46,6 +46,9 @@ int main(int argc, char *argv[])
     pMainWindows->setLoadProjectCommand(pViewModel->getloadProjectCommand());
     pMainWindows->setSaveProjectCommand(pViewModel->getsaveProjectCommand());
     pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());
+    pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
+    pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
+
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

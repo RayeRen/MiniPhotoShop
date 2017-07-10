@@ -361,6 +361,7 @@ typedef signed int SNUM32;		//32位有符号数
 typedef struct {
     UNUM8 r, g, b, a,empty;
 }Pixel32b;
+
 class Pixmap:public BaseShape
 {
     unsigned int height, width, format;	//height为图像高度 width为图像宽度 format为状态
@@ -474,5 +475,22 @@ public:
     unsigned int *getGHead() { return hgG; }
     unsigned int *getBHead() { return hgB; }
 };
-
+class DoneInfo{
+    int layoutindex;
+    shared_ptr<BaseShape> shape;
+public:
+    DoneInfo(int layoutindex,shared_ptr<BaseShape> shape):layoutindex(layoutindex),shape(shape){}
+    int getlayoutindex()const{
+        return layoutindex;
+    }
+    void setlayoutindex(int layoutindex){
+        this->layoutindex=layoutindex;
+    }
+    shared_ptr<BaseShape> getshape() const{
+        return shape;
+    }
+    void setshape(shared_ptr<BaseShape> shape){
+        this->shape=shape;
+    }
+};
 #endif // DATASTRUCTURE_H
