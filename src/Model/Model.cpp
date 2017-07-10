@@ -253,6 +253,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
         Params params;
         params.setType(NOTIFY::ADD_IMAGE_FAILED);
         notify(params);
+        return;
     }
     layouts.list.push_back(newImage);
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Pixmap(*newImage)));

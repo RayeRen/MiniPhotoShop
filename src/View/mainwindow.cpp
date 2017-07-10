@@ -226,13 +226,21 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_aboutPro->text()){
         //temporal use to test undo redo
-        Params params;
-        undoCommand->setParams(params);
-        undoCommand->exec();
+
     }
     if(action->text()==ui->action_help->text()){
         //temporal use to test undo redo
 
+    }
+    if(action->text()==ui->action_undo->text())
+    {
+        Params params;
+        undoCommand->setParams(params);
+        undoCommand->exec();
+
+    }
+    if(action->text()==ui->action_redo->text())
+    {
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();

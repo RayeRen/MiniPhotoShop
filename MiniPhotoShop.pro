@@ -67,5 +67,5 @@ FORMS += \
     src/View/mainwindow.ui
 
 RESOURCES += \
-    imgs.qrc \
-    langs.qrc
+    langs.qrc \
+    imgs.qrc

@@ -230,6 +230,8 @@
     <addaction name="action_move"/>
     <addaction name="action_rotate"/>
     <addaction name="action_scale"/>
+    <addaction name="action_undo"/>
+    <addaction name="action_redo"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -250,6 +252,8 @@
    <addaction name="action_move"/>
    <addaction name="action_rotate"/>
    <addaction name="action_scale"/>
+   <addaction name="action_undo"/>
+   <addaction name="action_redo"/>
    <addaction name="action_aboutPro"/>
    <addaction name="action_help"/>
    <addaction name="action_aboutQt"/>
@@ -367,6 +371,24 @@
    </property>
    <property name="text">
     <string>缩放</string>
+   </property>
+  </action>
+  <action name="action_undo">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/undo.png</normaloff>:/img/img/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>撤销</string>
+   </property>
+  </action>
+  <action name="action_redo">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/redo.png</normaloff>:/img/img/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>重做</string>
    </property>
   </action>
  </widget>
