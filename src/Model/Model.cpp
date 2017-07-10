@@ -34,7 +34,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
          centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
- params.setInts({(int)layouts.list.size()-1});
+    params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
 

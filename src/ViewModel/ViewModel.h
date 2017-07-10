@@ -25,7 +25,7 @@ public:
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
     const shared_ptr<BaseCommand> &getAddRectCommand() const;
-const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
+    const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
     const shared_ptr<BaseCommand> &getNewCanvasCommand() const;
     const shared_ptr<BaseCommand> &getPenUpdateCommand() const;
     const shared_ptr<BaseCommand> &getNewProjectCommand() const;
@@ -33,7 +33,8 @@ const shared_ptr<BaseCommand> &getAddPicCommand() const{return addPicCommand;}
     const shared_ptr<BaseCommand> &getloadProjectCommand() const;
     const shared_ptr<BaseCommand> &getBrushUpdateCommand() const{return brushUpdateCommand;}
     const shared_ptr<BaseCommand> &getChangeSelectedCommand() const{return changeSelectedCommand;}
-     const shared_ptr<BaseCommand> &getLayoutTransCommand() const{return layoutTransCommand;}
+    const shared_ptr<BaseCommand> &getLayoutTransCommand() const{return layoutTransCommand;}
+
     virtual void update(Params params);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}

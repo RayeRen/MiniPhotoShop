@@ -41,8 +41,11 @@ int main(int argc, char *argv[])
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());
     pMainWindows->setBrushUpdateCommand(pViewModel->getBrushUpdateCommand());
     pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
-     pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
-      pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+    pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
+    pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+    pMainWindows->setLoadProjectCommand(pViewModel->getloadProjectCommand());
+    pMainWindows->setSaveProjectCommand(pViewModel->getsaveProjectCommand());
+    pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;
