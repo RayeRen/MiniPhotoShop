@@ -197,12 +197,12 @@ void ViewModel::RefreshDisplayImage(int index) {
             tmpBrush.setStyle(static_cast<Qt::BrushStyle>(rectBrush.getBrushStyle()));
             painter.setPen(tmpPen);
             painter.setBrush(tmpBrush);
-            painter.drawRect(QRectF(0,0, rect->getWidth(),rect->getHeight()));
+            painter.drawRect(QRectF(-rect->getWidth()/2,-rect->getHeight()/2, rect->getWidth(),rect->getHeight()));
             if(index==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
-                painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER,-SETTINGS::SELECTED_RECT_BORDER,
+                painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER-rect->getWidth()/2,-SETTINGS::SELECTED_RECT_BORDER-rect->getHeight()/2,
                                        rect->getWidth()+SETTINGS::SELECTED_RECT_BORDER*2, rect->getHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
             }
             break;

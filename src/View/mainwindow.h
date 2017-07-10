@@ -39,6 +39,8 @@ private:
     const Pen* pen;
     const Brush* brush;
     const QImage* displayImage;
+    QString statusBarInfo;
+    int cursorX,cursorY;
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand;
@@ -51,6 +53,8 @@ private:
      void PenStyleComboBoxChanged(int);
      void BrushStyleComboBoxChanged(int);
      void ListItemSelectionChanged();
+     void UpdateCursorPosition(int,int);
+     void UpdateStatusBarInfo(QString);
 };
 
 #endif // MAINWINDOW_H

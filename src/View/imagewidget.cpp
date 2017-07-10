@@ -73,6 +73,7 @@ void ImageWidget::paintUpdate()
 
 void ImageWidget::mousePressEvent(QMouseEvent *event)
 {
+    emit CursorMove(event->localPos().x(),event->localPos().y());
     switch(*state)
     {
     case STATE::DRAW_LINE_INIT:
@@ -118,6 +119,7 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+     emit CursorMove(-1,-1);
     int centerX,centerY;
     Params para;
     switch(*state)
@@ -145,7 +147,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
     case STATE::DRAW_RECT:
         *state=STATE::DRAW_RECT_INIT;
         emit StateChanged();
-        centerX=mouseLastX,centerY=mouseLastY;
+        centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
         para.setInts({centerX,centerY,mouseX-mouseLastX,mouseY-mouseLastY});
         addRectCommand->setParams(para);
         addRectCommand->exec();
@@ -169,6 +171,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
+     emit CursorMove(event->localPos().x(),event->localPos().y());
     switch(*state)
     {
     case STATE::MOVE:

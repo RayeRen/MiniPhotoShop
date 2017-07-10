@@ -45,7 +45,7 @@ private:
    int realWidth,realHeight;
 signals:
    void StateChanged();
-   void NewStatusInfo(QString,int);
+   void CursorMove(int,int);
 };
 
 #endif // IMAGEWIDGET_H
