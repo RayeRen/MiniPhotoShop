@@ -11,6 +11,8 @@
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"
+#include "src/ViewModel/Commands/undocommand.h"
+#include "src/ViewModel/Commands/redocommand.h"
 #include "src/ViewModel/Commands/changedselectedcommand.h"
 #include "src/ViewModel/Commands/layouttransformcommand.h"
 #include "src/ViewModel/Commands/newprojectcommand.h"
@@ -80,6 +82,9 @@ void ViewModel::update(Params params) {
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.push_back(pImage);
         RefreshDisplayImage(ints[0]);
+        Params params;
+        params.setType(NOTIFY::DISPLAY_REFRESH);
+        notify(params);
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
@@ -88,9 +93,31 @@ void ViewModel::update(Params params) {
         newParams.setType(NOTIFY::NEW_LAYOUT);
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
+        break;
     }
-
-
+    case NOTIFY::UPDATE_IMAGE_MINUS:{
+        qDebug()<<"minus";
+        vector<int> ints=params.getInts();
+        qDebug()<<"Remove Minus:"<<ints[0];
+        vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
+        displayBuffer.erase(it);
+        if(this->selectedLayout>=ints[0]){
+            this->selectedLayout--;
+        }
+        SetSelectedLayout(this->selectedLayout);
+        //qDebug()<<"Remove Refresh";
+        //RefreshDisplayImage();
+        qDebug()<<"Remove Refresh end";
+        Params params;
+        params.setType(NOTIFY::DISPLAY_REFRESH);
+        notify(params);
+        qDebug()<<"Message Display_refresh end";
+        Params newParams;
+        newParams.setType(NOTIFY::DELETE_LAYOUT);
+        newParams.setInts({ints[0]});
+        notify(newParams);
+        qDebug()<<"Message Notify";
+    }
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
@@ -103,6 +130,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
+   // painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -234,6 +262,8 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     newProjectCommand(shared_ptr<BaseCommand>(new NewProjectCommand(pModel))),
     loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
     saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
+    undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
+    redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);

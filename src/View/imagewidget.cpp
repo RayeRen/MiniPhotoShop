@@ -179,6 +179,7 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
         Params params;
         params.setType(COMMAND::LAYOUT_MOVE);
         params.setInts({(int)(event->localPos().x()-mouseX),(int)(event->localPos().y()-mouseY)});
+
         layoutTransCommand->setParams(params);
         layoutTransCommand->exec();
         mouseX=event->localPos().x();

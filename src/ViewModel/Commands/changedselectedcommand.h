@@ -9,8 +9,9 @@ public:
     ChangeSelectedCommand(const shared_ptr<Model> &pModel,const shared_ptr<ViewModel> &pViewModel) : BaseCommand(pModel,pViewModel) {}
 
     void exec() {
-        qDebug()<<"exec";
         vector<int> ints=params.getInts();
+        qDebug()<<"exec change selected command"<<ints[0];
+
         pViewModel->SetSelectedLayout(ints[0]);
     }
 };

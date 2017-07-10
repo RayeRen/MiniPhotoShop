@@ -32,7 +32,9 @@ SOURCES += \
     src/View/imagewidget.cpp \
     src/ViewModel/Commands/newcanvascommand.cpp \
     src/ViewModel/Commands/addellipsecommand.cpp \
-    src/Common/DataStructure.cpp
+    src/Common/DataStructure.cpp \
+    src/ViewModel/Commands/redocommand.cpp \
+    src/ViewModel/Commands/undocommand.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -57,6 +59,8 @@ HEADERS += \
     src/ViewModel/Commands/saveprojectcommand.h \
     src/ViewModel/Commands/loadprojectcommand.h \
     src/ViewModel/Commands/addpiccommand.h \
+    src/ViewModel/Commands/redocommand.h \
+    src/ViewModel/Commands/undocommand.h \
     src/ViewModel/Commands/layouttransformcommand.h
 
 FORMS += \

@@ -94,6 +94,17 @@ void MainWindow::update(Params params)
         ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
     }
         break;
+    case NOTIFY::DELETE_LAYOUT:{
+        vector<int> ints=params.getInts();
+        qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
+        QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(ints[0]);
+        qDebug()<<"Remove:"<<ints[0];
+        ui->layoutListWidget->removeItemWidget(deletedWidget);
+        delete deletedWidget;
+        qDebug()<<"After Delete Count"<<ui->layoutListWidget->count();
+
+    }
+        break;
     case NOTIFY::REFRESH_PREVIEW:
     {
         vector<int> ints=params.getInts();
@@ -213,7 +224,19 @@ void MainWindow::menuTriggered(QAction* action)
         state=STATE::ROTATE_INIT;
         StateChanged();
     }
+    if(action->text()==ui->action_aboutPro->text()){
+        //temporal use to test undo redo
+        Params params;
+        undoCommand->setParams(params);
+        undoCommand->exec();
+    }
+    if(action->text()==ui->action_help->text()){
+        //temporal use to test undo redo
 
+        Params params;
+        redoCommand->setParams(params);
+        redoCommand->exec();
+    }
 }
 
 void MainWindow::StateChanged()
