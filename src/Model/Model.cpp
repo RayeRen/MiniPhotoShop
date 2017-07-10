@@ -494,9 +494,10 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else if(NowDoneIndex<MaxDoneIndex){
+        DoneList.erase(DoneList.begin()+NowDoneIndex+1,DoneList.end());
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
-        DoneList[NowDoneIndex]=DoneInfo(commandtype,layoutindex,aftershape,beforeshape);
     }else{
         //Wrong!
         qDebug()<<"DoneList Wrong!!";
