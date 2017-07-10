@@ -55,6 +55,10 @@ namespace PIXMAP{
 enum{
     FMT_NULL,FMT_RGB,FMT_YUV,FMT_GREY,FMT_BIN
 };
+enum {
+    SELECT_R=1,SELECT_G=2,SELECT_B=4,SELECT_GREY=8
+};	//标记需要计数的通道
+
 }
 
 namespace SETTINGS{

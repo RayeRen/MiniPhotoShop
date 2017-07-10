@@ -54,20 +54,6 @@ public:
     {
         return type;
     }
-    /*Params& operator= (const Params& p){
-        qDebug()<<"operator="<<this;
-        this->type=p.type;
-        qDebug()<<"operator=1";
-        this->ints=p.ints;
-        qDebug()<<"operator=2";
-        this->ptrs=p.ptrs;
-        qDebug()<<"operator=3";
-        this->doubles=p.doubles;
-        qDebug()<<"operator=4";
-        this->strings=p.strings;
-        qDebug()<<"operator=5";
-        return *this;
-    }*/
 
 private:
     int type;

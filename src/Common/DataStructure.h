@@ -5,6 +5,10 @@
 #include "../Constants.h"
 #include <QImage>
 #include <memory>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 using namespace std;
 
 class Pen {
@@ -348,14 +352,38 @@ public:
     }
 };
 
+typedef unsigned char UNUM8;	//8位无符号数
+typedef unsigned short UNUM16;	//16位无符号数
+typedef unsigned int UNUM32;	//32位无符号数
+typedef signed char SNUM8;		//8位有符号数
+typedef signed short SNUM16;	//16位有符号数
+typedef signed int SNUM32;		//32位有符号数
+typedef struct {
+    UNUM8 r, g, b, a,empty;
+}Pixel32b;
 class Pixmap:public BaseShape
 {
     unsigned int height, width, format;	//height为图像高度 width为图像宽度 format为状态
-    unsigned char  *r, *g, *b, *a;	//r、g、b、a为4个通道的数组 顺序为从左下到右上，先行后列
+    UNUM8 *r, *g, *b, *a;	//r、g、b、a为4个通道的数组 顺序为从左下到右上，先行后列
 public:
     Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,unsigned int width, unsigned int height,unsigned char value=0);
     Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName);
     Pixmap(const Pixmap &pixmap) :BaseShape(pixmap),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { Load(pixmap); }
+    Pixmap(unsigned int width, unsigned int height, unsigned char value=0) :BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(width), height(height), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL)
+    {
+        r = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+        g = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+        b = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+        a = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
+        memset(r, value, width*height);
+        memset(g, value, width*height);
+        memset(b, value, width*height);
+        memset(a, value, width*height);
+        format = PIXMAP::FMT_RGB;
+    }
+    Pixmap(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { LoadBmpFile(fileName); }	//从图片文件载入
+
+
     ~Pixmap() { FreePixmap(); }
     int Load(const Pixmap &pixmap);
     int Load(const QImage &image);
@@ -365,10 +393,87 @@ public:
     unsigned int GetWidth(){return width;}
     unsigned int GetHeight(){return height;}
 
+    int LoadBmpFile(const char * fileName);	//尝试从图片文件载入数据
+    int SaveAsBMP24b(const char * fileName) const;	//存储为24位BMP图片
+    int SaveAsGreyBMP8b(const char * fileName) const;	//存储为8位灰度图片
+    //void FreePixmap();	//清空数据
+
+    int ConvertFormat(unsigned int newFormat, int thre=-1);	//转换格式
+    int ConvertToYUV();     //转化为YUV颜色格式
+    int ConvertToRGB();     //转化为RGB颜色格式
+    int ConvertToGrey();	//用YUV中的Y通道填充RGB，转换为灰阶图像
+    unsigned char OtsuGetThre();	//获得大津法阈值
+    int ConvertToBin(int thre=-1);	//二值化，若thre不在0~255之间，则先进行大津法求阈值操作
+    void ChangeLuma(int del);	//改变YUV通道中的Y值，并恢复原格式
+    int InverseColor();	//反色
+    int LogOperation();	//对数操作
+    int HistoEqualizing();	//直方图均衡
+    Pixel32b NearestInterpolation(double x,double y) const;	//最邻近插值
+    Pixel32b BilinearInterpolation(double x,double y) const;	//双线性插值
+    static double Gaussian(double x,double r);//计算高斯分布
+
+    static int AffineTrans(const shared_ptr<Pixmap> src,shared_ptr<Pixmap> dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//根据矩阵进行仿射变换  坐标(x,y,1)转置 matrix 3*3矩阵顺序 (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
+    shared_ptr<Pixmap> Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//平移
+    shared_ptr<Pixmap> Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//旋转
+    shared_ptr<Pixmap> Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//镜像
+    shared_ptr<Pixmap> Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//缩放
+    shared_ptr<Pixmap> Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//斜切
+
+    shared_ptr<Pixmap> Dilation(const shared_ptr<Pixmap> stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//膨胀
+    shared_ptr<Pixmap> Erosion(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//腐蚀
+    shared_ptr<Pixmap> Opening(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//开运算
+    shared_ptr<Pixmap> Closing(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//闭运算
+
+    shared_ptr<Pixmap> AddBorder(unsigned int borderWidth,int mode=0) const;	//镜像边缘扩展
+    shared_ptr<Pixmap> Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//卷积
+    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
+    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
+
+    unsigned int getWidth() const { return width; }	//返回图片宽度
+    unsigned int getHeight() const { return height; }	//返回图片高度
+
+    const unsigned char *getRHead() const { return r; }	//返回r数组
+    const unsigned char *getGHead() const { return g; }	//返回g数组
+    const unsigned char *getBHead() const { return b; }	//返回b数组
+    const unsigned char *getAHead() const { return a; }	//返回a数组
+
+    unsigned char *getRHead() { return r; }	//非常量版 返回r数组
+    unsigned char *getGHead() { return g; }	//非常量版 返回g数组
+    unsigned char *getBHead() { return b; }	//非常量版 返回b数组
+    unsigned char *getAHead() { return a; }	//非常量版 返回a数组
+
+    unsigned int getFormat() const { return format; }	//返回格式
+
     const unsigned char *getR(unsigned int x, unsigned int y) const { if (x < width&&y < height) return r + y*width + x; return NULL; }//返回(x,y)坐标处的r值指针
     const unsigned char *getG(unsigned int x, unsigned int y) const { if (x < width&&y < height)return g + y*width + x; return NULL; } //返回(x,y)坐标处的g值指针
     const unsigned char *getB(unsigned int x, unsigned int y) const { if (x < width&&y < height) return b + y*width + x; return NULL; } //返回(x,y)坐标处的b值指针
     const unsigned char *getA(unsigned int x, unsigned int y) const { if (x < width&&y < height) return a + y*width + x; return NULL; } //返回(x,y)坐标处的a值指针
+    Pixel32b getPixel(unsigned int x,unsigned int y) const;	//获得(x,y)处的像素点颜色
+
+    unsigned char *getR(unsigned int x, unsigned int y) { if (x < width&&y < height) return r + y*width + x; return NULL; } //非常量版 返回(x,y)坐标处的r值指针
+    unsigned char *getG(unsigned int x, unsigned int y) { if (x < width&&y < height) return g + y*width + x; return NULL; }//非常量版 返回(x,y)坐标处的g值指针
+    unsigned char *getB(unsigned int x, unsigned int y) { if (x < width&&y < height) return b + y*width + x; return NULL; }//非常量版 返回(x,y)坐标处的b值指针
+    unsigned char *getA(unsigned int x, unsigned int y) { if (x < width&&y < height) return a + y*width + x; return NULL; }//非常量版 返回(x,y)坐标处的a值指针
+
+};
+
+
+class Histogram3c
+{
+    unsigned int *hgR, *hgG, *hgB;	//3通道颜色计数
+public:
+    Histogram3c();
+    Histogram3c(Pixmap &pixmap,unsigned char select=PIXMAP::SELECT_R|PIXMAP::SELECT_G|PIXMAP::SELECT_B);
+    ~Histogram3c() { FreeHistogram3c(); }
+    void FreeHistogram3c();
+    void LoadPixmap(Pixmap &pixmap, unsigned char select = PIXMAP::SELECT_R|PIXMAP::SELECT_G|PIXMAP::SELECT_B);	//对Pixmap类计算直方图
+    unsigned int* CalcHistogram(unsigned int total,const unsigned char *color);
+    unsigned int getRCount(unsigned char r) const;
+    unsigned int getGCount(unsigned char g) const;
+    unsigned int getBCount(unsigned char b) const;
+    unsigned int *getRHead() { return hgR; }
+    unsigned int *getGHead() { return hgG; }
+    unsigned int *getBHead() { return hgB; }
 };
 
 #endif // DATASTRUCTURE_H
