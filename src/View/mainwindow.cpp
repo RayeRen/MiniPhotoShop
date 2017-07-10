@@ -211,6 +211,7 @@ void MainWindow::StateChanged()
     ui->action_move->setChecked(false);
     ui->action_scale->setChecked(false);
     ui->action_rotate->setChecked(false);
+    ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
     switch(state)
     {
     case STATE::INIT:
@@ -225,16 +226,25 @@ void MainWindow::StateChanged()
     case STATE::DRAW_RECT_INIT:case STATE::DRAW_RECT:
         ui->action_drawRect->setChecked(true);
         break;
-      case STATE::MOVE_INIT:case STATE::MOVE:
+      case STATE::MOVE_INIT:
+    ui->MainDisplayWidget->setCursor(Qt::OpenHandCursor);
+     ui->action_move->setChecked(true);
+        break;
+    case STATE::MOVE:
+         ui->MainDisplayWidget->setCursor(Qt::ClosedHandCursor);
         ui->action_move->setChecked(true);
+
         break;
 
     case STATE::SCALE_INIT:case STATE::SCALE:
       ui->action_scale->setChecked(true);
+      ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
       break;
 
     case STATE::ROTATE_INIT:case STATE::ROTATE:
       ui->action_rotate->setChecked(true);
+      ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
+
       break;
     }
     QWidget::update();
