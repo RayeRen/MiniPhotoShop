@@ -5,8 +5,6 @@
 #include <QColorDialog>
 #include <QFileDialog>
 
-#define LISTICONSIZE 150
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -32,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
     connect(ui->brushStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(BrushStyleComboBoxChanged(int)));
-
+    connect(ui->MainDisplayWidget,SIGNAL(NewStatusInfo(QString,int)),ui->statusBar,SLOT(showMessage(QString,int)));
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("无描边")),QString("no_pen"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("虚线")),QString("dash"));
@@ -49,10 +47,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
     ui->brushStyleComboBox->setCurrentIndex(1);
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
-    ui->layoutListWidget->setIconSize(QSize( LISTICONSIZE, LISTICONSIZE));
+    ui->layoutListWidget->setIconSize(QSize( SETTINGS::LIST_ICON_SIZE,SETTINGS::LIST_ICON_SIZE));
     //ui->layoutListWidget->insertItem(0,item1);
-
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+    ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
 }
 
 MainWindow::~MainWindow()
