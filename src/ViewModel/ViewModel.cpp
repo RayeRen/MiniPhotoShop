@@ -121,9 +121,10 @@ void ViewModel::RefreshDisplayImage(int index) {
         shared_ptr<BaseShape> baseShape=(layouts->list)[index];
 
         painter.translate(baseShape->getPosX(),baseShape->getPosY());
-        painter.scale(baseShape->getScaleX(),baseShape->getScaleY());
+
 
         painter.rotate(baseShape->getAngle());
+        painter.scale(baseShape->getScaleX(),baseShape->getScaleY());
         switch((layouts->list)[index]->getType())
         {
         case SHAPE::LINE:
