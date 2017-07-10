@@ -247,6 +247,7 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_undo->text())
     {
+        qDebug()<<"begin undo";
         Params params;
         undoCommand->setParams(params);
         undoCommand->exec();
@@ -254,6 +255,7 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_redo->text())
     {
+        qDebug()<<"begin redo";
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();
@@ -419,6 +421,10 @@ void MainWindow::ListItemSelectionChanged()
 void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand)
 {
     ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
+}
+void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){
+    ui->MainDisplayWidget->setLayoutTransNotifyCommand(layoutTransNotifyCommand);
+
 }
 
 void MainWindow::UpdateCursorPosition(int x,int y)

@@ -9,6 +9,8 @@
 Model::Model(){
     NowDoneIndex=-1;
     MaxDoneIndex=-1;
+    ChangeBegin=0;
+    ChangeLayout=-1;
 }
 
 void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,double y2)
@@ -489,12 +491,19 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
  void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape){
     //delete ->before valid create ->after valid modify before after valid
      //add an event
+     qDebug()<<"Begin Add Done Event";
     if(NowDoneIndex==MaxDoneIndex){
         DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else if(NowDoneIndex<MaxDoneIndex){
-        DoneList.erase(DoneList.begin()+NowDoneIndex+1,DoneList.end());
+        qDebug()<<"Now Index"<<NowDoneIndex<<"Max Index"<<MaxDoneIndex<<"DoneList Count"<<DoneList.size();
+        vector<DoneInfo>::iterator it;
+        int offset=NowDoneIndex+1;
+        for(it=DoneList.begin()+offset;it!=DoneList.end();){
+            qDebug()<<"Where";
+            it=DoneList.erase(it);
+        }
         DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
@@ -502,6 +511,7 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
         //Wrong!
         qDebug()<<"DoneList Wrong!!";
     }
+    qDebug()<<"End Push DoneList";
  }
 
  void Model::redo(){
@@ -563,12 +573,13 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
     if(NowDoneIndex>=0){
         //Now Assume that the insert must be in the last layout.
         DoneInfo nowInfo=DoneList[NowDoneIndex];
+        NowDoneIndex--;
         switch(nowInfo.getcommandtype()){
         case COMMAND::CREATE:{
             //Undo Create
             vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+nowInfo.getlayoutindex();
             layouts.list.erase(it);
-            NowDoneIndex--;
+
             Params params;
             params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
             params.setInts({(int)nowInfo.getlayoutindex()});

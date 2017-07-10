@@ -29,6 +29,7 @@ public:
     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand){this->addRectCommand=addRectCommand;}
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand){this->newCanvasCommand=newCanvasCommand;}
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand){this->layoutTransCommand=layoutTransCommand;}
+    void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){this->layoutTransNotifyCommand=layoutTransNotifyCommand;}
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
 private:
@@ -41,6 +42,8 @@ private:
    shared_ptr<BaseCommand> newCanvasCommand;
    shared_ptr<BaseCommand> addRectCommand;
    shared_ptr<BaseCommand> layoutTransCommand;
+   shared_ptr<BaseCommand> layoutTransNotifyCommand;
+
    int mouseLastX,mouseLastY,mouseX,mouseY;
    int realWidth,realHeight;
 signals:

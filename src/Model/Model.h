@@ -15,6 +15,9 @@ private:
     Pen pen;
     Brush brush;
     Layouts layouts;
+
+    int ChangeBegin,ChangeLayout;
+    shared_ptr<BaseShape> tempShape;
     int NowDoneIndex,MaxDoneIndex;
     vector<DoneInfo> DoneList;
     void ClearModel();
@@ -26,6 +29,27 @@ public:
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
+    void LayoutChange(int Change,int LayoutIndex){
+        if(Change==1){
+            //Begin
+            ChangeBegin=Change;
+            ChangeLayout=LayoutIndex;
+            qDebug()<<"Save";
+            tempShape=NewBaseShape(layouts.list.at(LayoutIndex));
+        }else if(ChangeBegin==1){
+            //End
+            ChangeBegin=0;
+            qDebug()<<"End";
+            if(ChangeLayout==LayoutIndex){
+                qDebug()<<"Save Done";
+                addDoneEvent(COMMAND::MODIFY,LayoutIndex,NewBaseShape(layouts.list.at(LayoutIndex)),tempShape);
+                tempShape=nullptr;
+            }
+        }
+    }
+
+
+
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
     void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);
     shared_ptr<BaseShape> NewBaseShape(shared_ptr<BaseShape> shape);

@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
     pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
     pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+    pMainWindows->setLayoutTransNotifyCommand(pViewModel->getLayoutTransNotifyCommand());
     pMainWindows->setLoadProjectCommand(pViewModel->getloadProjectCommand());
     pMainWindows->setSaveProjectCommand(pViewModel->getsaveProjectCommand());
     pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());

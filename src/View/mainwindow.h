@@ -27,6 +27,8 @@ public:
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
+    void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand);
+
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
     void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
     void setLoadProjectCommand(const shared_ptr<BaseCommand> &loadProjectCommand){this->loadProjectCommand=loadProjectCommand;}
@@ -50,7 +52,7 @@ private:
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
-     loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand;
+     loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,layoutTransNotifyCommand;
 QMenu* canvasPopMenu;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件

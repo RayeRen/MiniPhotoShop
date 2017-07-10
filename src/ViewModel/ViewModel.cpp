@@ -15,6 +15,7 @@
 #include "src/ViewModel/Commands/redocommand.h"
 #include "src/ViewModel/Commands/changedselectedcommand.h"
 #include "src/ViewModel/Commands/layouttransformcommand.h"
+#include "src/ViewModel/Commands/layouttransformnotifycommand.h"
 #include "src/ViewModel/Commands/newprojectcommand.h"
 #include "src/ViewModel/Commands/loadprojectcommand.h"
 #include "src/ViewModel/Commands/saveprojectcommand.h"
@@ -67,8 +68,11 @@ void ViewModel::update(Params params) {
         QPainter painter(&(*preview));
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[ints[0]],QRectF(0,0,displayImage.width(),displayImage.height()));
-        Params newParams;
+        Params params;
+        params.setType(NOTIFY::DISPLAY_REFRESH);
+        notify(params);
 
+        Params newParams;
         qDebug()<<"UPDATE_IMAGE";
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
         newParams.setInts({ints[0]});
@@ -257,6 +261,8 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     newCanvasCommand(shared_ptr<BaseCommand>(new NewCanvasCommand(pModel,shared_ptr<ViewModel>(this)))),
     changeSelectedCommand(shared_ptr<BaseCommand>(new ChangeSelectedCommand(pModel,shared_ptr<ViewModel>(this)))),
     layoutTransCommand(shared_ptr<BaseCommand>(new LayoutTransCommand(pModel,shared_ptr<ViewModel>(this)))),
+    layoutTransNotifyCommand(shared_ptr<BaseCommand>(new LayoutTransNotifyCommand(pModel,shared_ptr<ViewModel>(this)))),
+
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
     newProjectCommand(shared_ptr<BaseCommand>(new NewProjectCommand(pModel))),
