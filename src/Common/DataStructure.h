@@ -477,20 +477,33 @@ public:
 };
 class DoneInfo{
     int layoutindex;
-    shared_ptr<BaseShape> shape;
+    shared_ptr<BaseShape> aftershape,beforeshape;
+    int commandtype;
 public:
-    DoneInfo(int layoutindex,shared_ptr<BaseShape> shape):layoutindex(layoutindex),shape(shape){}
+    DoneInfo(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr):commandtype(commandtype),layoutindex(layoutindex),aftershape(aftershape),beforeshape(beforeshape){}
     int getlayoutindex()const{
         return layoutindex;
     }
     void setlayoutindex(int layoutindex){
         this->layoutindex=layoutindex;
     }
-    shared_ptr<BaseShape> getshape() const{
-        return shape;
+    shared_ptr<BaseShape> getaftershape() const{
+        return aftershape;
     }
-    void setshape(shared_ptr<BaseShape> shape){
-        this->shape=shape;
+    void setaftershape(shared_ptr<BaseShape> aftershape){
+        this->aftershape=aftershape;
+    }
+    shared_ptr<BaseShape> getbeforeshape() const{
+        return beforeshape;
+    }
+    void setbeforeshape(shared_ptr<BaseShape> beforeshape){
+        this->beforeshape=beforeshape;
+    }
+    int getcommandtype()const{
+        return commandtype;
+    }
+    void setcommandtype(int commandtype){
+        this->commandtype=commandtype;
     }
 };
 #endif // DATASTRUCTURE_H

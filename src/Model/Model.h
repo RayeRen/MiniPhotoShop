@@ -26,7 +26,7 @@ public:
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
-    void addDoneEvent(int layoutindex,shared_ptr<BaseShape> shape);
+    void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
     void redo();
     void undo();
     bool newProject(bool isSavedPre);

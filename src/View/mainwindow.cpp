@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QFileDialog>
-
+#include <QString>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -404,17 +404,20 @@ void MainWindow::UpdateCursorPosition(int x,int y)
 {
     cursorX=x;
     cursorY=y;
-    if(cursorX>=0&&cursorY>=0)
-     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
-    else
+    if(cursorX>=0&&cursorY>=0){
+        QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
+        ui->statusBar->showMessage(messageA);
+    }
+     else
         ui->statusBar->showMessage(statusBarInfo);
 }
 
 void MainWindow::UpdateStatusBarInfo(QString info)
 {
     statusBarInfo=info;
-    if(cursorX>=0&&cursorY>=0)
-     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
-    else
+    if(cursorX>=0&&cursorY>=0){
+        QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
+        ui->statusBar->showMessage(messageA);
+    }else
         ui->statusBar->showMessage(statusBarInfo);
 }
