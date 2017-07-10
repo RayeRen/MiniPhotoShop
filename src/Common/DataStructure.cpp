@@ -321,7 +321,7 @@ int  Pixmap::LoadBmpFile(const char * fileName)
     free(palette);
     return 0;
 }
-/*
+
 int Pixmap::SaveAsBMP24b(const char * fileName) const
 {
     if (r == NULL || g == NULL || b == NULL || a == NULL || width == 0 || height == 0 || format == FMT_NULL)
@@ -467,7 +467,7 @@ int Pixmap::SaveAsGreyBMP8b(const char * fileName) const
     return 0;
     return 0;
 }
-*/
+
 int Pixmap::ConvertFormat(unsigned int newFormat, int thre)
 {
     switch (newFormat)
@@ -726,9 +726,9 @@ Pixel32b Pixmap::BilinearInterpolation(double x, double y) const
     return res;
 }
 
-int Pixmap::AffineTrans(const Pixmap * src, Pixmap * dst, double * matrix, int InterpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+int Pixmap::AffineTrans(const shared_ptr<Pixmap>  src, shared_ptr<Pixmap>  dst, double * matrix, int InterpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
-    if (src == NULL || dst == NULL || src == dst)
+    if (src == nullptr || dst == nullptr || src == dst)
         return 1;
     double tarx, tary;
     Pixel32b pixel;
@@ -754,89 +754,90 @@ int Pixmap::AffineTrans(const Pixmap * src, Pixmap * dst, double * matrix, int I
     return 0;
 }
 
-Pixmap * Pixmap::Translation(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+shared_ptr<Pixmap>  Pixmap::Translation(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
-    Pixmap *res = NULL;
+    shared_ptr<Pixmap> res = nullptr;
     if (autoExpand)
-        res = new Pixmap((unsigned int)(width + abs(x) * 2), (unsigned int)(height + abs(y) * 2));
+        res = shared_ptr<Pixmap>(new Pixmap((unsigned int)(width + abs(x) * 2), (unsigned int)(height + abs(y) * 2)));
     else
-        res = new Pixmap(width, height);
+        res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double matrix[9] = { 1,0,-x,0,1,-y,0,0,1 };
-    AffineTrans(this, res, matrix, interpolMethod, backR, backG, backB);
+
+    AffineTrans(shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), res, matrix, interpolMethod, backR, backG, backB);
     return res;
 }
 
-Pixmap * Pixmap::Rotation(double angle, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+shared_ptr<Pixmap>  Pixmap::Rotation(double angle, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
-    Pixmap *res = NULL;
+    shared_ptr<Pixmap> res = nullptr;
     unsigned int diagonal = (unsigned int)sqrt(width*width + height*height);
     if (autoExpand)
-        res = new Pixmap(diagonal, diagonal);
+        res = shared_ptr<Pixmap>(new Pixmap(diagonal, diagonal));
     else
-        res = new Pixmap(width, height);
+        res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double matrix[9] = { cos(angle / 180.0*PI),sin(angle / 180.0*PI),0,-sin(angle / 180.0*PI),cos(angle / 180.0*PI),0,0,0,1 };
-    AffineTrans(this, res, matrix, interpolMethod, backR, backG, backB);
+    AffineTrans(shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), res, matrix, interpolMethod, backR, backG, backB);
     return res;
 }
 
 
 
-Pixmap * Pixmap::Mirror(int x, int y, int, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+shared_ptr<Pixmap>  Pixmap::Mirror(int x, int y, int, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
-    Pixmap *res = new Pixmap(width, height);
+    shared_ptr<Pixmap> res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double matrix[9] = { (!x) * 2 - 1.0,0,0,0,(!y) * 2 - 1.0,0,0,0,1 };
-    AffineTrans(this, res, matrix, interpolMethod, backR, backG, backB);
+    AffineTrans(shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), res, matrix, interpolMethod, backR, backG, backB);
     return res;
 }
 
-Pixmap * Pixmap::Scale(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+shared_ptr<Pixmap>  Pixmap::Scale(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
     if (!x || !y)
-        return NULL;
-    Pixmap *res = NULL;
+        return nullptr;
+    shared_ptr<Pixmap> res = nullptr;
     if (autoExpand)
-        res = new Pixmap((unsigned int)(abs(x)*width), (unsigned int)(abs(y)*height));
+        res = shared_ptr<Pixmap>(new Pixmap((unsigned int)(abs(x)*width), (unsigned int)(abs(y)*height)));
     else
-        res = new Pixmap(width, height);
+        res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double matrix[9] = { 1 / x,0,0,0,1 / y,0,0,0,1 };
-    AffineTrans(this, res, matrix, interpolMethod, backR, backG, backB);
+    AffineTrans(shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), res, matrix, interpolMethod, backR, backG, backB);
     return res;
 }
 
-Pixmap * Pixmap::Shear(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
+shared_ptr<Pixmap>  Pixmap::Shear(double x, double y, int autoExpand, int interpolMethod, UNUM8 backR, UNUM8 backG, UNUM8 backB)
 {
-    Pixmap *res = NULL;
+    shared_ptr<Pixmap> res = nullptr;
     if (autoExpand)
-        res = new Pixmap((unsigned int)(abs(x)*height + width), (unsigned int)(abs(y)*width + height));
+        res = shared_ptr<Pixmap>(new Pixmap((unsigned int)(abs(x)*height + width), (unsigned int)(abs(y)*width + height)));
     else
-        res = new Pixmap(width, height);
+        res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double matrix[9] = { 1,-x,0,-y,1,0,0,0,1 };
-    AffineTrans(this, res, matrix, interpolMethod, backR, backG, backB);
+    AffineTrans(shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), res, matrix, interpolMethod, backR, backG, backB);
     return res;
 }
 
-Pixmap* Pixmap::Dilation(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
+shared_ptr<Pixmap> Pixmap::Dilation(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
 {
-    if (stElement == NULL || anchorX >= stElement->width || anchorY >= stElement->height)
-        return NULL;
-    const Pixmap *src = this, *stE = stElement;
-    Pixmap *tmpPic1 = NULL, *tmpPic2 = NULL;
+    if (stElement == nullptr || anchorX >= stElement->width || anchorY >= stElement->height)
+        return nullptr;
+    shared_ptr<Pixmap> src = shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), stE = stElement;
+    shared_ptr<Pixmap> tmpPic1 = nullptr, tmpPic2 = nullptr;
     if (stElement->format != FMT_BIN)
     {
-        tmpPic1 = new Pixmap(*stE);
+        tmpPic1 = shared_ptr<Pixmap>(new Pixmap(*stE));
         tmpPic1->ConvertToBin();
         stE = tmpPic1;
     }
     if (format != FMT_BIN)
     {
-        tmpPic2 = new Pixmap(*this);
+        tmpPic2 = shared_ptr<Pixmap>(new Pixmap(*this));
         tmpPic2->ConvertToBin();
         src = tmpPic2;
     }
     unsigned char value = 255;
     if (inverse)
         value = 0;
-    Pixmap *res = new Pixmap(width, height, 255 - value);
+    shared_ptr<Pixmap> res = shared_ptr<Pixmap>(new Pixmap(width, height, 255 - value));
     unsigned int stWidth = stE->width, stHeight = stE->height, flag = 0;
     unsigned int stLeft = anchorX, stRight = stWidth - stLeft - 1, stTop = anchorY, stBottom = stHeight - 1 - anchorX;
     for (unsigned int x = stLeft; x < width - stRight; x++)
@@ -855,34 +856,36 @@ Pixmap* Pixmap::Dilation(const Pixmap * stElement, unsigned int anchorX, unsigne
             }
         }
     if (stElement->format != FMT_BIN)
-        delete(tmpPic1);
+        //delete(tmpPic1)
+            ;
     if (format != FMT_BIN)
-        delete(tmpPic2);
+        //delete(tmpPic2)
+            ;
     return res;
 }
 
-Pixmap* Pixmap::Erosion(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
+shared_ptr<Pixmap> Pixmap::Erosion(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
 {
-    if (stElement == NULL || anchorX >= stElement->width || anchorY >= stElement->height)
-        return NULL;
-    const Pixmap *src = this, *stE = stElement;
-    Pixmap *tmpPic1 = NULL, *tmpPic2 = NULL;
+    if (stElement == nullptr || anchorX >= stElement->width || anchorY >= stElement->height)
+        return nullptr;
+    shared_ptr<Pixmap> src = shared_ptr<Pixmap>(const_cast<Pixmap*>(this)), stE = stElement;
+    shared_ptr<Pixmap> tmpPic1 = nullptr, tmpPic2 = nullptr;
     if (stElement->format != FMT_BIN)
     {
-        tmpPic1 = new Pixmap(*stE);
+        tmpPic1 = shared_ptr<Pixmap>(new Pixmap(*stE));
         tmpPic1->ConvertToBin();
         stE = tmpPic1;
     }
     if (format != FMT_BIN)
     {
-        tmpPic2 = new Pixmap(*this);
+        tmpPic2 = shared_ptr<Pixmap>(new Pixmap(*this));
         tmpPic2->ConvertToBin();
         src = tmpPic2;
     }
     unsigned char value = 255;
     if (inverse)
         value = 0;
-    Pixmap *res = new Pixmap(width, height, 255 - value);
+    shared_ptr<Pixmap> res = shared_ptr<Pixmap>(new Pixmap(width, height, 255 - value));
     unsigned int stWidth = stE->width, stHeight = stE->height, flag = 0;
     unsigned int stLeft = anchorX, stRight = stWidth - stLeft - 1, stTop = anchorY, stBottom = stHeight - 1 - anchorX;
     for (unsigned int x = stLeft; x < width - stRight; x++)
@@ -901,35 +904,38 @@ Pixmap* Pixmap::Erosion(const Pixmap * stElement, unsigned int anchorX, unsigned
             }
         }
     if (stElement->format != FMT_BIN)
-        delete(tmpPic1);
+        //delete(tmpPic1)
+            ;
     if (format != FMT_BIN)
-        delete(tmpPic2);
+        //delete(tmpPic2)
+            ;
     return res;
 }
 
-Pixmap * Pixmap::Opening(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
+shared_ptr<Pixmap>  Pixmap::Opening(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
 {
-    Pixmap *tmpRes = Erosion(stElement, anchorX, anchorY, inverse), *res = NULL;
-    if (tmpRes != NULL)
+    shared_ptr<Pixmap> tmpRes = Erosion(stElement, anchorX, anchorY, inverse), res = nullptr;
+    if (tmpRes != nullptr)
         res = tmpRes->Dilation(stElement, anchorX, anchorY, inverse);
-    delete tmpRes;
+    //delete tmpRes;
     return res;
 }
 
-Pixmap * Pixmap::Closing(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
+shared_ptr<Pixmap>  Pixmap::Closing(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse) const
 {
-    Pixmap *tmpRes = Dilation(stElement, anchorX, anchorY, inverse), *res = NULL;
-    if (tmpRes != NULL)
+    shared_ptr<Pixmap> tmpRes = Dilation(stElement, anchorX, anchorY, inverse), res = nullptr;
+    if (tmpRes != nullptr)
         res = tmpRes->Erosion(stElement, anchorX, anchorY, inverse);
-    delete tmpRes;
+    //delete tmpRes;
     return res;
 }
 
-Pixmap * Pixmap::AddBorder(unsigned int borderWidth, int mode) const
+shared_ptr<Pixmap>  Pixmap::AddBorder(unsigned int borderWidth, int mode) const
 {
     if (this->format == FMT_NULL)
-        return NULL;
-    Pixmap *res = new Pixmap(width + borderWidth * 2, height + borderWidth * 2);
+        return nullptr;
+    shared_ptr<Pixmap> res = shared_ptr<Pixmap>(new Pixmap(width + borderWidth * 2, height + borderWidth * 2));
+
     res->format=format;
     for (unsigned int x = borderWidth; x < borderWidth + width; x++)
         for (unsigned int y = borderWidth; y < borderWidth + height; y++)
@@ -994,15 +1000,16 @@ Pixmap * Pixmap::AddBorder(unsigned int borderWidth, int mode) const
             *(res->getA(x, y + height + borderWidth)) = *(this->getA(0, height - 1));
             *(res->getA(x + width + borderWidth, y + height + borderWidth)) = *(this->getA(width - 1, height - 1));
         }
+
     return res;
 }
 
 
-Pixmap * Pixmap::Convolution(double * filter, unsigned int filterSize, int normalization, double **outR, double **outG, double **outB) const
+shared_ptr<Pixmap>  Pixmap::Convolution(double * filter, unsigned int filterSize, int normalization, double **outR, double **outG, double **outB) const
 {
     if (this->format == FMT_NULL || filter == NULL || !(filterSize % 2))
-        return NULL;
-    Pixmap *src = this->AddBorder(filterSize / 2), *res = new Pixmap(width, height);
+        return nullptr;
+    shared_ptr<Pixmap> src = this->AddBorder(filterSize / 2), res = shared_ptr<Pixmap>(new Pixmap(width, height));
     double *dataR = (double*)malloc(sizeof(double)*width*height);
     double *dataG = (double*)malloc(sizeof(double)*width*height);
     double *dataB = (double*)malloc(sizeof(double)*width*height);
@@ -1073,11 +1080,11 @@ Pixmap * Pixmap::Convolution(double * filter, unsigned int filterSize, int norma
         delete dataB;
     else
         *outB = dataB;
-    delete src;
+    //delete src;
     return res;
 }
 
-Pixmap * Pixmap::LaplacianEnhance(double * filter, unsigned int filterSize) const
+shared_ptr<Pixmap>  Pixmap::LaplacianEnhance(double * filter, unsigned int filterSize) const
 {
     double *inputFilter;
     if (filter == NULL || filterSize == 0)
@@ -1091,9 +1098,9 @@ Pixmap * Pixmap::LaplacianEnhance(double * filter, unsigned int filterSize) cons
     else
         inputFilter = filter;
     double **outR = (double**)malloc(sizeof(double*)), **outG = (double**)malloc(sizeof(double*)), **outB = (double**)malloc(sizeof(double*));
-    Pixmap *res = Convolution(inputFilter, filterSize, 0, outR, outG, outB);
-    if (res == NULL)
-        return NULL;
+    shared_ptr<Pixmap> res = Convolution(inputFilter, filterSize, 0, outR, outG, outB);
+    if (res == nullptr)
+        return nullptr;
     UNUM8 *resR = res->getRHead(), *resG = res->getGHead(), *resB = res->getBHead();
     const UNUM8 *leftR = getRHead(), *leftG = getGHead(), *leftB = getBHead();
     double *tmpR = *outR, *tmpG = *outG, *tmpB = *outB;
@@ -1131,15 +1138,15 @@ double Pixmap::Gaussian(double x,double r)
     return pow(2.7182818,-x*x/(2*r*r))/(r*tmp);
 }
 
-Pixmap *Pixmap::BilateralFiltering(int filterSize,double intenPara,double spacePara) const
+shared_ptr<Pixmap> Pixmap::BilateralFiltering(int filterSize,double intenPara,double spacePara) const
 {
     if (this->format == FMT_NULL)
-        return NULL;
+        return nullptr;
     if(filterSize<0) filterSize=(int)(0.05*pow(width*width+height*height,0.5));
     if(!(filterSize%2)) filterSize++;
     if(spacePara<0) spacePara=0.02*pow(width*width+height*height,0.5);
     if(intenPara<0) intenPara=0.15;
-    Pixmap *src = this->AddBorder(filterSize / 2), *res = new Pixmap(width, height);
+    shared_ptr<Pixmap> src = this->AddBorder(filterSize / 2), res = shared_ptr<Pixmap>(new Pixmap(width, height));
     src->ConvertToYUV();
     res->format=FMT_YUV;
     int halfSize = filterSize / 2;
@@ -1169,12 +1176,14 @@ Pixmap *Pixmap::BilateralFiltering(int filterSize,double intenPara,double spaceP
             *(dataA + (y - halfSize)*width + x - halfSize) =*(src->getA(x,y));
         }
     delete gauSpace;
-    delete src;
+    //delete src;
     res->ConvertFormat(format);
     return res;
 }
+
 //----------------------------Pixmap End-----------------------------//
 //----------------------------histogram begin------------------------//
+
 #define RANGEOFCOLOR 256
 
 Histogram3c::Histogram3c()

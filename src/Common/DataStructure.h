@@ -412,22 +412,22 @@ public:
     Pixel32b BilinearInterpolation(double x,double y) const;	//双线性插值
     static double Gaussian(double x,double r);//计算高斯分布
 
-    static int AffineTrans(const Pixmap *src,Pixmap *dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//根据矩阵进行仿射变换  坐标(x,y,1)转置 matrix 3*3矩阵顺序 (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
-    Pixmap *Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//平移
-    Pixmap *Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//旋转
-    Pixmap *Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//镜像
-    Pixmap *Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//缩放
-    Pixmap *Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//斜切
+    static int AffineTrans(const shared_ptr<Pixmap> src,shared_ptr<Pixmap> dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//根据矩阵进行仿射变换  坐标(x,y,1)转置 matrix 3*3矩阵顺序 (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
+    shared_ptr<Pixmap> Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//平移
+    shared_ptr<Pixmap> Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//旋转
+    shared_ptr<Pixmap> Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//镜像
+    shared_ptr<Pixmap> Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//缩放
+    shared_ptr<Pixmap> Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//斜切
 
-    Pixmap *Dilation(const Pixmap *stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//膨胀
-    Pixmap *Erosion(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//腐蚀
-    Pixmap *Opening(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//开运算
-    Pixmap *Closing(const Pixmap * stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//闭运算
+    shared_ptr<Pixmap> Dilation(const shared_ptr<Pixmap> stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//膨胀
+    shared_ptr<Pixmap> Erosion(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//腐蚀
+    shared_ptr<Pixmap> Opening(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//开运算
+    shared_ptr<Pixmap> Closing(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//闭运算
 
-    Pixmap *AddBorder(unsigned int borderWidth,int mode=0) const;	//镜像边缘扩展
-    Pixmap *Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//卷积
-    Pixmap *LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
-    Pixmap *BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
+    shared_ptr<Pixmap> AddBorder(unsigned int borderWidth,int mode=0) const;	//镜像边缘扩展
+    shared_ptr<Pixmap> Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//卷积
+    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
+    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
 
     unsigned int getWidth() const { return width; }	//返回图片宽度
     unsigned int getHeight() const { return height; }	//返回图片高度
@@ -475,4 +475,5 @@ public:
     unsigned int *getGHead() { return hgG; }
     unsigned int *getBHead() { return hgB; }
 };
+
 #endif // DATASTRUCTURE_H
