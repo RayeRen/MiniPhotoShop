@@ -8,12 +8,14 @@ class NewProjectCommand:public BaseCommand
 {
 public:
     NewProjectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
+    void exec(){
+
+    }
 
     bool exec(bool isSavedPre)
     {
         if(pModel->isProjectEmpty())
             return true;
-
         return pModel->newProject(isSavedPre);
     }
 };

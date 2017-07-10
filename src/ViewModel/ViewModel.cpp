@@ -13,6 +13,9 @@
 #include "src/ViewModel/Commands/brushupdatecommand.h"
 #include "src/ViewModel/Commands/changedselectedcommand.h"
 #include "src/ViewModel/Commands/layouttransformcommand.h"
+#include "src/ViewModel/Commands/newprojectcommand.h"
+#include "src/ViewModel/Commands/loadprojectcommand.h"
+#include "src/ViewModel/Commands/saveprojectcommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -228,6 +231,9 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     layoutTransCommand(shared_ptr<BaseCommand>(new LayoutTransCommand(pModel,shared_ptr<ViewModel>(this)))),
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
+    newProjectCommand(shared_ptr<BaseCommand>(new NewProjectCommand(pModel))),
+    loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
+    saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);

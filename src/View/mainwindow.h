@@ -28,7 +28,12 @@ public:
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
-   void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
+    void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
+    void setLoadProjectCommand(const shared_ptr<BaseCommand> &loadProjectCommand){this->loadProjectCommand=loadProjectCommand;}
+    void setNewProjectCommand(const shared_ptr<BaseCommand> &newProjectCommand){this->newProjectCommand=newProjectCommand;}
+    void setSaveProjectCommand(const shared_ptr<BaseCommand> &saveProjectCommand){this->saveProjectCommand=saveProjectCommand;}
+
+
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -41,7 +46,9 @@ private:
     const QImage* displayImage;
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
-     penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand;
+     penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
+     loadProjectCommand,saveProjectCommand,newProjectCommand
+     ;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();

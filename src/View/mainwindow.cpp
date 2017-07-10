@@ -72,7 +72,6 @@ void MainWindow::setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseC
 void MainWindow::setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand)
 {
     ui->MainDisplayWidget->setAddRectCommand(addRectCommand);
-
 }
 
 void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand)
@@ -85,13 +84,13 @@ void MainWindow::update(Params params)
     switch(params.getType())
     {
     case NOTIFY::ADD_IMAGE_FAILED:
-        QMessageBox::critical(this,QString("错误"),QString("打开图片失败"));
+        QMessageBox::critical(this,QStringLiteral("错误"),QStringLiteral("打开图片失败"));
         break;
     case NOTIFY::NEW_LAYOUT:
     {
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("图层 %1").arg(ui->layoutListWidget->count()),ui->layoutListWidget);
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ui->layoutListWidget->count()),ui->layoutListWidget);
         ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
     }
         break;
@@ -109,7 +108,7 @@ void MainWindow::update(Params params)
         ui->MainDisplayWidget->paintUpdate();
         break;
     case NOTIFY::NO_LAYOUT_SELECTED:
-        QMessageBox::information(this,QString("提示"),QString("请在右侧图层列表选择需要操作的图层"));
+        QMessageBox::information(this,QStringLiteral("提示"),QStringLiteral("请在右侧图层列表选择需要操作的图层"));
         break;
     }
 }
@@ -176,7 +175,7 @@ void MainWindow::menuTriggered(QAction* action)
     if(action->text()==ui->action_openPic->text())
     {
         QFileDialog fileDialog(this);
-        QString aimPicFileName=fileDialog.getOpenFileName(this,"打开图片文件",".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
+        QString aimPicFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
         if(!aimPicFileName.isNull())
         {
             Params params;
@@ -185,6 +184,17 @@ void MainWindow::menuTriggered(QAction* action)
             addPicCommand->exec();
         }
         return;
+    }
+    if(action->text()==ui->action_newCanvas->text()){
+        //New Project
+
+    }
+    if(action->text()==ui->action_saveCanvas->text()){
+        //Save Project
+
+    }
+    if(action->text()==ui->action_saveAsPic->text()){
+        //Save Picture
     }
     if(action->text()==ui->action_move->text())
     {
@@ -203,6 +213,7 @@ void MainWindow::menuTriggered(QAction* action)
         state=STATE::ROTATE_INIT;
         StateChanged();
     }
+
 }
 
 void MainWindow::StateChanged()
@@ -244,7 +255,7 @@ void MainWindow::StateChanged()
 
 void MainWindow::ButtonForeColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,"设置前景色");
+    const QColor& color = QColorDialog::getColor(QColor(pen->getForeR(),pen->getForeG(),pen->getForeB()),this,QStringLiteral("设置前景色"));
     if(color.isValid())
     {
         ui->foreColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
@@ -258,7 +269,7 @@ void MainWindow::ButtonForeColorPressed()
 
 void MainWindow::ButtonBackColorPressed()
 {
-    const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,"设置背景色");
+    const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,QStringLiteral("设置背景色"));
     if(color.isValid())
     {
         ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
