@@ -5,8 +5,6 @@
 #include <QColorDialog>
 #include <QFileDialog>
 
-#define LISTICONSIZE 150
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pen=NULL;
     brush=NULL;
     displayImage=NULL;
+    cursorX=-1;
+    cursorY=-1;
     ui->setupUi(this);
     ui->MainDisplayWidget->SetState(&state);
 
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->backColorButton,SIGNAL(pressed()),this,SLOT(ButtonBackColorPressed()));
     connect(ui->penStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(PenStyleComboBoxChanged(int)));
     connect(ui->brushStyleComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(BrushStyleComboBoxChanged(int)));
-
+    connect(ui->MainDisplayWidget,SIGNAL(CursorMove(int,int)),this,SLOT(UpdateCursorPosition(int,int)));
     ui->penStyleComboBox->insertItem(0,QString(QStringLiteral("无描边")),QString("no_pen"));
     ui->penStyleComboBox->insertItem(1,QString(QStringLiteral("实线")),QString("solid"));
     ui->penStyleComboBox->insertItem(2,QString(QStringLiteral("虚线")),QString("dash"));
@@ -49,10 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
     ui->brushStyleComboBox->setCurrentIndex(1);
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
-    ui->layoutListWidget->setIconSize(QSize( LISTICONSIZE, LISTICONSIZE));
+    ui->layoutListWidget->setIconSize(QSize( SETTINGS::LIST_ICON_SIZE,SETTINGS::LIST_ICON_SIZE));
     //ui->layoutListWidget->insertItem(0,item1);
-
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+    ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
 }
 
 MainWindow::~MainWindow()
@@ -101,7 +101,7 @@ void MainWindow::update(Params params)
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
-             qDebug()<<"item"<<ints[0];
+        qDebug()<<"item"<<ints[0];
     }
         break;
     case NOTIFY::DISPLAY_REFRESH:
@@ -227,28 +227,69 @@ void MainWindow::StateChanged()
     switch(state)
     {
     case STATE::INIT:
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
         break;
-    case STATE::DRAW_LINE_INIT:case STATE::DRAW_LINE:
+    case STATE::DRAW_LINE_INIT:
         ui->action_drawLine->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点")));
         break;
-
-    case STATE::DRAW_ELLIPSE_INIT:case STATE::DRAW_ELLIPSE:
+    case STATE::DRAW_LINE:
+        ui->action_drawLine->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+         UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定直线的终点")));
+        break;
+    case STATE::DRAW_ELLIPSE_INIT:
         ui->action_drawEllipse->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+         UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
         break;
-    case STATE::DRAW_RECT_INIT:case STATE::DRAW_RECT:
+    case STATE::DRAW_ELLIPSE:
+        ui->action_drawEllipse->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+         UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定椭圆的长轴与短轴")));
+        break;
+    case STATE::DRAW_RECT_INIT:
         ui->action_drawRect->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
         break;
-      case STATE::MOVE_INIT:case STATE::MOVE:
+    case STATE::DRAW_RECT:
+        ui->action_drawRect->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
+        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定矩形的第二个顶点")));
+        break;
+    case STATE::MOVE_INIT:
+        ui->MainDisplayWidget->setCursor(Qt::OpenHandCursor);
         ui->action_move->setChecked(true);
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始移动图层")));
+        break;
+    case STATE::MOVE:
+        ui->MainDisplayWidget->setCursor(Qt::ClosedHandCursor);
+        ui->action_move->setChecked(true);
+UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层")));
         break;
 
-    case STATE::SCALE_INIT:case STATE::SCALE:
-      ui->action_scale->setChecked(true);
-      break;
-
-    case STATE::ROTATE_INIT:case STATE::ROTATE:
-      ui->action_rotate->setChecked(true);
-      break;
+    case STATE::SCALE_INIT:
+        ui->action_scale->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层")));
+        break;
+case STATE::SCALE:
+        ui->action_scale->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
+      UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以缩放图层")));
+        break;
+    case STATE::ROTATE_INIT:
+        ui->action_rotate->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
+UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
+        break;
+        case STATE::ROTATE:
+        ui->action_rotate->setChecked(true);
+        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
+  UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下并水平移动鼠标以旋转图层")));
+        break;
     }
     QWidget::update();
 }
@@ -334,4 +375,23 @@ void MainWindow::ListItemSelectionChanged()
 void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand)
 {
     ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
+}
+
+void MainWindow::UpdateCursorPosition(int x,int y)
+{
+    cursorX=x;
+    cursorY=y;
+    if(cursorX>=0&&cursorY>=0)
+     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
+    else
+        ui->statusBar->showMessage(statusBarInfo);
+}
+
+void MainWindow::UpdateStatusBarInfo(QString info)
+{
+    statusBarInfo=info;
+    if(cursorX>=0&&cursorY>=0)
+     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
+    else
+        ui->statusBar->showMessage(statusBarInfo);
 }
