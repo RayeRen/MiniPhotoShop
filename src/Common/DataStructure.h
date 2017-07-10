@@ -367,7 +367,7 @@ class Pixmap:public BaseShape
     UNUM8 *r, *g, *b, *a;	//r、g、b、a为4个通道的数组 顺序为从左下到右上，先行后列
 public:
     Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,unsigned int width, unsigned int height,unsigned char value=0);
-    Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName);
+    Pixmap(const string &name,string fileName);
     Pixmap(const Pixmap &pixmap) :BaseShape(pixmap),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { Load(pixmap); }
     Pixmap(unsigned int width, unsigned int height, unsigned char value=0) :BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(width), height(height), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL)
     {
@@ -381,7 +381,8 @@ public:
         memset(a, value, width*height);
         format = PIXMAP::FMT_RGB;
     }
-    Pixmap(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL) { LoadBmpFile(fileName); }	//从图片文件载入
+    Pixmap(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL)
+    { LoadBmpFile(fileName); }	//从图片文件载入
 
 
     ~Pixmap() { FreePixmap(); }
@@ -429,8 +430,6 @@ public:
     shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
     shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
 
-    unsigned int getWidth() const { return width; }	//返回图片宽度
-    unsigned int getHeight() const { return height; }	//返回图片高度
 
     const unsigned char *getRHead() const { return r; }	//返回r数组
     const unsigned char *getGHead() const { return g; }	//返回g数组

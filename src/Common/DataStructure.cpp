@@ -1,5 +1,6 @@
 #include "../Common/DataStructure.h"
 #include <cstdlib>
+#include <QDebug>
 //#include <memory.h>
 using namespace PIXMAP;
 #ifndef PI
@@ -41,13 +42,19 @@ Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, 
     format = PIXMAP::FMT_RGB;
 }
 
-Pixmap::Pixmap(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle,string fileName)
-    :r(NULL),g(NULL),b(NULL),a(NULL),width(0),height(0),format(PIXMAP::FMT_NULL),BaseShape(posX, posY, type, name, scaleX, scaleY, angle)
+Pixmap::Pixmap(const string &name,string fileName)
+    :r(NULL),g(NULL),b(NULL),a(NULL),width(0),height(0),format(PIXMAP::FMT_NULL),
+      BaseShape(0, 0, SHAPE::PIXMAP, name, 1.0,1.0,0.0)
 {
     QImage tmpImage(QString::fromStdString(fileName));
     tmpImage.convertToFormat(QImage::Format_ARGB32);
     if(!tmpImage.isNull())
+    {
         Load(tmpImage);
+       BaseShape::setPosX(width/2);
+        BaseShape::setPosY(height/2);
+    }
+
 }
 
 int Pixmap::Load(const Pixmap &pixmap)
@@ -1214,7 +1221,7 @@ void Histogram3c::FreeHistogram3c()
 void Histogram3c::LoadPixmap(Pixmap & pixmap, unsigned char select)
 {
     FreeHistogram3c();
-    unsigned int total = pixmap.getHeight()*pixmap.getWidth();
+    unsigned int total = pixmap.GetHeight()*pixmap.GetWidth();
     if (select & 1)
         hgR = CalcHistogram(total, pixmap.getRHead());
     if (select & 2)

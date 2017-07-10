@@ -122,8 +122,7 @@ void ViewModel::RefreshDisplayImage(int index) {
 
         painter.translate(baseShape->getPosX(),baseShape->getPosY());
 
-
-        painter.rotate(baseShape->getAngle());
+         painter.rotate(baseShape->getAngle());
         painter.scale(baseShape->getScaleX(),baseShape->getScaleY());
         switch((layouts->list)[index]->getType())
         {
@@ -175,12 +174,12 @@ void ViewModel::RefreshDisplayImage(int index) {
         case SHAPE::PIXMAP:
         {
             shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
-            painter.drawImage(QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRectF(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
+            painter.drawImage(QRect(-((int)(pixmap->GetWidth()/2)),-((int)(pixmap->GetHeight()/2)),pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRect(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
             if(index==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
-                painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER,-SETTINGS::SELECTED_RECT_BORDER,
+                painter.drawRect(QRect(-SETTINGS::SELECTED_RECT_BORDER-pixmap->GetWidth()/2,-SETTINGS::SELECTED_RECT_BORDER-pixmap->GetHeight()/2,
                                        pixmap->GetWidth()+SETTINGS::SELECTED_RECT_BORDER*2, pixmap->GetHeight()+SETTINGS::SELECTED_RECT_BORDER*2));
             }
         }

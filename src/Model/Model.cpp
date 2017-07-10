@@ -237,7 +237,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
 
  void Model::addImage(string fileName)
  {
-     shared_ptr<Pixmap> newImage(new Pixmap(0,0,SHAPE::PIXMAP,string("image"),1.0,1.0,0.0,fileName));
+     shared_ptr<Pixmap> newImage(new Pixmap(string("image"),fileName));
     if(newImage->GetFormat()==PIXMAP::FMT_NULL)
     {
         Params params;
