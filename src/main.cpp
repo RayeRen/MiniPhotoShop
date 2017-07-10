@@ -40,9 +40,12 @@ int main(int argc, char *argv[])
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());
     pMainWindows->setBrushUpdateCommand(pViewModel->getBrushUpdateCommand());
-     pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
-     pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
-     pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
+    pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
+    pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
+    pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
+    pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
+    pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

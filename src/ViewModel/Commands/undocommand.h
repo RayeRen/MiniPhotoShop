@@ -1,6 +1,7 @@
 #ifndef UNDOCOMMAND_H
 #define UNDOCOMMAND_H
-
+#include "../../Common/BaseCommand.h"
+#include "../../Model/Model.h"
 class UndoCommand: public BaseCommand
 {
 public:

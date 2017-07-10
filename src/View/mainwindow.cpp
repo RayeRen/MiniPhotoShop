@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->action_drawLine->setCheckable(true);
     ui->action_drawEllipse->setCheckable(true);
     ui->action_drawRect->setCheckable(true);
+    ui->action_move->setCheckable(true);
+    ui->action_scale->setCheckable(true);
+    ui->action_rotate->setCheckable(true);
     connect(ui->penWidthSlider,SIGNAL(valueChanged(int)),this,SLOT(PenWidthSliderChanged(int)));
     connect(ui->MainDisplayWidget,SIGNAL(StateChanged()),this,SLOT(StateChanged()));
     connect(ui->foreColorButton,SIGNAL(pressed()),this,SLOT(ButtonForeColorPressed()));
@@ -48,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
     ui->layoutListWidget->setIconSize(QSize( LISTICONSIZE, LISTICONSIZE));
     //ui->layoutListWidget->insertItem(0,item1);
+
+    connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
 
 MainWindow::~MainWindow()
@@ -84,11 +89,10 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::NEW_LAYOUT:
     {
-        qDebug()<<"Count"<<ui->layoutListWidget->count();
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("layout"),ui->layoutListWidget);
-        ui->layoutListWidget->insertItem(0,newItem);
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString("图层 %1").arg(ui->layoutListWidget->count()),ui->layoutListWidget);
+        ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
     }
         break;
     case NOTIFY::DELETE_LAYOUT:{
@@ -100,6 +104,22 @@ void MainWindow::update(Params params)
         qDebug()<<"After Delete Count"<<ui->layoutListWidget->count();
 
     }
+        break;
+    case NOTIFY::REFRESH_PREVIEW:
+    {
+        vector<int> ints=params.getInts();
+        vector<shared_ptr<void>> ptrs=params.getPtrs();
+        shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
+        QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
+        item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
+             qDebug()<<"item"<<ints[0];
+    }
+        break;
+    case NOTIFY::DISPLAY_REFRESH:
+        ui->MainDisplayWidget->paintUpdate();
+        break;
+    case NOTIFY::NO_LAYOUT_SELECTED:
+        QMessageBox::information(this,QString("提示"),QString("请在右侧图层列表选择需要操作的图层"));
         break;
     }
 }
@@ -144,22 +164,22 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_drawLine->text())
     {
-        if(state==STATE::INIT)
-            state=STATE::DRAW_LINE_INIT;
+
+        state=STATE::DRAW_LINE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawEllipse->text())
     {
-        if(state==STATE::INIT)
-            state=STATE::DRAW_ELLIPSE_INIT;
+
+        state=STATE::DRAW_ELLIPSE_INIT;
         StateChanged();
         return;
     }
     if(action->text()==ui->action_drawRect->text())
     {
-        if(state==STATE::INIT)
-            state=STATE::DRAW_RECT_INIT;
+
+        state=STATE::DRAW_RECT_INIT;
         StateChanged();
         return;
     }
@@ -174,6 +194,24 @@ void MainWindow::menuTriggered(QAction* action)
             addPicCommand->setParams(params);
             addPicCommand->exec();
         }
+        return;
+    }
+    if(action->text()==ui->action_move->text())
+    {
+        state=STATE::MOVE_INIT;
+        StateChanged();
+        return;
+    }
+    if(action->text()==ui->action_scale->text())
+    {
+        state=STATE::SCALE_INIT;
+        StateChanged();
+    }
+
+    if(action->text()==ui->action_rotate->text())
+    {
+        state=STATE::ROTATE_INIT;
+        StateChanged();
     }
     if(action->text()==ui->action_aboutPro->text()){
         //temporal use to test undo redo
@@ -195,19 +233,34 @@ void MainWindow::StateChanged()
     ui->action_drawLine->setChecked(false);
     ui->action_drawEllipse->setChecked(false);
     ui->action_drawRect->setChecked(false);
+    ui->action_move->setChecked(false);
+    ui->action_scale->setChecked(false);
+    ui->action_rotate->setChecked(false);
     switch(state)
     {
     case STATE::INIT:
         break;
-    case STATE::DRAW_LINE_INIT:
+    case STATE::DRAW_LINE_INIT:case STATE::DRAW_LINE:
         ui->action_drawLine->setChecked(true);
         break;
 
-    case STATE::DRAW_ELLIPSE_INIT:
+    case STATE::DRAW_ELLIPSE_INIT:case STATE::DRAW_ELLIPSE:
         ui->action_drawEllipse->setChecked(true);
         break;
-    case STATE::DRAW_RECT_INIT:
+    case STATE::DRAW_RECT_INIT:case STATE::DRAW_RECT:
         ui->action_drawRect->setChecked(true);
+        break;
+      case STATE::MOVE_INIT:case STATE::MOVE:
+        ui->action_move->setChecked(true);
+        break;
+
+    case STATE::SCALE_INIT:case STATE::SCALE:
+      ui->action_scale->setChecked(true);
+      break;
+
+    case STATE::ROTATE_INIT:case STATE::ROTATE:
+      ui->action_rotate->setChecked(true);
+      break;
     }
     QWidget::update();
 }
@@ -231,7 +284,6 @@ void MainWindow::ButtonBackColorPressed()
     const QColor& color = QColorDialog::getColor(QColor(brush->getBackR(),brush->getBackG(),brush->getBackB()),this,"设置背景色");
     if(color.isValid())
     {
-        qDebug()<<"pressed";
         ui->backColorButton->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
         Params params;
         params.setType(COMMAND::UPDATE_BRUSH_COLOR);
@@ -278,4 +330,20 @@ void MainWindow::BrushStyleComboBoxChanged(int index)
         brushUpdateCommand->exec();
 
     }
+}
+
+void MainWindow::ListItemSelectionChanged()
+{
+    if(changeSelectedCommand!=nullptr)
+    {
+        Params params;
+        params.setInts({ui->layoutListWidget->currentRow()});
+        changeSelectedCommand->setParams(params);
+        changeSelectedCommand->exec();
+    }
+}
+
+void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand)
+{
+    ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
 }

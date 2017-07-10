@@ -60,7 +60,8 @@ HEADERS += \
     src/ViewModel/Commands/loadprojectcommand.h \
     src/ViewModel/Commands/addpiccommand.h \
     src/ViewModel/Commands/redocommand.h \
-    src/ViewModel/Commands/undocommand.h
+    src/ViewModel/Commands/undocommand.h \
+    src/ViewModel/Commands/layouttransformcommand.h
 
 FORMS += \
     src/View/mainwindow.ui
