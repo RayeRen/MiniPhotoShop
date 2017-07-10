@@ -51,7 +51,7 @@ private:
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand;
-
+QMenu* canvasPopMenu;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
@@ -63,6 +63,7 @@ private:
      void ListItemSelectionChanged();
      void UpdateCursorPosition(int,int);
      void UpdateStatusBarInfo(QString);
+     void CanvasPopMenuShow(const QPoint);
 };
 
 #endif // MAINWINDOW_H

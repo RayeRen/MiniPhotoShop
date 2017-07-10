@@ -17,7 +17,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
     layouts.list.push_back(pLine=shared_ptr<Line>(new Line(centerX,
         centerY,SHAPE::LINE,string("Line"),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
     qDebug()<<centerX<<centerY<<x1<<y1<<x2<<y2;
-    addDoneEvent(layouts.list.size()-1,shared_ptr<BaseShape>(pLine));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Line(*pLine)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
     params.setInts({(int)layouts.list.size()-1});
@@ -27,7 +27,7 @@ void Model::addEllipse(double centerX,double centerY,double a,double b){
     shared_ptr<Ellipse> pEllipse;
     layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(centerX,
         centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,brush,a,b)));
-    addDoneEvent(layouts.list.size()-1,shared_ptr<BaseShape>(pEllipse));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Ellipse(*pEllipse)));
 
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
@@ -40,7 +40,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     shared_ptr<Rect> pRect;
     layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
          centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
-    addDoneEvent(layouts.list.size()-1,shared_ptr<BaseShape>(pRect));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Rect(*pRect)));
 
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
@@ -451,25 +451,27 @@ void Model::addRect(double centerX, double centerY, double width, double height)
         Params params;
         params.setType(NOTIFY::ADD_IMAGE_FAILED);
         notify(params);
+        return;
     }
     layouts.list.push_back(newImage);
-    addDoneEvent(layouts.list.size()-1,shared_ptr<BaseShape>(newImage));
-
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Pixmap(*newImage)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
     params.setInts({(int)layouts.list.size()-1});
     notify(params);
  }
 
- void Model::addDoneEvent(int layoutindex,shared_ptr<BaseShape> shape){
+ void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape){
+    //delete ->before valid create ->after valid modify before after valid
      //add an event
     if(NowDoneIndex==MaxDoneIndex){
-        DoneList.push_back(DoneInfo(layoutindex,shape));
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else if(NowDoneIndex<MaxDoneIndex){
         NowDoneIndex++;
-        DoneList[NowDoneIndex]=DoneInfo(layoutindex,shape);
+        MaxDoneIndex=NowDoneIndex;
+        DoneList[NowDoneIndex]=DoneInfo(commandtype,layoutindex,aftershape,beforeshape);
     }else{
         //Wrong!
         qDebug()<<"DoneList Wrong!!";
@@ -483,24 +485,51 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     }else{
         NowDoneIndex++;
         //Now Assume that there is no delete in the operation.
-        layouts.list.push_back(DoneList[NowDoneIndex].getshape());
-        Params params;
-        params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-        params.setInts({(int)layouts.list.size()-1});
-        notify(params);
+        DoneInfo nowInfo=DoneList[NowDoneIndex];
+        switch(nowInfo.getcommandtype()){
+        case COMMAND::CREATE:{
+            //redo create
+            int insertindex=nowInfo.getlayoutindex();
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+insertindex;
+            layouts.list.insert(it,nowInfo.getaftershape());
+            //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+            params.setInts({(int)insertindex});
+            notify(params);}
+            break;
+        case COMMAND::DELETE:
+            break;
+        case COMMAND::MODIFY:
+            break;
+        }
+
+
     }
  }
 
  void Model::undo(){
     if(NowDoneIndex>=0){
         //Now Assume that the insert must be in the last layout.
-        vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+DoneList[NowDoneIndex].getlayoutindex();
-        layouts.list.erase(it);
-        NowDoneIndex--;
-        Params params;
-        params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
-        params.setInts({(int)layouts.list.size()});
-        notify(params);
+        DoneInfo nowInfo=DoneList[NowDoneIndex];
+        switch(nowInfo.getcommandtype()){
+        case COMMAND::CREATE:{
+            //Undo Create
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+nowInfo.getlayoutindex();
+            layouts.list.erase(it);
+            NowDoneIndex--;
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+            params.setInts({(int)nowInfo.getlayoutindex()});
+            notify(params);}
+            break;
+        case COMMAND::DELETE:
+            break;
+        case COMMAND::MODIFY:
+            break;
+        }
+
+
     }else{
         qDebug()<<"Cannot undo";
     }

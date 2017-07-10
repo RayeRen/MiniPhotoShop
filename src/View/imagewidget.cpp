@@ -73,6 +73,8 @@ void ImageWidget::paintUpdate()
 
 void ImageWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(event->button()!=Qt::LeftButton)
+        return;
     emit CursorMove(event->localPos().x(),event->localPos().y());
     switch(*state)
     {
@@ -148,7 +150,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         *state=STATE::DRAW_RECT_INIT;
         emit StateChanged();
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
-        para.setInts({centerX,centerY,mouseX-mouseLastX,mouseY-mouseLastY});
+        para.setInts({centerX,centerY,std::abs(mouseX-mouseLastX),std::abs(mouseY-mouseLastY)});
         addRectCommand->setParams(para);
         addRectCommand->exec();
         break;

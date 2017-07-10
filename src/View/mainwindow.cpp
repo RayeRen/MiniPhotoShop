@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QFileDialog>
-
+#include <QString>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -53,6 +53,19 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->layoutListWidget->insertItem(0,item1);
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
     ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
+    ui->MainDisplayWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->MainDisplayWidget,SIGNAL(customContextMenuRequested(const QPoint)),this,SLOT(CanvasPopMenuShow(const QPoint)));
+    canvasPopMenu=new QMenu(ui->MainDisplayWidget);
+    canvasPopMenu->addAction(ui->action_drawLine);
+    canvasPopMenu->addAction(ui->action_drawRect);
+    canvasPopMenu->addAction(ui->action_drawEllipse);
+    canvasPopMenu->addAction(ui->action_move);
+    canvasPopMenu->addAction(ui->action_scale);
+    canvasPopMenu->addAction(ui->action_rotate);
+    canvasPopMenu->addAction(ui->action_undo);
+    canvasPopMenu->addAction(ui->action_redo);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -226,13 +239,21 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_aboutPro->text()){
         //temporal use to test undo redo
-        Params params;
-        undoCommand->setParams(params);
-        undoCommand->exec();
+
     }
     if(action->text()==ui->action_help->text()){
         //temporal use to test undo redo
 
+    }
+    if(action->text()==ui->action_undo->text())
+    {
+        Params params;
+        undoCommand->setParams(params);
+        undoCommand->exec();
+
+    }
+    if(action->text()==ui->action_redo->text())
+    {
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();
@@ -404,17 +425,26 @@ void MainWindow::UpdateCursorPosition(int x,int y)
 {
     cursorX=x;
     cursorY=y;
-    if(cursorX>=0&&cursorY>=0)
-     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
-    else
+    if(cursorX>=0&&cursorY>=0){
+        QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
+        ui->statusBar->showMessage(messageA);
+    }
+     else
         ui->statusBar->showMessage(statusBarInfo);
 }
 
 void MainWindow::UpdateStatusBarInfo(QString info)
 {
     statusBarInfo=info;
-    if(cursorX>=0&&cursorY>=0)
-     ui->statusBar->showMessage(QString(statusBarInfo+" 位置(%1,%2)").arg(cursorX).arg(cursorY));
-    else
+    if(cursorX>=0&&cursorY>=0){
+        QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
+        ui->statusBar->showMessage(messageA);
+    }else
         ui->statusBar->showMessage(statusBarInfo);
+}
+
+void MainWindow::CanvasPopMenuShow(const QPoint)
+{
+    qDebug()<<"POPSHOW";
+     canvasPopMenu->exec(QCursor::pos());
 }
