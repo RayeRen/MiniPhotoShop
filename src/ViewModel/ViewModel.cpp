@@ -61,7 +61,7 @@ void ViewModel::update(Params params) {
     case NOTIFY::UPDATE_IMAGE:
     {
         vector<int> ints=params.getInts();
-        //RefreshDisplayImage(ints[0]);
+        RefreshDisplayImage(ints[0]);
 
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));

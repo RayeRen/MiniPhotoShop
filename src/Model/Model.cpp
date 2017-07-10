@@ -47,7 +47,32 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
-
+void Model::addBaseShape(vector<shared_ptr<BaseShape>>::iterator  it,shared_ptr<BaseShape> shape){
+    //Redo Need it.
+    if(shape!=nullptr){
+        layouts.list.insert(it,NewBaseShape(shape));
+    }
+}
+shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
+    shared_ptr<BaseShape> newBaseShape=nullptr;
+    if(shape!=nullptr){
+        string name=shape->getName();
+        if(name=="Line"){
+            newBaseShape=shared_ptr<BaseShape>(new Line(*(static_pointer_cast<Line>(shape))));
+        }else if(name=="Ellipse"){
+            newBaseShape=shared_ptr<BaseShape>(new Ellipse(*(static_pointer_cast<Ellipse>(shape))));
+        }else if(name=="Rectangle"){
+            newBaseShape=shared_ptr<BaseShape>(new Rect(*(static_pointer_cast<Rect>(shape))));
+        }else if(name=="image"){
+            newBaseShape=shared_ptr<BaseShape>(new Pixmap(*(static_pointer_cast<Pixmap>(shape))));
+        }else{
+            qDebug()<<"Cannot recognize this shape name :"<<QString(name.c_str());
+        }
+    }else{
+        qDebug()<<"The shape is null";
+    }
+    return newBaseShape;
+}
  void Model::SetPenColor(unsigned char r,unsigned char g,unsigned char b)
  {
      pen.setForeR(r);
@@ -289,20 +314,45 @@ void Model::addRect(double centerX, double centerY, double width, double height)
         //Now Assume that there is no delete in the operation.
         DoneInfo nowInfo=DoneList[NowDoneIndex];
         switch(nowInfo.getcommandtype()){
-        case COMMAND::CREATE:{
+        case COMMAND::CREATE:
+        {
             //redo create
             int insertindex=nowInfo.getlayoutindex();
             vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+insertindex;
-            layouts.list.insert(it,nowInfo.getaftershape());
+            addBaseShape(it,nowInfo.getaftershape());
+            //layouts.list.insert(it,nowInfo.getaftershape());
             //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
             Params params;
             params.setType(NOTIFY::UPDATE_IMAGE_ADD);
             params.setInts({(int)insertindex});
-            notify(params);}
+            notify(params);
+        }
             break;
-        case COMMAND::DELETE:
+        case COMMAND::DELETE:{
+            //redo create
+            int delindex=nowInfo.getlayoutindex();
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+delindex;
+            layouts.list.erase(it);
+            //layouts.list.insert(it,nowInfo.getaftershape());
+            //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+            params.setInts({(int)delindex});
+            notify(params);
+        }
             break;
-        case COMMAND::MODIFY:
+        case COMMAND::MODIFY:{
+            //redo modify
+            int modifyindex=nowInfo.getlayoutindex();
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+modifyindex;
+            *it=NewBaseShape(nowInfo.getaftershape());
+            //layouts.list.insert(it,nowInfo.getaftershape());
+            //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE);
+            params.setInts({(int)modifyindex});
+            notify(params);
+        }
             break;
         }
 
@@ -325,9 +375,31 @@ void Model::addRect(double centerX, double centerY, double width, double height)
             params.setInts({(int)nowInfo.getlayoutindex()});
             notify(params);}
             break;
-        case COMMAND::DELETE:
+        case COMMAND::DELETE:{
+            //undo delete
+            int delindex=nowInfo.getlayoutindex();
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+delindex;
+            addBaseShape(it,nowInfo.getbeforeshape());
+            //layouts.list.insert(it,nowInfo.getaftershape());
+            //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+            params.setInts({(int)delindex});
+            notify(params);
+        }
             break;
-        case COMMAND::MODIFY:
+        case COMMAND::MODIFY:{
+            //undo modify
+            int modifyindex=nowInfo.getlayoutindex();
+            vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+modifyindex;
+            *it=NewBaseShape(nowInfo.getbeforeshape());
+            //layouts.list.insert(it,nowInfo.getaftershape());
+            //layouts.list.push_back(DoneList[NowDoneIndex].getshape());
+            Params params;
+            params.setType(NOTIFY::UPDATE_IMAGE);
+            params.setInts({(int)modifyindex});
+            notify(params);
+        }
             break;
         }
 

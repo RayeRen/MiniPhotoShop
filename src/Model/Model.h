@@ -27,6 +27,9 @@ public:
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
+    void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);
+    shared_ptr<BaseShape> NewBaseShape(shared_ptr<BaseShape> shape);
+
     void redo();
     void undo();
     bool newProject(bool isSavedPre);
