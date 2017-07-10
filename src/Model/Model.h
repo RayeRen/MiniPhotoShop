@@ -29,17 +29,59 @@ public:
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
     void LayoutChange(int Change,int LayoutIndex);
-    void DeleteLayout(int LayoutIndex){
-        if(LayoutIndex<0)return;
-        vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+LayoutIndex;
-        addDoneEvent(COMMAND::DELETE,LayoutIndex,nullptr,NewBaseShape(layouts.list.at(LayoutIndex)));
+    void DeleteLayout(int LayoutIndex);
+    void PixmapFilter(Params params){
+        //ints的第0个是layoutindex.
+        int type=params.getType();
+        vector<int> ints=params.getInts();
+        vector<double> doubles=params.getDoubles();
+        int layoutindex=ints[0];
+        if(layoutindex<0)return;
+        if(layouts.list.at(layoutindex)->getType()!=SHAPE::PIXMAP)return;
+        shared_ptr<Pixmap> pic(static_pointer_cast<Pixmap>(layouts.list.at(layoutindex)));
+        shared_ptr<BaseShape> tempPic(NewBaseShape(layouts.list.at(layoutindex)));
+        if(pic==nullptr)return;
+        switch(type){
+        case PIXMAP::LAPLACIANENHANCE:{
+            int size;
+            size=ints[0];
+            double* conv=NULL;
+            if(size>0){
+               conv=new double[size*size];
+               double *nowconv=conv;
+               for(int i=0;i<size;i++){
+                   for(int j=0;j<size;j++){
+                       *(nowconv++)=doubles[i*size+j];
+                   }
+               }
+            }else{
 
-        layouts.list.erase(it);
-        qDebug()<<"Model Delete is Over .Next Delete";
-        Params params;
-        params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
-        params.setInts({(int)LayoutIndex});
-        notify(params);
+            }
+            pic->LaplacianEnhance(conv,size);
+        }
+            break;
+        case PIXMAP::BILATERALFILTERING:
+            pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
+            break;
+        case PIXMAP::HISTOEQUALIZING:
+            pic->HistoEqualizing();
+            break;
+        case PIXMAP::INVERSECOLOR:
+            pic->InverseColor();
+            break;
+        case PIXMAP::LOGOPERATION:
+            pic->LogOperation();
+            break;
+        default:
+            return;
+            break;
+        }
+        addDoneEvent(COMMAND::MODIFY,layoutindex,NewBaseShape(layouts.list.at(layoutindex)),tempPic);
+        Params newparams;
+        newparams.setType(NOTIFY::UPDATE_IMAGE);
+        newparams.setInts({(int)layoutindex});
+        notify(newparams);
+
     }
 
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);

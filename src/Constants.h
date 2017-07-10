@@ -45,6 +45,7 @@ namespace COMMAND {
     enum{
         CREATE,MODIFY,DELETE
     };
+
 }
 //UI states
 namespace STATE{
@@ -61,7 +62,9 @@ enum{
 enum {
     SELECT_R=1,SELECT_G=2,SELECT_B=4,SELECT_GREY=8
 };	//标记需要计数的通道
-
+enum{
+    INVERSECOLOR,LOGOPERATION,HISTOEQUALIZING,LAPLACIANENHANCE,BILATERALFILTERING
+};
 }
 
 namespace SETTINGS{

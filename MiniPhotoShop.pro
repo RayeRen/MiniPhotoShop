@@ -63,7 +63,8 @@ HEADERS += \
     src/ViewModel/Commands/undocommand.h \
     src/ViewModel/Commands/layouttransformcommand.h \
     src/ViewModel/Commands/layouttransformnotifycommand.h \
-    src/ViewModel/Commands/deletelayoutcommand.h
+    src/ViewModel/Commands/deletelayoutcommand.h \
+    src/ViewModel/Commands/pixmapfiltercommand.h
 
 FORMS += \
     src/View/mainwindow.ui
