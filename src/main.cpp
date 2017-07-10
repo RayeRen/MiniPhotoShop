@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());
     pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
     pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
-
+    pMainWindows->setDeleteLayoutCommand(pViewModel->getDeleteLayoutCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

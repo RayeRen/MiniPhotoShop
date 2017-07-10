@@ -23,32 +23,24 @@ private:
     void ClearModel();
 public:
     Model();
-    void addLine(){
-    }
+    void addLine(){}
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
-    void LayoutChange(int Change,int LayoutIndex){
-        if(Change==1){
-            //Begin
-            ChangeBegin=Change;
-            ChangeLayout=LayoutIndex;
-            qDebug()<<"Save";
-            tempShape=NewBaseShape(layouts.list.at(LayoutIndex));
-        }else if(ChangeBegin==1){
-            //End
-            ChangeBegin=0;
-            qDebug()<<"End";
-            if(ChangeLayout==LayoutIndex){
-                qDebug()<<"Save Done";
-                addDoneEvent(COMMAND::MODIFY,LayoutIndex,NewBaseShape(layouts.list.at(LayoutIndex)),tempShape);
-                tempShape=nullptr;
-            }
-        }
+    void LayoutChange(int Change,int LayoutIndex);
+    void DeleteLayout(int LayoutIndex){
+        if(LayoutIndex<0)return;
+        vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+LayoutIndex;
+        addDoneEvent(COMMAND::DELETE,LayoutIndex,nullptr,NewBaseShape(layouts.list.at(LayoutIndex)));
+
+        layouts.list.erase(it);
+        qDebug()<<"Model Delete is Over .Next Delete";
+        Params params;
+        params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+        params.setInts({(int)LayoutIndex});
+        notify(params);
     }
-
-
 
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
     void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);

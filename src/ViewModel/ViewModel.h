@@ -37,7 +37,7 @@ public:
     const shared_ptr<BaseCommand> &getChangeSelectedCommand() const{return changeSelectedCommand;}
     const shared_ptr<BaseCommand> &getLayoutTransCommand() const{return layoutTransCommand;}
     const shared_ptr<BaseCommand> &getLayoutTransNotifyCommand() const{return layoutTransNotifyCommand;}
-
+    const shared_ptr<BaseCommand> &getDeleteLayoutCommand()const{return deleteLayoutCommand;}
     virtual void update(Params params);
 
 
@@ -60,7 +60,8 @@ private:
     shared_ptr<BaseCommand> addLineCommand,addEllipseCommand,
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
     newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
-    addPicCommand,layoutTransCommand,undoCommand,redoCommand,layoutTransNotifyCommand
+    addPicCommand,layoutTransCommand,undoCommand,redoCommand,layoutTransNotifyCommand,
+    deleteLayoutCommand
     ;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;

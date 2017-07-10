@@ -58,23 +58,41 @@ void Model::addBaseShape(vector<shared_ptr<BaseShape>>::iterator  it,shared_ptr<
 shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
     shared_ptr<BaseShape> newBaseShape=nullptr;
     if(shape!=nullptr){
-        string name=shape->getName();
-        if(name=="Line"){
+        int type=shape->getType();
+        if(type==SHAPE::LINE){
             newBaseShape=shared_ptr<BaseShape>(new Line(*(static_pointer_cast<Line>(shape))));
-        }else if(name=="Ellipse"){
+        }else if(type==SHAPE::ELLIPSE){
             newBaseShape=shared_ptr<BaseShape>(new Ellipse(*(static_pointer_cast<Ellipse>(shape))));
-        }else if(name=="Rectangle"){
+        }else if(type==SHAPE::RECT){
             newBaseShape=shared_ptr<BaseShape>(new Rect(*(static_pointer_cast<Rect>(shape))));
-        }else if(name=="image"){
+        }else if(type==SHAPE::PIXMAP){
             newBaseShape=shared_ptr<BaseShape>(new Pixmap(*(static_pointer_cast<Pixmap>(shape))));
         }else{
-            qDebug()<<"Cannot recognize this shape name :"<<QString(name.c_str());
         }
     }else{
         qDebug()<<"The shape is null";
     }
     return newBaseShape;
 }
+void Model::LayoutChange(int Change,int LayoutIndex){
+    if(Change==1){
+        //Begin
+        ChangeBegin=Change;
+        ChangeLayout=LayoutIndex;
+        qDebug()<<"Save";
+        tempShape=NewBaseShape(layouts.list.at(LayoutIndex));
+    }else if(ChangeBegin==1){
+        //End
+        ChangeBegin=0;
+        qDebug()<<"End";
+        if(ChangeLayout==LayoutIndex){
+            qDebug()<<"Save Done";
+            addDoneEvent(COMMAND::MODIFY,LayoutIndex,NewBaseShape(layouts.list.at(LayoutIndex)),tempShape);
+            tempShape=nullptr;
+        }
+    }
+}
+
  void Model::SetPenColor(unsigned char r,unsigned char g,unsigned char b)
  {
      pen.setForeR(r);
@@ -583,7 +601,8 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
             Params params;
             params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
             params.setInts({(int)nowInfo.getlayoutindex()});
-            notify(params);}
+            notify(params);
+        }
             break;
         case COMMAND::DELETE:{
             //undo delete
