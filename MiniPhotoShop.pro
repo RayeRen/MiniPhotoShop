@@ -55,7 +55,9 @@ HEADERS += \
     src/ViewModel/Commands/brushupdatecommand.h \
     src/ViewModel/Commands/newprojectcommand.h \
     src/ViewModel/Commands/saveprojectcommand.h \
-    src/ViewModel/Commands/loadprojectcommand.h
+    src/ViewModel/Commands/loadprojectcommand.h \
+    src/ViewModel/Commands/addpiccommand.h \
+    src/ViewModel/Commands/layouttransformcommand.h
 
 FORMS += \
     src/View/mainwindow.ui

@@ -21,11 +21,19 @@ public:
     ~MainWindow();
 
     void setAddLineCommand(const shared_ptr<BaseCommand> &addLineCommand);
+    void setAddPicCommand(const shared_ptr<BaseCommand> &addPicCommand){this->addPicCommand=addPicCommand;}
     void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand);
     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand);
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
+    void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
+    void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
+    void setLoadProjectCommand(const shared_ptr<BaseCommand> &loadProjectCommand){this->loadProjectCommand=loadProjectCommand;}
+    void setNewProjectCommand(const shared_ptr<BaseCommand> &newProjectCommand){this->newProjectCommand=newProjectCommand;}
+    void setSaveProjectCommand(const shared_ptr<BaseCommand> &saveProjectCommand){this->saveProjectCommand=saveProjectCommand;}
+
+
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -36,8 +44,13 @@ private:
     const Pen* pen;
     const Brush* brush;
     const QImage* displayImage;
+    QString statusBarInfo;
+    int cursorX,cursorY;
     int state;
-     shared_ptr<BaseCommand> newCanvasCommand,penUpdateCommand,brushUpdateCommand;
+     shared_ptr<BaseCommand> newCanvasCommand,
+     penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
+     loadProjectCommand,saveProjectCommand,newProjectCommand
+     ;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
@@ -46,6 +59,9 @@ private:
      void PenWidthSliderChanged(int);
      void PenStyleComboBoxChanged(int);
      void BrushStyleComboBoxChanged(int);
+     void ListItemSelectionChanged();
+     void UpdateCursorPosition(int,int);
+     void UpdateStatusBarInfo(QString);
 };
 
 #endif // MAINWINDOW_H

@@ -34,7 +34,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
          centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
     Params params;
     params.setType(NOTIFY::UPDATE_IMAGE_ADD);
- params.setInts({(int)layouts.list.size()-1});
+    params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
 
@@ -180,7 +180,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
              layouts.list.push_back(pLine=shared_ptr<Line>(new Line(PosX,
                  PosY,SHAPE::LINE,name,scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-             params.setInts({layouts.list.size()-1});
+             params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
 
@@ -201,7 +201,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
              layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(PosX,
                  PosY,SHAPE::ELLIPSE,name,scaleX,scaleY,angle,pen,brush,a,b)));
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-              params.setInts({layouts.list.size()-1});
+              params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
 
@@ -222,7 +222,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
              layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(PosX,
                   PosY, SHAPE::RECT, name,scaleX,scaleY,angle,pen,brush,width,height)));
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-             params.setInts({layouts.list.size()-1});
+             params.setInts({(int)layouts.list.size()-1});
              notify(params);
              break;
 
@@ -233,4 +233,20 @@ void Model::addRect(double centerX, double centerY, double width, double height)
 
      in.close();
      return true;
+ }
+
+ void Model::addImage(string fileName)
+ {
+     shared_ptr<Pixmap> newImage(new Pixmap(string("image"),fileName));
+    if(newImage->GetFormat()==PIXMAP::FMT_NULL)
+    {
+        Params params;
+        params.setType(NOTIFY::ADD_IMAGE_FAILED);
+        notify(params);
+    }
+    layouts.list.push_back(newImage);
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)layouts.list.size()-1});
+    notify(params);
  }

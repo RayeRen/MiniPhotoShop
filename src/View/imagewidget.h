@@ -28,6 +28,7 @@ public:
     void setAddEllipseCommand(const shared_ptr<BaseCommand> &addEllipseCommand){this->addEllipseCommand=addEllipseCommand;}
     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand){this->addRectCommand=addRectCommand;}
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand){this->newCanvasCommand=newCanvasCommand;}
+    void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand){this->layoutTransCommand=layoutTransCommand;}
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
 private:
@@ -39,10 +40,12 @@ private:
    shared_ptr<BaseCommand> addEllipseCommand;
    shared_ptr<BaseCommand> newCanvasCommand;
    shared_ptr<BaseCommand> addRectCommand;
+   shared_ptr<BaseCommand> layoutTransCommand;
    int mouseLastX,mouseLastY,mouseX,mouseY;
    int realWidth,realHeight;
 signals:
    void StateChanged();
+   void CursorMove(int,int);
 };
 
 #endif // IMAGEWIDGET_H

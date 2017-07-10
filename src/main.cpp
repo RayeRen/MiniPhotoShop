@@ -2,12 +2,13 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QElapsedTimer>
-#include<QTranslator>
+#include <QTranslator>
 #include <src/ViewModel/ViewModel.h>
 #include <QDebug>
 #include <iostream>
 using namespace std;
 #define SPLAHSCREENTIME 2000
+
 
 int main(int argc, char *argv[])
 {
@@ -31,12 +32,20 @@ int main(int argc, char *argv[])
     pMainWindows->setAddEllipseCommand(pViewModel->getAddEllipseCommand());
     pMainWindows->setAddRectCommand(pViewModel->getAddRectCommand());
     pViewModel->SetLayouts(pModel->GetLayouts());
-    pMainWindows->SetPen(pModel->GetPen());
-    pMainWindows->SetBrush(pModel->GetBrush());
+    pViewModel->SetPen(pModel->GetPen());
+    pViewModel->SetBrush(pModel->GetBrush());
+    pMainWindows->SetPen(pViewModel->GetPen());
+    pMainWindows->SetBrush(pViewModel->GetBrush());
     pMainWindows->SetDisplayImage(pViewModel->GetDisplayImage());
     pMainWindows->setNewCanvasCommand(pViewModel->getNewCanvasCommand());
     pMainWindows->setPenUpdateCommand(pViewModel->getPenUpdateCommand());
     pMainWindows->setBrushUpdateCommand(pViewModel->getBrushUpdateCommand());
+    pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
+    pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
+    pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+    pMainWindows->setLoadProjectCommand(pViewModel->getloadProjectCommand());
+    pMainWindows->setSaveProjectCommand(pViewModel->getsaveProjectCommand());
+    pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

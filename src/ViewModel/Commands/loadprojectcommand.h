@@ -8,6 +8,9 @@ class LoadProjectCommand:public BaseCommand
 {
 public:
     LoadProjectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
+    void exec(){
+
+    }
 
     bool exec()
     {
