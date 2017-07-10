@@ -53,6 +53,19 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->layoutListWidget->insertItem(0,item1);
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
     ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
+    ui->MainDisplayWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->MainDisplayWidget,SIGNAL(customContextMenuRequested(const QPoint)),this,SLOT(CanvasPopMenuShow(const QPoint)));
+    canvasPopMenu=new QMenu(ui->MainDisplayWidget);
+    canvasPopMenu->addAction(ui->action_drawLine);
+    canvasPopMenu->addAction(ui->action_drawRect);
+    canvasPopMenu->addAction(ui->action_drawEllipse);
+    canvasPopMenu->addAction(ui->action_move);
+    canvasPopMenu->addAction(ui->action_scale);
+    canvasPopMenu->addAction(ui->action_rotate);
+    canvasPopMenu->addAction(ui->action_undo);
+    canvasPopMenu->addAction(ui->action_redo);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -428,4 +441,10 @@ void MainWindow::UpdateStatusBarInfo(QString info)
         ui->statusBar->showMessage(messageA);
     }else
         ui->statusBar->showMessage(statusBarInfo);
+}
+
+void MainWindow::CanvasPopMenuShow(const QPoint)
+{
+    qDebug()<<"POPSHOW";
+     canvasPopMenu->exec(QCursor::pos());
 }

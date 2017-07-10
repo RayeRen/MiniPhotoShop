@@ -73,6 +73,8 @@ void ImageWidget::paintUpdate()
 
 void ImageWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(event->button()!=Qt::LeftButton)
+        return;
     emit CursorMove(event->localPos().x(),event->localPos().y());
     switch(*state)
     {
