@@ -137,6 +137,9 @@ void MainWindow::update(Params params)
     case NOTIFY::NO_LAYOUT_SELECTED:
         QMessageBox::information(this,QStringLiteral("提示"),QStringLiteral("请在右侧图层列表选择需要操作的图层"));
         break;
+    case NOTIFY::CLEAR:
+        ui->MainDisplayWidget->update();
+        break;
     }
 }
 

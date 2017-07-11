@@ -131,6 +131,13 @@ void ViewModel::update(Params params) {
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
         break;
+    case NOTIFY::CLEAR:{
+        ClearViewModel();
+        Params newParams;
+        newParams.setType(NOTIFY::CLEAR);
+        notify(newParams);
+    }
+        break;
     }
 }
 void ViewModel::SaveAsPicture(string path){
@@ -160,7 +167,7 @@ void ViewModel::RefreshDisplayImage(int index) {
 
         QPainter painter(&(*displayBuffer[index]));
         painter.setCompositionMode(QPainter::CompositionMode_Source);
-        painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
+        painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
         shared_ptr<BaseShape> baseShape=(layouts->list)[index];
 
         painter.translate(baseShape->getPosX(),baseShape->getPosY());

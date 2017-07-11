@@ -41,6 +41,11 @@ public:
     const shared_ptr<BaseCommand> &getSaveAsPictureCommand()const{return saveAsPictureCommand;}
     virtual void update(Params params);
 
+    void ClearViewModel(){
+        SetSelectedLayout(-1);
+        displayBuffer.clear();
+        RefreshDisplayImage();
+    }
 
     void SaveAsPicture(string path);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
