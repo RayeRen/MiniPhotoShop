@@ -143,7 +143,7 @@ void Model::DeleteLayout(int LayoutIndex){
  {
      fstream out;
      int i;
-     int num = layouts.list.capacity() - 1;
+     int num = layouts.list.size();
 
      out.open(path, ios::out | ios::binary);
      if(!out)
@@ -153,6 +153,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
      string head("This is a mpsd project file");
      out.write(head.c_str(), head.size());
+     out.write(reinterpret_cast<char*>(&num), sizeof(int));
+
      for(i = 0; i < num; i++)
      {
          int type = layouts.list[i]->getType();
@@ -368,6 +370,7 @@ void Model::DeleteLayout(int LayoutIndex){
  {
      fstream in;
      int type;
+     int num;
      char head[30];
      int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle, format;
      unsigned char R, G, B;
@@ -382,11 +385,13 @@ void Model::DeleteLayout(int LayoutIndex){
      if(!in)
          return;
 
-     in.read(head, sizeof("This is a mpsd project file"));
+     in.read(head, 27);
+     head[27] = '\0';
      if(strcmp(head, "This is a mpsd project file") != 0)
          return;
+     in.read(reinterpret_cast<char*>(&num), sizeof(int));
 
-     while(!in.eof())
+     for(int i = 0; i < num; i++)
      {
          in.read(reinterpret_cast<char*>(&type), sizeof(int));
          switch(type)
@@ -619,7 +624,8 @@ void Model::DeleteLayout(int LayoutIndex){
      shared_ptr<Pixmap> pic(static_pointer_cast<Pixmap>(layouts.list.at(layoutindex)));
      shared_ptr<BaseShape> tempPic(NewBaseShape(layouts.list.at(layoutindex)));
      if(pic==nullptr)return;
-     switch(type){
+     switch(type)
+     {
      case PIXMAP::LAPLACIANENHANCE:{
          int size;
          size=ints[0];
