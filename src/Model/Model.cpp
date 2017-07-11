@@ -71,7 +71,7 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
     }
     return newBaseShape;
 }
-void Model::LayoutChange(int Change,int LayoutIndex){
+void Model::LayoutTransform(int Change,int LayoutIndex){
     if(Change==1){
         //Begin
         ChangeBegin=Change;
@@ -675,12 +675,12 @@ void Model::DeleteLayout(int LayoutIndex){
      tempShape=nullptr;
      DoneList.clear();
  }
- void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape){
+ void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape,int beforelayoutindex){
     //delete ->before valid create ->after valid modify before after valid
      //add an event
      qDebug()<<"Begin Add Done Event";
     if(NowDoneIndex==MaxDoneIndex){
-        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape,beforelayoutindex));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else if(NowDoneIndex<MaxDoneIndex){
@@ -691,7 +691,7 @@ void Model::DeleteLayout(int LayoutIndex){
             qDebug()<<"Where";
             it=DoneList.erase(it);
         }
-        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape,beforelayoutindex));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else{
@@ -750,6 +750,13 @@ void Model::DeleteLayout(int LayoutIndex){
             notify(params);
         }
             break;
+        case COMMAND::ORDERCHANGE:{
+            //redo before -> after
+            int after=nowInfo.getlayoutindex();
+            int before=nowInfo.getbeforelayoutindexx();
+            LayoutOrderChange(before,after,1);
+        }
+            break;
         }
 
 
@@ -799,6 +806,15 @@ void Model::DeleteLayout(int LayoutIndex){
             notify(params);
         }
             break;
+        case COMMAND::ORDERCHANGE:{
+            //undo before -> after
+            //after -> before
+            int after=nowInfo.getlayoutindex();
+            int before=nowInfo.getbeforelayoutindexx();
+            LayoutOrderChange(after,before,1);
+        }
+            break;
+
         }
 
 

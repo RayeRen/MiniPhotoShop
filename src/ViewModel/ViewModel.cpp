@@ -21,6 +21,7 @@
 #include "src/ViewModel/Commands/saveprojectcommand.h"
 #include "src/ViewModel/Commands/deletelayoutcommand.h"
 #include "src/ViewModel/Commands/saveaspicturecommand.h"
+#include "src/ViewModel/Commands/layoutorderchangecommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -128,6 +129,10 @@ void ViewModel::update(Params params) {
     }
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
+        notify(params);
+        break;
+    case NOTIFY::LAYOUT_ORDER_CHANGE:
+
         notify(params);
         break;
     case NOTIFY::CLEAR:{
@@ -372,6 +377,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),
     deleteLayoutCommand(shared_ptr<BaseCommand>(new DeleteLayoutCommand(pModel,shared_ptr<ViewModel>(this)))),
     saveAsPictureCommand(shared_ptr<BaseCommand>(new SaveAsPictureCommand(pModel,shared_ptr<ViewModel>(this)))),
+    layoutOrderChangeCommand(shared_ptr<BaseCommand>(new LayoutOrderChangeCommand(pModel,shared_ptr<ViewModel>(this)))),
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(200, 200), QImage::Format_ARGB32);

@@ -39,6 +39,7 @@ public:
     const shared_ptr<BaseCommand> &getLayoutTransNotifyCommand() const{return layoutTransNotifyCommand;}
     const shared_ptr<BaseCommand> &getDeleteLayoutCommand()const{return deleteLayoutCommand;}
     const shared_ptr<BaseCommand> &getSaveAsPictureCommand()const{return saveAsPictureCommand;}
+    const shared_ptr<BaseCommand> &getLayoutOrderChangeCommand()const{return layoutOrderChangeCommand;}
     virtual void update(Params params);
 
     void ClearViewModel();
@@ -49,6 +50,7 @@ public:
     void NewCanvas(unsigned int width,unsigned int height);
     void SetSelectedLayout(int selectedLayout);
     int GetSelectedLayout(){return selectedLayout;}
+    int GetMaxLayoutIndex(){return layouts->list.size()-1;}
     void SetPen(const Pen* pen){this->pen=pen;}
     void SetBrush(const Brush* brush){this->brush=brush;}
     void LayoutMove(int x,int y);
@@ -62,7 +64,7 @@ private:
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
     newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
     addPicCommand,layoutTransCommand,undoCommand,redoCommand,layoutTransNotifyCommand,
-    deleteLayoutCommand,saveAsPictureCommand
+    deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
     ;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;

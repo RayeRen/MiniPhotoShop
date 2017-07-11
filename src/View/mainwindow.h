@@ -38,11 +38,15 @@ public:
     void setRedoCommand(const shared_ptr<BaseCommand> &redoCommand){this->redoCommand=redoCommand;}
     void setDeleteLayoutCommand(const shared_ptr<BaseCommand> &deleteLayoutCommand){this->deleteLayoutCommand=deleteLayoutCommand;}
     void setSaveAsPictureCommand(const shared_ptr<BaseCommand> &saveAsPictureCommand){this->saveAsPictureCommand=saveAsPictureCommand;}
-
+    void setLayoutOrderChangeCommand(const shared_ptr<BaseCommand> &layoutOrderChangeCommand){this->layoutOrderChangeCommand=layoutOrderChangeCommand;}
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
+
     virtual void update(Params params);
+
+    void ConnectQListWidget();
+    void DisConnentQListWidget();
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +59,7 @@ private:
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
-     layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand
+     layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
      ;
     QMenu* canvasPopMenu;
     friend class BaseState;

@@ -476,17 +476,25 @@ public:
     unsigned int *getBHead() { return hgB; }
 };
 class DoneInfo{
-    int layoutindex;
+    int layoutindex,beforelayoutindex;
     shared_ptr<BaseShape> aftershape,beforeshape;
     int commandtype;
 public:
-    DoneInfo(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr):commandtype(commandtype),layoutindex(layoutindex),aftershape(aftershape),beforeshape(beforeshape){}
+    DoneInfo(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr,int beforelayoutindex=-1):commandtype(commandtype),
+        layoutindex(layoutindex),aftershape(aftershape),beforeshape(beforeshape),beforelayoutindex(beforelayoutindex){}
     int getlayoutindex()const{
         return layoutindex;
     }
     void setlayoutindex(int layoutindex){
         this->layoutindex=layoutindex;
     }
+    int getbeforelayoutindexx()const{
+        return beforelayoutindex;
+    }
+    void setbeforelayoutindex(int beforelayoutindex){
+        this->beforelayoutindex=beforelayoutindex;
+    }
+
     shared_ptr<BaseShape> getaftershape() const{
         return aftershape;
     }

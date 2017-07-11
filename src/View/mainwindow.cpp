@@ -93,9 +93,16 @@ void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCom
 {
     this->penUpdateCommand=penUpdateCommand;
 }
+void MainWindow::ConnectQListWidget(){
+    connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+}
+void MainWindow::DisConnentQListWidget(){
+    disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+}
 
 void MainWindow::update(Params params)
 {
+    DisConnentQListWidget();
     switch(params.getType())
     {
     case NOTIFY::ADD_IMAGE_FAILED:
@@ -130,6 +137,7 @@ void MainWindow::update(Params params)
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
+        if(ui->layoutListWidget->currentRow()!=ints[0])ui->layoutListWidget->setCurrentRow(ints[0]);
         qDebug()<<"item"<<ints[0];
     }
         break;
@@ -143,7 +151,7 @@ void MainWindow::update(Params params)
         qDebug()<<"Notify clear View";
         ui->MainDisplayWidget->update();
         int count=ui->layoutListWidget->count();
-        disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        //disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
         ui->layoutListWidget->clear();
         /*
         for(int i=count-1;i>=0;i--){
@@ -152,10 +160,11 @@ void MainWindow::update(Params params)
             ui->layoutListWidget->removeItemWidget(deletedWidget);
             delete deletedWidget;
         }*/
-        connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        //connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
         qDebug()<<"Remove all "<<ui->layoutListWidget->count();
         break;
     }
+    ConnectQListWidget();
 }
 
 void MainWindow::SetPen(const Pen* pen)
@@ -278,13 +287,21 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_aboutPro->text())
     {
-
-
+        //temporal use to test move up
+        qDebug()<<"Move Up Go!!!";
+        Params params;
+        params.setType(COMMAND::LAYOUT_ORDER_UP);
+        layoutOrderChangeCommand->setParams(params);
+        layoutOrderChangeCommand->exec();
     }
     if(action->text()==ui->action_help->text())
     {
-
-
+        //temporal use to test move down
+        qDebug()<<"Move Down Go!!!";
+        Params params;
+        params.setType(COMMAND::LAYOUT_ORDER_DOWN);
+        layoutOrderChangeCommand->setParams(params);
+        layoutOrderChangeCommand->exec();
     }
     if(action->text()==ui->action_undo->text())
     {
