@@ -88,6 +88,8 @@ void ViewModel::update(Params params) {
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.insert(displayBuffer.begin()+ints[0],pImage);
         //displayBuffer.push_back(pImage);
+        if(this->selectedLayout>=ints[0])
+            this->selectedLayout++;
         qDebug()<<"Buffer Size:"<<displayBuffer.size();
         RefreshDisplayImage(ints[0]);
         Params params;
@@ -228,6 +230,7 @@ void ViewModel::RefreshDisplayImage(int i)
 {
     if (layouts == nullptr)
         return;
+    qDebug()<<"RefreshDisplayImage"<<this->selectedLayout;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
     // painter.setCompositionMode(QPainter::CompositionMode_Source);
