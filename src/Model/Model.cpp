@@ -317,7 +317,43 @@ void Model::DeleteLayout(int LayoutIndex){
              break;
          }
          case SHAPE::PIXMAP:
+         {
+             shared_ptr<Pixmap> pixmap;
+             pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>(layouts.list[i]));
+             //BaseShape Data
+             int PosX, PosY;
+             double ScaleX, ScaleY, Angle;
+             PosX = pixmap->getPosX();
+             PosY = pixmap->getPosY();
+             ScaleX = pixmap->getScaleX();
+             ScaleY = pixmap->getScaleY();
+             Angle = pixmap->getAngle();
+             out.write(reinterpret_cast<char*>(&PosX), sizeof(int));
+             out.write(reinterpret_cast<char*>(&PosY), sizeof(int));
+             out.write(reinterpret_cast<char*>(&ScaleX), sizeof(double));
+             out.write(reinterpret_cast<char*>(&ScaleY), sizeof(double));
+             out.write(reinterpret_cast<char*>(&Angle), sizeof(double));
+
+             //Pixmap Data
+             int width, height, format;
+             width = pixmap->GetWidth();
+             height = pixmap->GetHeight();
+             format = pixmap->GetFormat();
+             out.write(reinterpret_cast<char*>(&width), sizeof(int));
+             out.write(reinterpret_cast<char*>(&height), sizeof(int));
+             out.write(reinterpret_cast<char*>(&format), sizeof(int));
+
+             UNUM8 *r, *g, *b, *a;
+             r = pixmap->getRHead();
+             g = pixmap->getGHead();
+             b = pixmap->getBHead();
+             a = pixmap->getAHead();
+             out.write(reinterpret_cast<char*>(r), width * height);
+             out.write(reinterpret_cast<char*>(g), width * height);
+             out.write(reinterpret_cast<char*>(b), width * height);
+             out.write(reinterpret_cast<char*>(a), width * height);
              break;
+         }
          }
      }
 
@@ -329,7 +365,7 @@ void Model::DeleteLayout(int LayoutIndex){
      fstream in;
      int type;
      char head[30];
-     int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle;
+     int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle, format;
      unsigned char R, G, B;
      double scaleX, scaleY, angle;
 
@@ -488,7 +524,52 @@ void Model::DeleteLayout(int LayoutIndex){
          }
 
          case SHAPE::PIXMAP:
+         {
+             //BaseShape Data
+             in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
+             in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
+             in.read(reinterpret_cast<char*>(&scaleX), sizeof(double));
+             in.read(reinterpret_cast<char*>(&scaleY), sizeof(double));
+             in.read(reinterpret_cast<char*>(&angle), sizeof(double));
+
+             //Pixmap Data
+             in.read(reinterpret_cast<char*>(&width), sizeof(int));
+             in.read(reinterpret_cast<char*>(&height), sizeof(int));
+             in.read(reinterpret_cast<char*>(&format), sizeof(int));
+
+             UNUM8 *r, *g, *b, *a;
+             r = (UNUM8 *)malloc(width * height);
+             g = (UNUM8 *)malloc(width * height);
+             b = (UNUM8 *)malloc(width * height);
+             a = (UNUM8 *)malloc(width * height);
+             in.read(reinterpret_cast<char*>(r), width * height);
+             in.read(reinterpret_cast<char*>(g), width * height);
+             in.read(reinterpret_cast<char*>(b), width * height);
+             in.read(reinterpret_cast<char*>(a), width * height);
+
+             //New Pixmap
+             shared_ptr<Pixmap> ppixmap;
+             layouts.list.push_back(ppixmap = shared_ptr<Pixmap>(new Pixmap(width, height)));
+             memcpy(ppixmap->getRHead(), r, width * height);
+             memcpy(ppixmap->getGHead(), g, width * height);
+             memcpy(ppixmap->getBHead(), b, width * height);
+             memcpy(ppixmap->getAHead(), a, width * height);
+             ppixmap->setPosX(PosX);
+             ppixmap->setPosY(PosY);
+             ppixmap->setScaleX(scaleX);
+             ppixmap->setScaleY(scaleY);
+             ppixmap->setAngle(angle);
+
+             Params params;
+             params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+             params.setInts({(int)layouts.list.size()-1});
+             notify(params);
+             free(r);
+             free(g);
+             free(b);
+             free(a);
              break;
+         }
          }
      }
 
