@@ -203,6 +203,7 @@
      <string>文件</string>
     </property>
     <addaction name="action_newCanvas"/>
+    <addaction name="action_openPro"/>
     <addaction name="action_openPic"/>
     <addaction name="action_saveCanvas"/>
     <addaction name="action_saveAsPic"/>
@@ -232,6 +233,7 @@
     <addaction name="action_scale"/>
     <addaction name="action_undo"/>
     <addaction name="action_redo"/>
+    <addaction name="action_deleteLayout"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -254,9 +256,9 @@
    <addaction name="action_scale"/>
    <addaction name="action_undo"/>
    <addaction name="action_redo"/>
+   <addaction name="action_deleteLayout"/>
    <addaction name="action_aboutPro"/>
    <addaction name="action_help"/>
-   <addaction name="action_aboutQt"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_newCanvas">
@@ -267,18 +269,26 @@
   <action name="action_openPic">
    <property name="icon">
     <iconset resource="../../imgs.qrc">
-     <normaloff>:/img/img/file.png</normaloff>:/img/img/file.png</iconset>
+     <normaloff>:/img/img/add.png</normaloff>:/img/img/add.png</iconset>
    </property>
    <property name="text">
     <string>打开图片</string>
    </property>
   </action>
   <action name="action_saveCanvas">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/save.png</normaloff>:/img/img/save.png</iconset>
+   </property>
    <property name="text">
     <string>保存工程</string>
    </property>
   </action>
   <action name="action_saveAsPic">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/png.png</normaloff>:/img/img/png.png</iconset>
+   </property>
    <property name="text">
     <string>另存为图片</string>
    </property>
@@ -389,6 +399,24 @@
    </property>
    <property name="text">
     <string>重做</string>
+   </property>
+  </action>
+  <action name="action_openPro">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/file.png</normaloff>:/img/img/file.png</iconset>
+   </property>
+   <property name="text">
+    <string>打开工程</string>
+   </property>
+  </action>
+  <action name="action_deleteLayout">
+   <property name="icon">
+    <iconset resource="../../imgs.qrc">
+     <normaloff>:/img/img/delete.png</normaloff>:/img/img/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>删除图层</string>
    </property>
   </action>
  </widget>

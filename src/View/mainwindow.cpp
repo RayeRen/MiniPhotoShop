@@ -274,23 +274,15 @@ void MainWindow::menuTriggered(QAction* action)
         state=STATE::ROTATE_INIT;
         StateChanged();
     }
-    if(action->text()==ui->action_aboutPro->text()){
-        //temporal use to test delete layout
-        deleteLayoutCommand->exec();
+    if(action->text()==ui->action_aboutPro->text())
+    {
+
 
     }
-    if(action->text()==ui->action_help->text()){
-        //temporal use to test load Project
-        //Load Project
-        QFileDialog fileDialog(this);
-        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
-        if(!aimProjectFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimProjectFileName.toStdString()});
-            loadProjectCommand->setParams(params);
-            loadProjectCommand->exec();
-        }
+    if(action->text()==ui->action_help->text())
+    {
+
+
     }
     if(action->text()==ui->action_undo->text())
     {
@@ -304,6 +296,24 @@ void MainWindow::menuTriggered(QAction* action)
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();
+    }
+    if(action->text()==ui->action_openPro->text())
+    {
+        //打开工程
+        QFileDialog fileDialog(this);
+        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
+        if(!aimProjectFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimProjectFileName.toStdString()});
+            loadProjectCommand->setParams(params);
+            loadProjectCommand->exec();
+        }
+    }
+    if(action->text()==ui->action_deleteLayout->text())
+    {
+        //删除图层
+        deleteLayoutCommand->exec();
     }
 }
 
