@@ -393,6 +393,7 @@ void Model::DeleteLayout(int LayoutIndex){
          {
          case SHAPE::LINE:
          {
+             qDebug()<<"Load line";
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -432,6 +433,8 @@ void Model::DeleteLayout(int LayoutIndex){
         }
          case SHAPE::ELLIPSE:
          {
+             qDebug()<<"Load ellipse";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -482,6 +485,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
          case SHAPE::RECT:
          {
+             qDebug()<<"Load rect";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -532,6 +537,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
          case SHAPE::PIXMAP:
          {
+             qDebug()<<"Load Pixmap";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
