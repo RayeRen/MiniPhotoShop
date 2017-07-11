@@ -7,7 +7,7 @@
 #include "src/ViewModel/Commands/AddLineCommand.h"
 #include "src/ViewModel/Commands/addellipsecommand.h"
 #include "src/ViewModel/Commands/addpiccommand.h"
-#include "src/ViewModel/Commands/addrectcommand.h"
+#include "src/ViewModel/Commands/AddRectCommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"
@@ -110,12 +110,9 @@ void ViewModel::update(Params params) {
         qDebug()<<"Remove Minus:"<<ints[0];
         vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
         displayBuffer.erase(it);
-        if(this->selectedLayout>=ints[0]){
+        if(this->selectedLayout>=ints[0])
             this->selectedLayout--;
-        }
         SetSelectedLayout(this->selectedLayout);
-        //qDebug()<<"Remove Refresh";
-        //RefreshDisplayImage();
         qDebug()<<"Remove Refresh end";
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
@@ -131,22 +128,113 @@ void ViewModel::update(Params params) {
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
         break;
+    case NOTIFY::CLEAR:{
+        qDebug()<<"clear view model";
+        ClearViewModel();
+        qDebug()<<"ok view model";
+        Params newParams;
+        newParams.setType(NOTIFY::CLEAR);
+        notify(newParams);
+    }
+        break;
     }
 }
-void ViewModel::SaveAsPicture(string path){
-    displayImage.save(QString(path.c_str()));
+void ViewModel::ClearViewModel(){
+    this->selectedLayout=-1;
+    displayBuffer.clear();
+    RefreshDisplayImage();
 }
 
-void ViewModel::RefreshDisplayImage(int index) {
+void ViewModel::SaveAsPicture(string path)
+{
+    QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
+    QPainter painter(&outputImage);
+    //painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
+    for(int i=0;i<displayBuffer.size();i++)
+    {
+
+        if(i==selectedLayout)
+        {
+            QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
+            QPainter layoutPainter(&tmpLayout);
+
+           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
+            layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
+            shared_ptr<BaseShape> baseShape=(layouts->list)[i];
+
+            layoutPainter.translate(baseShape->getPosX(),baseShape->getPosY());
+
+            layoutPainter.rotate(baseShape->getAngle());
+            layoutPainter.scale(baseShape->getScaleX(),baseShape->getScaleY());
+            switch((layouts->list)[i]->getType())
+            {
+            case SHAPE::LINE:
+            {
+                shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[i]));
+                Pen linePen = line->getPen();
+                QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
+                tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
+                tmpPen.setWidth(linePen.getLineWidth());
+                layoutPainter.setPen(tmpPen);
+                layoutPainter.drawLine( line->getX1(),  line->getY1(),line->getX2(),  line->getY2());
+            }
+                break;
+            case SHAPE::ELLIPSE:
+            {
+                shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[i]));
+                Pen ellipsePen = ellipse->getPen();
+                Brush ellipseBrush = ellipse->getBrush();
+                QPen tmpPen(QColor(ellipsePen.getForeR(),ellipsePen.getForeG(),ellipsePen.getForeB()));
+                QBrush tmpBrush(QColor(ellipseBrush.getBackR(),ellipseBrush.getBackG(),ellipseBrush.getBackB()));
+                tmpPen.setStyle(static_cast<Qt::PenStyle>(ellipsePen.getPenStyle()));
+                tmpPen.setWidth(ellipsePen.getLineWidth());
+                tmpBrush.setStyle(static_cast<Qt::BrushStyle>(ellipseBrush.getBrushStyle()));
+                layoutPainter.setPen(tmpPen);
+               layoutPainter.setBrush(tmpBrush);
+                layoutPainter.drawEllipse(QPoint(0,0),ellipse->getA(),ellipse->getB());
+            }
+                break;
+            case SHAPE::PIXMAP:
+            {
+                shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[i]));
+                layoutPainter.drawImage(QRect(-((int)(pixmap->GetWidth()/2)),-((int)(pixmap->GetHeight()/2)),pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRect(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
+            }
+                break;
+            case SHAPE::RECT:
+                shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[i]));
+                Pen rectPen = rect->getPen();
+                Brush rectBrush = rect->getBrush();
+                QPen tmpPen(QColor(rectPen.getForeR(),rectPen.getForeG(),rectPen.getForeB()));
+                QBrush tmpBrush(QColor(rectBrush.getBackR(),rectBrush.getBackG(),rectBrush.getBackB()));
+
+                tmpPen.setStyle(static_cast<Qt::PenStyle>(rectPen.getPenStyle()));
+                tmpPen.setWidth(rectPen.getLineWidth());
+                tmpBrush.setStyle(static_cast<Qt::BrushStyle>(rectBrush.getBrushStyle()));
+                layoutPainter.setPen(tmpPen);
+                layoutPainter.setBrush(tmpBrush);
+               layoutPainter.drawRect(QRectF(-rect->getWidth()/2,-rect->getHeight()/2, rect->getWidth(),rect->getHeight()));
+                break;
+            }
+            painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),tmpLayout,QRectF(0,0,displayImage.width(),displayImage.height()));
+            continue;
+        }
+        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
+    }
+    outputImage.save(QString(path.c_str()));
+}
+
+void ViewModel::RefreshDisplayImage(int i)
+{
     if (layouts == nullptr)
         return;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
-   // painter.setCompositionMode(QPainter::CompositionMode_Source);
+    // painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
-    if(index<0)
+    if(i<0)
     {
 
     }
@@ -158,20 +246,21 @@ void ViewModel::RefreshDisplayImage(int index) {
         QBrush selectedBrush;
         selectedBrush.setStyle(Qt::NoBrush);
 
-        QPainter painter(&(*displayBuffer[index]));
+        QPainter painter(&(*displayBuffer[i]));
         painter.setCompositionMode(QPainter::CompositionMode_Source);
+
         painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
-        shared_ptr<BaseShape> baseShape=(layouts->list)[index];
+        shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 
         painter.translate(baseShape->getPosX(),baseShape->getPosY());
 
-         painter.rotate(baseShape->getAngle());
+        painter.rotate(baseShape->getAngle());
         painter.scale(baseShape->getScaleX(),baseShape->getScaleY());
-        switch((layouts->list)[index]->getType())
+        switch((layouts->list)[i]->getType())
         {
         case SHAPE::LINE:
         {
-            shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[index]));
+            shared_ptr<Line> line = shared_ptr<Line>(static_pointer_cast<Line>((layouts->list)[i]));
             Pen linePen = line->getPen();
             QPen tmpPen(QColor(linePen.getForeR(),linePen.getForeG(),linePen.getForeB()));
             tmpPen.setStyle(static_cast<Qt::PenStyle>(linePen.getPenStyle()));
@@ -180,7 +269,7 @@ void ViewModel::RefreshDisplayImage(int index) {
 
             painter.drawLine( line->getX1(),  line->getY1(),
                               line->getX2(),  line->getY2());
-            if(index==selectedLayout)
+            if(i==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
@@ -193,7 +282,7 @@ void ViewModel::RefreshDisplayImage(int index) {
             break;
         case SHAPE::ELLIPSE:
         {
-            shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[index]));
+            shared_ptr<Ellipse> ellipse = shared_ptr<Ellipse>(static_pointer_cast<Ellipse>((layouts->list)[i]));
             Pen ellipsePen = ellipse->getPen();
             Brush ellipseBrush = ellipse->getBrush();
             QPen tmpPen(QColor(ellipsePen.getForeR(),ellipsePen.getForeG(),ellipsePen.getForeB()));
@@ -205,7 +294,7 @@ void ViewModel::RefreshDisplayImage(int index) {
             painter.setPen(tmpPen);
             painter.setBrush(tmpBrush);
             painter.drawEllipse(QPoint(0,0),ellipse->getA(),ellipse->getB());
-            if(index==selectedLayout)
+            if(i==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
@@ -216,9 +305,9 @@ void ViewModel::RefreshDisplayImage(int index) {
             break;
         case SHAPE::PIXMAP:
         {
-            shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[index]));
+            shared_ptr<Pixmap> pixmap = shared_ptr<Pixmap>(static_pointer_cast<Pixmap>((layouts->list)[i]));
             painter.drawImage(QRect(-((int)(pixmap->GetWidth()/2)),-((int)(pixmap->GetHeight()/2)),pixmap->GetWidth(),pixmap->GetHeight()),*(pixmap->Output()),QRect(0,0,pixmap->GetWidth(),pixmap->GetHeight()));
-            if(index==selectedLayout)
+            if(i==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
@@ -228,7 +317,7 @@ void ViewModel::RefreshDisplayImage(int index) {
         }
             break;
         case SHAPE::RECT:
-            shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[index]));
+            shared_ptr<Rect> rect = shared_ptr<Rect>(static_pointer_cast<Rect>((layouts->list)[i]));
             Pen rectPen = rect->getPen();
             Brush rectBrush = rect->getBrush();
             QPen tmpPen(QColor(rectPen.getForeR(),rectPen.getForeG(),rectPen.getForeB()));
@@ -240,7 +329,7 @@ void ViewModel::RefreshDisplayImage(int index) {
             painter.setPen(tmpPen);
             painter.setBrush(tmpBrush);
             painter.drawRect(QRectF(-rect->getWidth()/2,-rect->getHeight()/2, rect->getWidth(),rect->getHeight()));
-            if(index==selectedLayout)
+            if(i==selectedLayout)
             {
                 painter.setPen(selectedRectPen);
                 painter.setBrush(selectedBrush);
@@ -314,9 +403,9 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
     notify(params);
     int pixmapflag=0;
     if(this->selectedLayout>=0){
-       if( (layouts->list)[this->selectedLayout]->getType()==SHAPE::PIXMAP){
-           pixmapflag=1;
-       }
+        if( (layouts->list)[this->selectedLayout]->getType()==SHAPE::PIXMAP){
+            pixmapflag=1;
+        }
     }
     Params newparams;
     newparams.setType(NOTIFY::IF_LAYOUT_PIXMAP);

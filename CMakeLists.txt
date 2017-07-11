@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.0)
 set(TARGET_NAME MiniPhotoShop)
 
 project(${TARGET_NAME})
@@ -20,39 +20,13 @@ include_directories(
 )
 
 set(CMAKE_CXX_STANDARD 11)
+file(GLOB_RECURSE SRC_LIST src/*.cpp src/*.h)
 
-set(SOURCE_FILES
-        src/ViewModel/Commands/AddLineCommand.cpp
-        src/ViewModel/Commands/newcanvascommand.cpp
-        src/ViewModel/Commands/addellipsecommand.cpp
-        src/ViewModel/ViewModel.cpp
-        src/View/mainwindow.cpp
-        src/View/imagewidget.cpp
-        src/Model/Model.cpp
-        src/main.cpp
-
-        src/Common/Params.h
-        src/Common/Observable.h
-        src/Common/Observer.h
-        src/Common/DataStructure.h
-        src/Common/BaseCommand.h
-        src/View/imagewidget.h
-        src/Model/Layouts.h
-        src/ViewModel/Commands/newcanvascommand.h
-        src/ViewModel/Commands/addellipsecommand.h
-        src/Constants.h
-        )
-
-# User interface files
-set(FORMS
-        src/View/mainwindow.ui
-        )
+# User interfgit ace files
+file(GLOB_RECURSE FORMS src/*.ui)
 
 # Resource fileshgx
-
-set(RESOURCES
-        imgs.qrc
-        )
+file(GLOB_RECURSE RESOURCES *.qrc)
 
 # Shared libraries
 set(LIBRARIES
@@ -67,6 +41,7 @@ add_executable(MiniPhotoShop
         ${UI_HEADERS}
         ${UIC_SOURCES}
         ${RCC_SOURCES}
+        ${SRC_LIST}
         )
 
 target_link_libraries(${TARGET_NAME} ${LIBRARIES})

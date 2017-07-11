@@ -14,10 +14,9 @@ A light and simple mini photoshop.
     3. Click the `run` button and enjoy the Mini PhotoShop.
     
 - use CMake
-    1. Copy the CMakeLists.txt.example and rename it to CMakeLists.txt.
-    2. Run `cmake .` in terminal.
-    3. Run `make` in terminal.
-    4. Open the executable file and enjoy the Mini PhotoShop.
+    1. Run `cmake .` in terminal.
+    2. Run `make` in terminal.
+    3. Open the executable file and enjoy the Mini PhotoShop.
 
 # Update Logs
 - `v1.0` Add *draw line*, *draw ellipse*, *change pen color*, *change pen weight*

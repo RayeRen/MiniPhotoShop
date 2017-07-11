@@ -33,6 +33,7 @@ public:
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
 private:
+
    const QImage *image;
    const Pen* pen;
    const Brush* brush;
@@ -46,9 +47,10 @@ private:
 
    int mouseLastX,mouseLastY,mouseX,mouseY;
    int realWidth,realHeight;
+
 signals:
-   void StateChanged();
-   void CursorMove(int,int);
+    void StateChanged();
+    void CursorMove(int,int);
 };
 
 #endif // IMAGEWIDGET_H

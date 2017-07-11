@@ -137,6 +137,22 @@ void MainWindow::update(Params params)
     case NOTIFY::NO_LAYOUT_SELECTED:
         QMessageBox::information(this,QStringLiteral("提示"),QStringLiteral("请在右侧图层列表选择需要操作的图层"));
         break;
+    case NOTIFY::CLEAR:
+        qDebug()<<"Notify clear View";
+        ui->MainDisplayWidget->update();
+        int count=ui->layoutListWidget->count();
+        disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        ui->layoutListWidget->clear();
+        /*
+        for(int i=count-1;i>=0;i--){
+            QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(i);
+            qDebug()<<"Remove:"<<i;
+            ui->layoutListWidget->removeItemWidget(deletedWidget);
+            delete deletedWidget;
+        }*/
+        connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        qDebug()<<"Remove all "<<ui->layoutListWidget->count();
+        break;
     }
 }
 
@@ -278,7 +294,6 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_undo->text())
     {
-        qDebug()<<"begin undo";
         Params params;
         undoCommand->setParams(params);
         undoCommand->exec();
@@ -286,7 +301,6 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_redo->text())
     {
-        qDebug()<<"begin redo";
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();
@@ -314,22 +328,22 @@ void MainWindow::StateChanged()
     case STATE::DRAW_LINE:
         ui->action_drawLine->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-         UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定直线的终点")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定直线的终点")));
         break;
     case STATE::DRAW_ELLIPSE_INIT:
         ui->action_drawEllipse->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-         UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
         break;
     case STATE::DRAW_ELLIPSE:
         ui->action_drawEllipse->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-         UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定椭圆的长轴与短轴")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定椭圆的长轴与短轴")));
         break;
     case STATE::DRAW_RECT_INIT:
         ui->action_drawRect->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
         break;
     case STATE::DRAW_RECT:
         ui->action_drawRect->setChecked(true);
@@ -344,7 +358,7 @@ UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第
     case STATE::MOVE:
         ui->MainDisplayWidget->setCursor(Qt::ClosedHandCursor);
         ui->action_move->setChecked(true);
-UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层")));
         break;
 
     case STATE::SCALE_INIT:
@@ -352,20 +366,20 @@ UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层
         ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
         UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层")));
         break;
-case STATE::SCALE:
+    case STATE::SCALE:
         ui->action_scale->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-      UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以缩放图层")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以缩放图层")));
         break;
     case STATE::ROTATE_INIT:
         ui->action_rotate->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
         break;
-        case STATE::ROTATE:
+    case STATE::ROTATE:
         ui->action_rotate->setChecked(true);
         ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-  UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下并水平移动鼠标以旋转图层")));
+        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下并水平移动鼠标以旋转图层")));
         break;
     }
     QWidget::update();
@@ -466,7 +480,7 @@ void MainWindow::UpdateCursorPosition(int x,int y)
         QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
         ui->statusBar->showMessage(messageA);
     }
-     else
+    else
         ui->statusBar->showMessage(statusBarInfo);
 }
 
@@ -483,5 +497,5 @@ void MainWindow::UpdateStatusBarInfo(QString info)
 void MainWindow::CanvasPopMenuShow(const QPoint)
 {
     qDebug()<<"POPSHOW";
-     canvasPopMenu->exec(QCursor::pos());
+    canvasPopMenu->exec(QCursor::pos());
 }
