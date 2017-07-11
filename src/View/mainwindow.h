@@ -1,13 +1,32 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include "../Constants.h"
 #include "../Common/DataStructure.h"
 #include <QMainWindow>
 #include "../Common/Observer.h"
 #include "../Common/BaseCommand.h"
-#include "../View/imagewidget.h"
-
+#include "imagewidget.h"
+#include "statemanager.h"
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QFileDialog>
+#include <QString>
+/*
+class BaseState;
+class DrawLineInitState;
+class DrawLineState;
+class DrawEllipseInitState;
+class DrawEllipseState;
+class DrawRectInitState;
+class DrawRectState;
+class MoveInitState;
+class MoveState;
+class ScaleInitState;
+class ScaleState;
+class RotateInitState;
+class RotateState;
+class StateCommonAction;
+*/
 namespace Ui {
     class MainWindow;
 }
@@ -48,6 +67,21 @@ public:
     void ConnectQListWidget();
     void DisConnentQListWidget();
 
+    friend class BaseState;
+    friend class DrawLineInitState;
+    friend class DrawLineState;
+    friend class DrawEllipseInitState;
+    friend class DrawEllipseState;
+    friend class DrawRectInitState;
+    friend class DrawRectState;
+    friend class MoveInitState;
+    friend class MoveState;
+    friend class ScaleInitState;
+    friend class ScaleState;
+    friend class RotateInitState;
+    friend class RotateState;
+    friend class StateCommonAction;
+
 private:
     Ui::MainWindow *ui;
     const Pen* pen;
@@ -62,7 +96,7 @@ private:
      layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
      ;
     QMenu* canvasPopMenu,*listPopMenu;
-    friend class BaseState;
+
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();

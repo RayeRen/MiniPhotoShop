@@ -1,5 +1,4 @@
 #include "imagewidget.h"
-#include <cmath>
 #include <QDebug>
 
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
@@ -17,6 +16,9 @@ void ImageWidget::paintEvent(QPaintEvent *event)
     {
         p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
     }
+    StateManager::Run(EVENT::CANVAS_REPAINT);
+    return;
+    //DELETE_BEGIN
     switch(*state)
     {
     case STATE::INIT:break;
@@ -59,6 +61,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
         }
         break;
     }
+    //DELETE_END
 }
 
 void ImageWidget::ClearImage()
@@ -77,6 +80,11 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     if(event->button()!=Qt::LeftButton)
         return;
     emit CursorMove(event->localPos().x(),event->localPos().y());
+    Params params;
+    params.setInts({event->localPos().x(),event->localPos().y()});
+    StateManager::Run(EVENT::MOUSE_LEFT_PRESSED,params);
+    return;
+    //DELETE_BEGIN
     switch(*state)
     {
     case STATE::DRAW_LINE_INIT:
@@ -101,7 +109,7 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         *state=STATE::MOVE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
-        qDebug()<<"begin move";
+
         Params params;
         params.setType(COMMAND::LAYOUT_CHANGEBEGIN);
         layoutTransNotifyCommand->setParams(params);
@@ -136,27 +144,30 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         break;
     }
     update();
+    //DELETE_END
 }
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-     emit CursorMove(-1,-1);
+    emit CursorMove(-1,-1);
+    StateManager::Run(EVENT::MOUSE_LEFT_RELEASED);
     int centerX,centerY;
     Params para;
+
     switch(*state)
     {
     case STATE::DRAW_LINE:
         *state=STATE::DRAW_LINE_INIT;
         emit StateChanged();
         //Params para;
-        qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
+
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
         para.setInts({centerX,centerY,mouseLastX-centerX,
                       mouseLastY-centerY,mouseX-centerX,
                       mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
-        qDebug()<<"Finish Draw Line";
+
         break;
     case STATE::DRAW_ELLIPSE:
         *state=STATE::DRAW_ELLIPSE_INIT;
@@ -206,6 +217,11 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 void ImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
      emit CursorMove(event->localPos().x(),event->localPos().y());
+
+    Params params;
+    params.setInts({event->localPos().x(),event->localPos().y()});
+    StateManager::Run(EVENT::MOUSE_MOVE,params);
+    return;
     switch(*state)
     {
     case STATE::MOVE:

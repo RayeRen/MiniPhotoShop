@@ -1,7 +1,5 @@
 #ifndef BASESTATE_H
 #define BASESTATE_H
-#include "../mainwindow.h"
-#include "../imagewidget.h"
 #include "../../Constants.h"
 #include "../../Common/Params.h"
 
@@ -13,4 +11,4 @@ public:
     int GetNumber(){return number;}
 };
 
-#ENDIF
+#endif
