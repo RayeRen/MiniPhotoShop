@@ -40,5 +40,17 @@ CMakeLists.txt.user*
 # Clion
 .idea
 cmake-build-debug
-CMakeLists.txt
 bin/
+
+### CMake template
+CMakeLists.txt
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
