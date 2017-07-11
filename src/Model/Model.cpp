@@ -7,10 +7,7 @@
 #include <iostream>
 #include <fstream>
 Model::Model(){
-    NowDoneIndex=-1;
-    MaxDoneIndex=-1;
-    ChangeBegin=0;
-    ChangeLayout=-1;
+    ClearModel();
 }
 
 void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,double y2)
@@ -125,6 +122,7 @@ void Model::DeleteLayout(int LayoutIndex){
      {
          layouts.list.clear();
      }
+     clearDoneEvent();
  }
 
  bool Model::isProjectEmpty()const
@@ -134,8 +132,7 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::newProject()
  {
-     if(!isProjectEmpty())
-         ClearModel();
+     ClearModel();
  }
 
  void Model::saveProject(string path)const
@@ -372,8 +369,7 @@ void Model::DeleteLayout(int LayoutIndex){
      unsigned char R, G, B;
      double scaleX, scaleY, angle;
 
-     if(!isProjectEmpty())
-         ClearModel();
+     ClearModel();
 
      in.open(path, ios::in | ios::binary);
      if(!in)
@@ -598,7 +594,67 @@ void Model::DeleteLayout(int LayoutIndex){
     params.setInts({(int)layouts.list.size()-1});
     notify(params);
  }
+ void Model::PixmapFilter(Params params){
+     //ints的第0个是layoutindex.
+     int type=params.getType();
+     vector<int> ints=params.getInts();
+     vector<double> doubles=params.getDoubles();
+     int layoutindex=ints[0];
+     if(layoutindex<0)return;
+     if(layouts.list.at(layoutindex)->getType()!=SHAPE::PIXMAP)return;
+     shared_ptr<Pixmap> pic(static_pointer_cast<Pixmap>(layouts.list.at(layoutindex)));
+     shared_ptr<BaseShape> tempPic(NewBaseShape(layouts.list.at(layoutindex)));
+     if(pic==nullptr)return;
+     switch(type){
+     case PIXMAP::LAPLACIANENHANCE:{
+         int size;
+         size=ints[0];
+         double* conv=NULL;
+         if(size>0){
+            conv=new double[size*size];
+            double *nowconv=conv;
+            for(int i=0;i<size;i++){
+                for(int j=0;j<size;j++){
+                    *(nowconv++)=doubles[i*size+j];
+                }
+            }
+         }else{
 
+         }
+         pic->LaplacianEnhance(conv,size);
+     }
+         break;
+     case PIXMAP::BILATERALFILTERING:
+         pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
+         break;
+     case PIXMAP::HISTOEQUALIZING:
+         pic->HistoEqualizing();
+         break;
+     case PIXMAP::INVERSECOLOR:
+         pic->InverseColor();
+         break;
+     case PIXMAP::LOGOPERATION:
+         pic->LogOperation();
+         break;
+     default:
+         return;
+         break;
+     }
+     addDoneEvent(COMMAND::MODIFY,layoutindex,NewBaseShape(layouts.list.at(layoutindex)),tempPic);
+     Params newparams;
+     newparams.setType(NOTIFY::UPDATE_IMAGE);
+     newparams.setInts({(int)layoutindex});
+     notify(newparams);
+
+ }
+ void Model::clearDoneEvent(){
+     NowDoneIndex=-1;
+     MaxDoneIndex=-1;
+     ChangeBegin=0;
+     ChangeLayout=-1;
+     tempShape=nullptr;
+     DoneList.clear();
+ }
  void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape){
     //delete ->before valid create ->after valid modify before after valid
      //add an event
