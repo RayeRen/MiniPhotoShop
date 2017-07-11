@@ -139,7 +139,7 @@ void Model::DeleteLayout(int LayoutIndex){
  {
      fstream out;
      int i;
-     int num = layouts.list.capacity() - 1;
+     int num = layouts.list.capacity();
 
      out.open(path, ios::out | ios::binary);
      if(!out)
@@ -149,6 +149,7 @@ void Model::DeleteLayout(int LayoutIndex){
 
      string head("This is a mpsd project file");
      out.write(head.c_str(), head.size());
+
      for(i = 0; i < num; i++)
      {
          int type = layouts.list[i]->getType();
