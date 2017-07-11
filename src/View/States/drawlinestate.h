@@ -9,6 +9,7 @@ public:
     DrawLineState():BaseState(STATE::DRAW_LINE){}
     virtual int Process(int event, Params params)
     {
+        qDebug()<<"CANVAS_DRAWLINE_BEGIN";
         switch(event)
         {
         case EVENT::ACTION_TRIGGERED:
@@ -16,6 +17,7 @@ public:
             break;
         case EVENT::CANVAS_REPAINT:
         {
+            qDebug()<<"CANVAS_DRAWLINE_BEGIN";
             MainWindow* pMainWindow=StateManager::GetpMainWindow();
             QPainter p(pMainWindow->ui->MainDisplayWidget);
             p.setRenderHint(QPainter::Antialiasing, true);

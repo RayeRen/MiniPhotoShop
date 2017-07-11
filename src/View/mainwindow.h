@@ -47,6 +47,7 @@ public:
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
     void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand);
+    void setPixmapFilterCommand(const shared_ptr<BaseCommand> &pixmapFilterCommand){this->pixmapFilterCommand=pixmapFilterCommand;}
 
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
     void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
@@ -89,11 +90,11 @@ private:
     const QImage* displayImage;
     QString statusBarInfo;
     int cursorX,cursorY;
-    int state;
+    int state,ifPixmap,selectedLayout;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
-     layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
+     pixmapFilterCommand,layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
      ;
     QMenu* canvasPopMenu,*listPopMenu;
 

@@ -40,6 +40,7 @@ public:
     const shared_ptr<BaseCommand> &getDeleteLayoutCommand()const{return deleteLayoutCommand;}
     const shared_ptr<BaseCommand> &getSaveAsPictureCommand()const{return saveAsPictureCommand;}
     const shared_ptr<BaseCommand> &getLayoutOrderChangeCommand()const{return layoutOrderChangeCommand;}
+    const shared_ptr<BaseCommand> &getPixmapFilterCommand()const{return pixmapFilterCommand;}
     virtual void update(Params params);
 
     void ClearViewModel();
@@ -64,7 +65,7 @@ private:
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
     newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
     addPicCommand,layoutTransCommand,undoCommand,redoCommand,layoutTransNotifyCommand,
-    deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
+    deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand,pixmapFilterCommand
     ;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;

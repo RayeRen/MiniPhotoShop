@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     displayImage=NULL;
     cursorX=-1;
     cursorY=-1;
+    ifPixmap=0;
     ui->setupUi(this);
     ui->MainDisplayWidget->SetState(&state);
 
@@ -162,6 +163,13 @@ void MainWindow::update(Params params)
         ui->layoutListWidget->clear();
 
         break;
+    case NOTIFY::IF_LAYOUT_PIXMAP:
+    {
+        vector<int> ints=params.getInts();
+        ifPixmap=ints[0];
+    }
+        break;
+
     }
     ConnectQListWidget();
 }
@@ -537,6 +545,5 @@ void MainWindow::CanvasPopMenuShow(const QPoint)
 
 void MainWindow::ListPopMenuShow(const QPoint)
 {
-    qDebug()<<"LISTPOP";
     listPopMenu->exec(QCursor::pos());
 }

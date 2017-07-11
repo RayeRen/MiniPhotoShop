@@ -229,4 +229,53 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         pMainWindow->layoutOrderChangeCommand->exec();
         return state;
     }
+    if(actionText==pMainWindow->ui->action_inverse->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params params;
+            params.setType(PIXMAP::INVERSECOLOR);
+            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+
+            pMainWindow->pixmapFilterCommand->setParams(params);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+             QMessageBox::critical(pMainWindow,QStringLiteral("错误"),QStringLiteral("请选择一个位图图层以进行滤镜操作"));
+
+        return state;
+    }
+    if(actionText==pMainWindow->ui->action_histoEqu->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params params;
+            params.setType(PIXMAP::HISTOEQUALIZING);
+            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+
+            pMainWindow->pixmapFilterCommand->setParams(params);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+             QMessageBox::critical(pMainWindow,QStringLiteral("错误"),QStringLiteral("请选择一个位图图层以进行滤镜操作"));
+
+        return state;
+    }
+    if(actionText==pMainWindow->ui->action_logOper->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params params;
+            params.setType(PIXMAP::LOGOPERATION);
+            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+
+            pMainWindow->pixmapFilterCommand->setParams(params);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+             QMessageBox::critical(pMainWindow,QStringLiteral("错误"),QStringLiteral("请选择一个位图图层以进行滤镜操作"));
+
+        return state;
+    }
+    return state;
 }

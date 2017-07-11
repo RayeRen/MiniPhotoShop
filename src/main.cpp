@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
     pMainWindows->setDeleteLayoutCommand(pViewModel->getDeleteLayoutCommand());
     pMainWindows->setSaveAsPictureCommand(pViewModel->getSaveAsPictureCommand());
     pMainWindows->setLayoutOrderChangeCommand(pViewModel->getLayoutOrderChangeCommand());
+     pMainWindows->setPixmapFilterCommand(pViewModel->getPixmapFilterCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

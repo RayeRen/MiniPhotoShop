@@ -143,13 +143,26 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>562</width>
-           <height>636</height>
+           <width>822</width>
+           <height>822</height>
           </rect>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="ImageWidget" name="MainDisplayWidget" native="true"/>
+           <widget class="ImageWidget" name="MainDisplayWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>800</width>
+              <height>800</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>800</width>
+              <height>800</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -287,10 +300,19 @@
     <addaction name="action_layoutDown"/>
     <addaction name="action_deleteLayout"/>
    </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>滤镜</string>
+    </property>
+    <addaction name="action_inverse"/>
+    <addaction name="action_histoEqu"/>
+    <addaction name="action_logOper"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_4"/>
    <addaction name="menu_5"/>
+   <addaction name="menu_6"/>
    <addaction name="menu_3"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -490,6 +512,21 @@
    </property>
    <property name="text">
     <string>下移图层</string>
+   </property>
+  </action>
+  <action name="action_inverse">
+   <property name="text">
+    <string>反色</string>
+   </property>
+  </action>
+  <action name="action_histoEqu">
+   <property name="text">
+    <string>直方图均衡</string>
+   </property>
+  </action>
+  <action name="action_logOper">
+   <property name="text">
+    <string>自动亮度调整</string>
    </property>
   </action>
  </widget>
