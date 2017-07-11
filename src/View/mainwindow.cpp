@@ -214,15 +214,33 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_newCanvas->text()){
         //New Project
-
+        newProjectCommand->exec();
     }
     if(action->text()==ui->action_saveCanvas->text()){
         //Save Project
-
+        QFileDialog fileDialog(this);
+        QString aimProjectFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
+        if(!aimProjectFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimProjectFileName.toStdString()});
+            saveProjectCommand->setParams(params);
+            saveProjectCommand->exec();
+        }
     }
     if(action->text()==ui->action_saveAsPic->text()){
         //Save Picture
+        QFileDialog fileDialog(this);
+        QString aimPicFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
+        if(!aimPicFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimPicFileName.toStdString()});
+            saveAsPictureCommand->setParams(params);
+            saveAsPictureCommand->exec();
+        }
     }
+
     if(action->text()==ui->action_move->text())
     {
         state=STATE::MOVE_INIT;
@@ -246,8 +264,17 @@ void MainWindow::menuTriggered(QAction* action)
 
     }
     if(action->text()==ui->action_help->text()){
-        //temporal use to test undo redo
-
+        //temporal use to test load Project
+        //Load Project
+        QFileDialog fileDialog(this);
+        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
+        if(!aimProjectFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimProjectFileName.toStdString()});
+            loadProjectCommand->setParams(params);
+            loadProjectCommand->exec();
+        }
     }
     if(action->text()==ui->action_undo->text())
     {
