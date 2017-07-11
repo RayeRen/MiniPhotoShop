@@ -371,7 +371,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     saveAsPictureCommand(shared_ptr<BaseCommand>(new SaveAsPictureCommand(pModel,shared_ptr<ViewModel>(this)))),
     selectedLayout(-1)
 {
-    displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);
+    displayImage = QImage(QSize(200, 200), QImage::Format_ARGB32);
     backGround=QImage(":/img/img/background.png");
 }
 
@@ -397,6 +397,16 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
     }
+    shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
+    QPainter painter(&(*preview));
+    painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+    painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
+    Params newParams;
+    newParams.setType(NOTIFY::REFRESH_PREVIEW);
+    newParams.setInts({selectedLayout});
+    newParams.setPtrs({shared_ptr<void>(preview)});
+    notify(newParams);
+
     qDebug()<<"Where is the bug";
     Params params;
     params.setType(NOTIFY::DISPLAY_REFRESH);
@@ -411,6 +421,7 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
     newparams.setType(NOTIFY::IF_LAYOUT_PIXMAP);
     newparams.setInts({pixmapflag});
     notify(newparams);
+
 }
 
 void ViewModel::LayoutMove(int x,int y)
