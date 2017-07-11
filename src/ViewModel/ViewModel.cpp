@@ -128,22 +128,38 @@ void ViewModel::update(Params params) {
     case NOTIFY::ADD_IMAGE_FAILED:
         notify(params);
         break;
+    case NOTIFY::CLEAR:{
+        qDebug()<<"clear view model";
+        ClearViewModel();
+        qDebug()<<"ok view model";
+        Params newParams;
+        newParams.setType(NOTIFY::CLEAR);
+        notify(newParams);
+    }
+        break;
     }
 }
+void ViewModel::ClearViewModel(){
+    this->selectedLayout=-1;
+    displayBuffer.clear();
+    RefreshDisplayImage();
+}
+
 void ViewModel::SaveAsPicture(string path)
 {
     QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
     QPainter painter(&outputImage);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
+    //painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     for(int i=0;i<displayBuffer.size();i++)
     {
+
         if(i==selectedLayout)
         {
             QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
             QPainter layoutPainter(&tmpLayout);
 
-            layoutPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
             layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
             shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 
@@ -232,6 +248,7 @@ void ViewModel::RefreshDisplayImage(int i)
 
         QPainter painter(&(*displayBuffer[i]));
         painter.setCompositionMode(QPainter::CompositionMode_Source);
+
         painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
         shared_ptr<BaseShape> baseShape=(layouts->list)[i];
         painter.setRenderHint(QPainter::Antialiasing, true);
