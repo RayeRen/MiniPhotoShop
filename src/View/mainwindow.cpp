@@ -138,7 +138,20 @@ void MainWindow::update(Params params)
         QMessageBox::information(this,QStringLiteral("提示"),QStringLiteral("请在右侧图层列表选择需要操作的图层"));
         break;
     case NOTIFY::CLEAR:
+        qDebug()<<"Notify clear View";
         ui->MainDisplayWidget->update();
+        int count=ui->layoutListWidget->count();
+        disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        ui->layoutListWidget->clear();
+        /*
+        for(int i=count-1;i>=0;i--){
+            QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(i);
+            qDebug()<<"Remove:"<<i;
+            ui->layoutListWidget->removeItemWidget(deletedWidget);
+            delete deletedWidget;
+        }*/
+        connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+        qDebug()<<"Remove all "<<ui->layoutListWidget->count();
         break;
     }
 }

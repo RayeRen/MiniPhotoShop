@@ -132,13 +132,20 @@ void ViewModel::update(Params params) {
         notify(params);
         break;
     case NOTIFY::CLEAR:{
+        qDebug()<<"clear view model";
         ClearViewModel();
+        qDebug()<<"ok view model";
         Params newParams;
         newParams.setType(NOTIFY::CLEAR);
         notify(newParams);
     }
         break;
     }
+}
+void ViewModel::ClearViewModel(){
+    this->selectedLayout=-1;
+    displayBuffer.clear();
+    RefreshDisplayImage();
 }
 void ViewModel::SaveAsPicture(string path){
     displayImage.save(QString(path.c_str()));

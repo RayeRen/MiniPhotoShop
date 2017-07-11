@@ -132,7 +132,11 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::newProject()
  {
+     qDebug()<<"newProject";
      ClearModel();
+     Params params;
+     params.setType(NOTIFY::CLEAR);
+     notify(params);
  }
 
  void Model::saveProject(string path)const
@@ -370,6 +374,9 @@ void Model::DeleteLayout(int LayoutIndex){
      double scaleX, scaleY, angle;
 
      ClearModel();
+     Params params;
+     params.setType(NOTIFY::CLEAR);
+     notify(params);
 
      in.open(path, ios::in | ios::binary);
      if(!in)
