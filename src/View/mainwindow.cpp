@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->layoutListWidget->setIconSize(QSize( SETTINGS::LIST_ICON_SIZE,SETTINGS::LIST_ICON_SIZE));
     //ui->layoutListWidget->insertItem(0,item1);
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+    //ui->layoutListWidget->setSortingEnabled(true);
+
     ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
     ui->MainDisplayWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->MainDisplayWidget,SIGNAL(customContextMenuRequested(const QPoint)),this,SLOT(CanvasPopMenuShow(const QPoint)));
@@ -104,7 +106,7 @@ void MainWindow::update(Params params)
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         vector<int> ints=params.getInts();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ints[0]),ui->layoutListWidget);
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ints[0]));
         qDebug()<<"Add Item"<<ints[0];
         ui->layoutListWidget->insertItem(ints[0],newItem);
     }
