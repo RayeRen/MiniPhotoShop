@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <iostream>
 #include <fstream>
-Model::Model(){
+Model::Model():layoutCount(0){
     ClearModel();
 }
 
@@ -14,7 +14,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
 {
     shared_ptr<Line> pLine;
     layouts.list.push_back(pLine=shared_ptr<Line>(new Line(centerX,
-        centerY,SHAPE::LINE,string("Line"),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
+        centerY,SHAPE::LINE,(QString("图层 %1 线段").arg(++layoutCount)).toStdString(),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
     qDebug()<<centerX<<centerY<<x1<<y1<<x2<<y2;
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Line(*pLine)));
     Params params;
@@ -25,7 +25,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
 void Model::addEllipse(double centerX,double centerY,double a,double b){
     shared_ptr<Ellipse> pEllipse;
     layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(centerX,
-        centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,brush,a,b)));
+        centerY,SHAPE::ELLIPSE,(QString("图层 %1 椭圆").arg(++layoutCount)).toStdString(),1.0,1.0,0.0,pen,brush,a,b)));
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Ellipse(*pEllipse)));
 
     Params params;
@@ -38,7 +38,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
 {
     shared_ptr<Rect> pRect;
     layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
-         centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
+         centerY, SHAPE::RECT,(QString("图层 %1 矩形").arg(++layoutCount)).toStdString(),1.0,1.0,0,pen,brush,width,height)));
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Rect(*pRect)));
 
     Params params;
@@ -598,7 +598,7 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::addImage(string fileName)
  {
-     shared_ptr<Pixmap> newImage(new Pixmap(string("image"),fileName));
+     shared_ptr<Pixmap> newImage(new Pixmap((QString("图层 %1 位图").arg(++layoutCount)).toStdString(),fileName));
     if(newImage->GetFormat()==PIXMAP::FMT_NULL)
     {
         Params params;

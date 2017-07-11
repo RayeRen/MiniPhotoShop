@@ -103,6 +103,7 @@ void ViewModel::update(Params params) {
         Params newParams;
         newParams.setType(NOTIFY::NEW_LAYOUT);
         newParams.setInts({ints[0]});
+        newParams.setStrings({(layouts->list)[ints[0]]->getName()});
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
         break;

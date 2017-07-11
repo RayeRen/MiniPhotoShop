@@ -56,7 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->penWidthSlider->setToolTip(QString(QStringLiteral("设置线宽")));
     ui->MainDisplayWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->layoutListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->MainDisplayWidget,SIGNAL(customContextMenuRequested(const QPoint)),this,SLOT(CanvasPopMenuShow(const QPoint)));
+    connect(ui->layoutListWidget,SIGNAL(customContextMenuRequested(const QPoint)),this,SLOT(ListPopMenuShow(const QPoint)));
     canvasPopMenu=new QMenu(ui->MainDisplayWidget);
     canvasPopMenu->addAction(ui->action_drawLine);
     canvasPopMenu->addAction(ui->action_drawRect);
@@ -66,7 +68,14 @@ MainWindow::MainWindow(QWidget *parent) :
     canvasPopMenu->addAction(ui->action_rotate);
     canvasPopMenu->addAction(ui->action_undo);
     canvasPopMenu->addAction(ui->action_redo);
+    listPopMenu=new QMenu(ui->layoutListWidget);
+    listPopMenu->addAction(ui->action_layoutUp);
+    listPopMenu->addAction(ui->action_layoutDown);
+    listPopMenu->addAction(ui->action_deleteLayout);
 
+    connect(ui->layoutUpToolButton,SIGNAL(pressed()),ui->action_layoutUp,SLOT(trigger()));
+    connect(ui->layoutDownToolButton,SIGNAL(pressed()),ui->action_layoutDown,SLOT(trigger()));
+    connect(ui->layoutDeleteToolButton,SIGNAL(pressed()),ui->action_deleteLayout,SLOT(trigger()));
 
 }
 
@@ -112,9 +121,9 @@ void MainWindow::update(Params params)
     {
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         vector<int> ints=params.getInts();
+        vector<string> strings=params.getStrings();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ints[0]));
-        qDebug()<<"Add Item"<<ints[0];
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString::fromStdString(strings[0]));
         ui->layoutListWidget->insertItem(ints[0],newItem);
     }
         break;
@@ -148,20 +157,11 @@ void MainWindow::update(Params params)
         QMessageBox::information(this,QStringLiteral("提示"),QStringLiteral("请在右侧图层列表选择需要操作的图层"));
         break;
     case NOTIFY::CLEAR:
-        qDebug()<<"Notify clear View";
         ui->MainDisplayWidget->update();
-        int count=ui->layoutListWidget->count();
-        //disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
+
+
         ui->layoutListWidget->clear();
-        /*
-        for(int i=count-1;i>=0;i--){
-            QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(i);
-            qDebug()<<"Remove:"<<i;
-            ui->layoutListWidget->removeItemWidget(deletedWidget);
-            delete deletedWidget;
-        }*/
-        //connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
-        qDebug()<<"Remove all "<<ui->layoutListWidget->count();
+
         break;
     }
     ConnectQListWidget();
@@ -287,21 +287,11 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_aboutPro->text())
     {
-        //temporal use to test move up
-        qDebug()<<"Move Up Go!!!";
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_UP);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
+        QMessageBox::about(NULL, "关于","Mini PhotoShop\nPowered By Qt5");
     }
     if(action->text()==ui->action_help->text())
     {
-        //temporal use to test move down
-        qDebug()<<"Move Down Go!!!";
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_DOWN);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
+
     }
     if(action->text()==ui->action_undo->text())
     {
@@ -333,6 +323,20 @@ void MainWindow::menuTriggered(QAction* action)
     {
         //删除图层
         deleteLayoutCommand->exec();
+    }
+    if(action->text()==ui->action_layoutUp->text())
+    {
+        Params params;
+        params.setType(COMMAND::LAYOUT_ORDER_UP);
+        layoutOrderChangeCommand->setParams(params);
+        layoutOrderChangeCommand->exec();
+    }
+    if(action->text()==ui->action_layoutDown->text())
+    {
+        Params params;
+        params.setType(COMMAND::LAYOUT_ORDER_DOWN);
+        layoutOrderChangeCommand->setParams(params);
+        layoutOrderChangeCommand->exec();
     }
 }
 
@@ -525,6 +529,11 @@ void MainWindow::UpdateStatusBarInfo(QString info)
 
 void MainWindow::CanvasPopMenuShow(const QPoint)
 {
-    qDebug()<<"POPSHOW";
     canvasPopMenu->exec(QCursor::pos());
+}
+
+void MainWindow::ListPopMenuShow(const QPoint)
+{
+    qDebug()<<"LISTPOP";
+    listPopMenu->exec(QCursor::pos());
 }

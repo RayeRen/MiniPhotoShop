@@ -61,7 +61,7 @@ private:
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
      layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
      ;
-    QMenu* canvasPopMenu;
+    QMenu* canvasPopMenu,*listPopMenu;
     friend class BaseState;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
@@ -75,6 +75,7 @@ private:
      void UpdateCursorPosition(int,int);
      void UpdateStatusBarInfo(QString);
      void CanvasPopMenuShow(const QPoint);
+     void ListPopMenuShow(const QPoint);
 };
 
 #endif // MAINWINDOW_H
