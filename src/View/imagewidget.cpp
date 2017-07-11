@@ -5,7 +5,7 @@
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {
     image=new QImage;
-    viewPortScale=1.0;
+    //viewPortScale=1.0;
     setCursor(QCursor(Qt::CrossCursor));
 }
 
