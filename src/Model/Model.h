@@ -15,23 +15,42 @@ private:
     Pen pen;
     Brush brush;
     Layouts layouts;
+
+    int ChangeBegin,ChangeLayout;
+    shared_ptr<BaseShape> tempShape;
     int NowDoneIndex,MaxDoneIndex;
     vector<DoneInfo> DoneList;
     void ClearModel();
 public:
     Model();
-    void addLine(){
-    }
+    void addLine(){}
     void addLine(double centerX,double centerY,double x1,double y1,double x2,double y2);
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
+    void LayoutChange(int Change,int LayoutIndex);
+    void DeleteLayout(int LayoutIndex){
+        if(LayoutIndex<0)return;
+        vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+LayoutIndex;
+        addDoneEvent(COMMAND::DELETE,LayoutIndex,nullptr,NewBaseShape(layouts.list.at(LayoutIndex)));
+
+        layouts.list.erase(it);
+        qDebug()<<"Model Delete is Over .Next Delete";
+        Params params;
+        params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+        params.setInts({(int)LayoutIndex});
+        notify(params);
+    }
+
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
+    void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);
+    shared_ptr<BaseShape> NewBaseShape(shared_ptr<BaseShape> shape);
+
     void redo();
     void undo();
-    bool newProject(bool isSavedPre);
-    bool saveProject(string path)const;
-    bool loadProject(string path);
+    void newProject();
+    void saveProject(string path)const;
+    void loadProject(string path);
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}

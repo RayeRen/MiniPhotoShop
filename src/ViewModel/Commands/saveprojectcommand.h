@@ -8,13 +8,11 @@ class SaveProjectCommand:public BaseCommand
 {
 public:
     SaveProjectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
-    void exec(){
 
-    }
-
-    bool exec(string path)
+    void exec()
     {
-        return pModel->saveProject(path);
+        string path(params.getStrings()[0]);
+        pModel->saveProject(path);
     }
 };
 

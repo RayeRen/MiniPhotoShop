@@ -27,6 +27,8 @@ public:
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand);
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
+    void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand);
+
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
     void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
     void setLoadProjectCommand(const shared_ptr<BaseCommand> &loadProjectCommand){this->loadProjectCommand=loadProjectCommand;}
@@ -34,7 +36,7 @@ public:
     void setSaveProjectCommand(const shared_ptr<BaseCommand> &saveProjectCommand){this->saveProjectCommand=saveProjectCommand;}
     void setUndoCommand(const shared_ptr<BaseCommand> &undoCommand){this->undoCommand=undoCommand;}
     void setRedoCommand(const shared_ptr<BaseCommand> &redoCommand){this->redoCommand=redoCommand;}
-
+    void setDeleteLayoutCommand(const shared_ptr<BaseCommand> &deleteLayoutCommand){this->deleteLayoutCommand=deleteLayoutCommand;}
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -50,8 +52,10 @@ private:
     int state;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
-     loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand;
-QMenu* canvasPopMenu;
+     loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
+     layoutTransNotifyCommand,deleteLayoutCommand
+     ;
+    QMenu* canvasPopMenu;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();

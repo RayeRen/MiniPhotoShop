@@ -61,7 +61,9 @@ HEADERS += \
     src/ViewModel/Commands/addpiccommand.h \
     src/ViewModel/Commands/redocommand.h \
     src/ViewModel/Commands/undocommand.h \
-    src/ViewModel/Commands/layouttransformcommand.h
+    src/ViewModel/Commands/layouttransformcommand.h \
+    src/ViewModel/Commands/layouttransformnotifycommand.h \
+    src/ViewModel/Commands/deletelayoutcommand.h
 
 FORMS += \
     src/View/mainwindow.ui

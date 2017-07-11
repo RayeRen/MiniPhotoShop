@@ -29,21 +29,25 @@ public:
     void setAddRectCommand(const shared_ptr<BaseCommand> &addRectCommand){this->addRectCommand=addRectCommand;}
     void setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCommand){this->newCanvasCommand=newCanvasCommand;}
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand){this->layoutTransCommand=layoutTransCommand;}
+    void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){this->layoutTransNotifyCommand=layoutTransNotifyCommand;}
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
 private:
-    const QImage *image;
-    const Pen* pen;
-    const Brush* brush;
-    double viewPortScale;
-    int* state;
-    shared_ptr<BaseCommand> addLineCommand;
-    shared_ptr<BaseCommand> addEllipseCommand;
-    shared_ptr<BaseCommand> newCanvasCommand;
-    shared_ptr<BaseCommand> addRectCommand;
-    shared_ptr<BaseCommand> layoutTransCommand;
-    int mouseLastX,mouseLastY,mouseX,mouseY;
-    int realWidth,realHeight;
+
+   const QImage *image;
+   const Pen* pen;
+   const Brush* brush;
+   int* state;
+   shared_ptr<BaseCommand> addLineCommand;
+   shared_ptr<BaseCommand> addEllipseCommand;
+   shared_ptr<BaseCommand> newCanvasCommand;
+   shared_ptr<BaseCommand> addRectCommand;
+   shared_ptr<BaseCommand> layoutTransCommand;
+   shared_ptr<BaseCommand> layoutTransNotifyCommand;
+
+   int mouseLastX,mouseLastY,mouseX,mouseY;
+   int realWidth,realHeight;
+
 signals:
     void StateChanged();
     void CursorMove(int,int);

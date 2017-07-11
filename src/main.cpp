@@ -43,12 +43,13 @@ int main(int argc, char *argv[])
     pMainWindows->setChangeSelectedCommand(pViewModel->getChangeSelectedCommand());
     pMainWindows->setAddPicCommand(pViewModel->getAddPicCommand());
     pMainWindows->setLayoutTransCommand(pViewModel->getLayoutTransCommand());
+    pMainWindows->setLayoutTransNotifyCommand(pViewModel->getLayoutTransNotifyCommand());
     pMainWindows->setLoadProjectCommand(pViewModel->getloadProjectCommand());
     pMainWindows->setSaveProjectCommand(pViewModel->getsaveProjectCommand());
     pMainWindows->setNewProjectCommand(pViewModel->getNewProjectCommand());
     pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
     pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
-
+    pMainWindows->setDeleteLayoutCommand(pViewModel->getDeleteLayoutCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

@@ -102,14 +102,17 @@ void MainWindow::update(Params params)
     case NOTIFY::NEW_LAYOUT:
     {
         vector<shared_ptr<void>> ptrs=params.getPtrs();
+        vector<int> ints=params.getInts();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ui->layoutListWidget->count()),ui->layoutListWidget);
-        ui->layoutListWidget->insertItem(ui->layoutListWidget->count()-1,newItem);
+        QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QStringLiteral("图层 %1").arg(ints[0]),ui->layoutListWidget);
+        qDebug()<<"Add Item"<<ints[0];
+        ui->layoutListWidget->insertItem(ints[0],newItem);
     }
         break;
     case NOTIFY::DELETE_LAYOUT:{
         vector<int> ints=params.getInts();
         qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
+        ui->layoutListWidget->setCurrentRow(ints[1]);
         QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(ints[0]);
         qDebug()<<"Remove:"<<ints[0];
         ui->layoutListWidget->removeItemWidget(deletedWidget);
@@ -238,7 +241,8 @@ void MainWindow::menuTriggered(QAction* action)
         StateChanged();
     }
     if(action->text()==ui->action_aboutPro->text()){
-        //temporal use to test undo redo
+        //temporal use to test delete layout
+        deleteLayoutCommand->exec();
 
     }
     if(action->text()==ui->action_help->text()){
@@ -247,6 +251,7 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_undo->text())
     {
+        qDebug()<<"begin undo";
         Params params;
         undoCommand->setParams(params);
         undoCommand->exec();
@@ -254,6 +259,7 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_redo->text())
     {
+        qDebug()<<"begin redo";
         Params params;
         redoCommand->setParams(params);
         redoCommand->exec();
@@ -419,6 +425,10 @@ void MainWindow::ListItemSelectionChanged()
 void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand)
 {
     ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
+}
+void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){
+    ui->MainDisplayWidget->setLayoutTransNotifyCommand(layoutTransNotifyCommand);
+
 }
 
 void MainWindow::UpdateCursorPosition(int x,int y)

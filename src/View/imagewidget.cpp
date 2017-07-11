@@ -97,24 +97,42 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         mouseX=mouseLastX=event->localPos().x();
         mouseY=mouseLastY=event->localPos().y();
         break;
-    case STATE::MOVE_INIT:
+    case STATE::MOVE_INIT:{
         *state=STATE::MOVE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
+        qDebug()<<"begin move";
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEBEGIN);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();
         emit StateChanged();
 
+    }
         break;
-    case STATE::SCALE_INIT:
+    case STATE::SCALE_INIT:{
         *state=STATE::SCALE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEBEGIN);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();
         emit StateChanged();
+
+    }
         break;
-    case STATE::ROTATE_INIT:
+    case STATE::ROTATE_INIT:{
         *state=STATE::ROTATE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEBEGIN);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();
         emit StateChanged();
+
+    }
         break;
     }
     update();
@@ -138,6 +156,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
                       mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
+        qDebug()<<"Finish Draw Line";
         break;
     case STATE::DRAW_ELLIPSE:
         *state=STATE::DRAW_ELLIPSE_INIT;
@@ -155,18 +174,30 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
         addRectCommand->setParams(para);
         addRectCommand->exec();
         break;
-    case STATE::MOVE:
+    case STATE::MOVE:{
         *state=STATE::MOVE_INIT;
         emit StateChanged();
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEEND);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();}
         break;
 
-    case STATE::SCALE:
+    case STATE::SCALE:{
         *state=STATE::SCALE_INIT;
         emit StateChanged();
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEEND);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();}
         break;
-    case STATE::ROTATE:
+    case STATE::ROTATE:{
         *state=STATE::ROTATE_INIT;
         emit StateChanged();
+        Params params;
+        params.setType(COMMAND::LAYOUT_CHANGEEND);
+        layoutTransNotifyCommand->setParams(params);
+        layoutTransNotifyCommand->exec();}
         break;
     }
     update();
