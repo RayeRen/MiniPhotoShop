@@ -65,7 +65,10 @@ HEADERS += \
     src/ViewModel/Commands/layouttransformnotifycommand.h \
     src/ViewModel/Commands/deletelayoutcommand.h \
     src/ViewModel/Commands/pixmapfiltercommand.h \
-    src/ViewModel/Commands/saveaspicturecommand.h
+    src/ViewModel/Commands/saveaspicturecommand.h \
+    src/View/statemanager.h \
+    src/View/States/BaseState.h \
+    src/View/States/initstate.h
 
 FORMS += \
     src/View/mainwindow.ui

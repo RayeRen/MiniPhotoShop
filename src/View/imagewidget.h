@@ -47,7 +47,7 @@ private:
 
    int mouseLastX,mouseLastY,mouseX,mouseY;
    int realWidth,realHeight;
-
+friend class BaseState;
 signals:
     void StateChanged();
     void CursorMove(int,int);

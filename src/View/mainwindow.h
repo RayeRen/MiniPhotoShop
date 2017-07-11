@@ -58,6 +58,7 @@ private:
      layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand
      ;
     QMenu* canvasPopMenu;
+    friend class BaseState;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
