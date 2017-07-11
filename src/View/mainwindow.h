@@ -37,6 +37,8 @@ public:
     void setUndoCommand(const shared_ptr<BaseCommand> &undoCommand){this->undoCommand=undoCommand;}
     void setRedoCommand(const shared_ptr<BaseCommand> &redoCommand){this->redoCommand=redoCommand;}
     void setDeleteLayoutCommand(const shared_ptr<BaseCommand> &deleteLayoutCommand){this->deleteLayoutCommand=deleteLayoutCommand;}
+    void setSaveAsPictureCommand(const shared_ptr<BaseCommand> &saveAsPictureCommand){this->saveAsPictureCommand=saveAsPictureCommand;}
+
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
@@ -53,7 +55,7 @@ private:
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
-     layoutTransNotifyCommand,deleteLayoutCommand
+     layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand
      ;
     QMenu* canvasPopMenu;
  public slots:
