@@ -605,7 +605,8 @@ void Model::DeleteLayout(int LayoutIndex){
      shared_ptr<Pixmap> pic(static_pointer_cast<Pixmap>(layouts.list.at(layoutindex)));
      shared_ptr<BaseShape> tempPic(NewBaseShape(layouts.list.at(layoutindex)));
      if(pic==nullptr)return;
-     switch(type){
+     switch(type)
+     {
      case PIXMAP::LAPLACIANENHANCE:{
          int size;
          size=ints[0];

@@ -234,7 +234,7 @@ void ViewModel::RefreshDisplayImage(int i)
         painter.setCompositionMode(QPainter::CompositionMode_Source);
         painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
         shared_ptr<BaseShape> baseShape=(layouts->list)[i];
-
+        painter.setRenderHint(QPainter::Antialiasing, true);
         painter.translate(baseShape->getPosX(),baseShape->getPosY());
 
         painter.rotate(baseShape->getAngle());
