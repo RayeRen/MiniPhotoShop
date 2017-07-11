@@ -214,14 +214,32 @@ void MainWindow::menuTriggered(QAction* action)
     }
     if(action->text()==ui->action_newCanvas->text()){
         //New Project
-
+        newProjectCommand->exec();
     }
     if(action->text()==ui->action_saveCanvas->text()){
         //Save Project
-
+        QFileDialog fileDialog(this);
+        QString aimProjectFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
+        if(!aimProjectFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimProjectFileName.toStdString()});
+            saveProjectCommand->setParams(params);
+            saveProjectCommand->exec();
+        }
     }
     if(action->text()==ui->action_saveAsPic->text()){
-        //Save Picture
+        //Save Picture temporal use to load project
+        //Load Project
+        QFileDialog fileDialog(this);
+        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
+        if(!aimProjectFileName.isNull())
+        {
+            Params params;
+            params.setStrings({aimProjectFileName.toStdString()});
+            loadProjectCommand->setParams(params);
+            loadProjectCommand->exec();
+        }
     }
     if(action->text()==ui->action_move->text())
     {

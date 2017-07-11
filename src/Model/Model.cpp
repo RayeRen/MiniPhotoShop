@@ -92,6 +92,18 @@ void Model::LayoutChange(int Change,int LayoutIndex){
         }
     }
 }
+void Model::DeleteLayout(int LayoutIndex){
+    if(LayoutIndex<0)return;
+    vector<shared_ptr<BaseShape>>::iterator it=layouts.list.begin()+LayoutIndex;
+    addDoneEvent(COMMAND::DELETE,LayoutIndex,nullptr,NewBaseShape(layouts.list.at(LayoutIndex)));
+
+    layouts.list.erase(it);
+    qDebug()<<"Model Delete is Over .Next Delete";
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+    params.setInts({(int)LayoutIndex});
+    notify(params);
+}
 
  void Model::SetPenColor(unsigned char r,unsigned char g,unsigned char b)
  {

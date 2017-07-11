@@ -307,6 +307,16 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
     Params params;
     params.setType(NOTIFY::DISPLAY_REFRESH);
     notify(params);
+    int pixmapflag=0;
+    if(this->selectedLayout>=0){
+       if( (layouts->list)[this->selectedLayout]->getType()==SHAPE::PIXMAP){
+           pixmapflag=1;
+       }
+    }
+    Params newparams;
+    newparams.setType(NOTIFY::IF_LAYOUT_PIXMAP);
+    newparams.setInts({pixmapflag});
+    notify(newparams);
 }
 
 void ViewModel::LayoutMove(int x,int y)
