@@ -7,7 +7,7 @@
 #include "src/ViewModel/Commands/AddLineCommand.h"
 #include "src/ViewModel/Commands/addellipsecommand.h"
 #include "src/ViewModel/Commands/addpiccommand.h"
-#include "src/ViewModel/Commands/addrectcommand.h"
+#include "src/ViewModel/Commands/AddRectCommand.h"
 #include "src/ViewModel/Commands/newcanvascommand.h"
 #include "src/ViewModel/Commands/penupdatecommand.h"
 #include "src/ViewModel/Commands/brushupdatecommand.h"

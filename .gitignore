@@ -43,7 +43,6 @@ cmake-build-debug
 bin/
 
 ### CMake template
-CMakeLists.txt
 CMakeCache.txt
 CMakeFiles
 CMakeScripts

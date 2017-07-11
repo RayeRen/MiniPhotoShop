@@ -105,18 +105,18 @@ int Pixmap::Load(const QImage &image)
     b = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
     a = (UNUM8*)malloc(sizeof(UNUM8)*width*height);
     format=PIXMAP::FMT_RGB;
-    QColor color;
+    QRgb color;
     unsigned char *pr=r,*pg=g,*pb=b,*pa=a;
 
 
         for(int y=0;y<height;y++)
             for(int x=0;x<width;x++)
         {
-            color=image.pixelColor(QPoint(x,y));
-            *pr++=color.red();
-            *pg++=color.green();
-            *pb++=color.blue();
-            *pa++=color.alpha();
+            color=image.pixel(QPoint(x,y));
+            *pr++=(color>>16)&0x000000FF;
+            *pg++=(color>>8)&0x000000FF;
+            *pb++=color&0x000000FF;
+            *pa++=(color>>24)&0x000000FF;
         }
 }
 
@@ -136,7 +136,7 @@ shared_ptr<QImage> Pixmap::Output()
             color.setGreen(*pg++);
             color.setBlue(*pb++);
             color.setAlpha(*pa++);
-            image->setPixelColor(x,y,color);
+            image->setPixel(QPoint(x,y),color.rgba());
         }
     return image;
 }
