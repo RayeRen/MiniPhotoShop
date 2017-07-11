@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     pMainWindows->setUndoCommand(pViewModel->getUndoCommand());
     pMainWindows->setRedoCommand(pViewModel->getRedoCommand());
     pMainWindows->setDeleteLayoutCommand(pViewModel->getDeleteLayoutCommand());
+    pMainWindows->setSaveAsPictureCommand(pViewModel->getSaveAsPictureCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;

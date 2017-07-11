@@ -20,6 +20,7 @@
 #include "src/ViewModel/Commands/loadprojectcommand.h"
 #include "src/ViewModel/Commands/saveprojectcommand.h"
 #include "src/ViewModel/Commands/deletelayoutcommand.h"
+#include "src/ViewModel/Commands/saveaspicturecommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -131,6 +132,9 @@ void ViewModel::update(Params params) {
         notify(params);
         break;
     }
+}
+void ViewModel::SaveAsPicture(string path){
+    displayImage.save(QString(path.c_str()));
 }
 
 void ViewModel::RefreshDisplayImage(int index) {
@@ -275,6 +279,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
     redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),
     deleteLayoutCommand(shared_ptr<BaseCommand>(new DeleteLayoutCommand(pModel,shared_ptr<ViewModel>(this)))),
+    saveAsPictureCommand(shared_ptr<BaseCommand>(new SaveAsPictureCommand(pModel,shared_ptr<ViewModel>(this)))),
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(800, 600), QImage::Format_ARGB32);
