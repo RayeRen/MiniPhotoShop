@@ -28,37 +28,9 @@ public:
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
+    void addText(int posX,int posY,string text);
     void LayoutTransform(int Change,int LayoutIndex);
-    void LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode=0){
-        if(beforeLayoutIndex<0||beforeLayoutIndex>=layouts.list.size())return;
-        if(afterLayoutIndex<0||afterLayoutIndex>=layouts.list.size())return;
-        if(beforeLayoutIndex==afterLayoutIndex)return;
-        int realafter=afterLayoutIndex;
-        if(afterLayoutIndex>beforeLayoutIndex){
-            realafter++;
-        }
-        vector<shared_ptr<BaseShape>>::iterator beforeit=layouts.list.begin()+beforeLayoutIndex;
-        vector<shared_ptr<BaseShape>>::iterator afterit=layouts.list.begin()+realafter;
-        layouts.list.insert(afterit,*beforeit);
-        Params params;
-        params.setType(NOTIFY::UPDATE_IMAGE_ADD);
-        params.setInts({(int)realafter});
-        notify(params);
-
-        int notifyindex=beforeLayoutIndex;
-        if(notifyindex>=afterLayoutIndex){
-            notifyindex++;
-        }
-        beforeit=layouts.list.begin()+notifyindex;
-        layouts.list.erase(beforeit);
-
-        Params newparams;
-        newparams.setType(NOTIFY::UPDATE_IMAGE_MINUS);
-        newparams.setInts({(int)notifyindex});
-        notify(newparams);
-        if(!mode)addDoneEvent(COMMAND::ORDERCHANGE,afterLayoutIndex,nullptr,nullptr,beforeLayoutIndex);
-
-    }
+    void LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode=0);
 
     void DeleteLayout(int LayoutIndex);
     void PixmapFilter(Params params);

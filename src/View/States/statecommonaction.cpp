@@ -1,4 +1,4 @@
-#include "statecommonaction.h"
+﻿#include "statecommonaction.h"
 #include "../mainwindow.h"
 #include "ui_mainwindow.h"
 int StateCommonAction::ActionTrigged(int state,Params params)
@@ -240,9 +240,12 @@ int StateCommonAction::ActionTrigged(int state,Params params)
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
         }
-        else
-             QMessageBox::critical(pMainWindow,QStringLiteral("错误"),QStringLiteral("请选择一个位图图层以进行滤镜操作"));
+        else{
 
+            QString title=QStringLiteral("错误 ");
+            qDebug()<<title;
+             QMessageBox::critical(pMainWindow,title,QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+        }
         return state;
     }
     if(actionText==pMainWindow->ui->action_histoEqu->text())

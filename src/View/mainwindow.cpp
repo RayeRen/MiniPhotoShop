@@ -146,7 +146,7 @@ void MainWindow::update(Params params)
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
-        if(ui->layoutListWidget->currentRow()!=ints[0])ui->layoutListWidget->setCurrentRow(ints[0]);
+        //if(ui->layoutListWidget->currentRow()!=ints[0])ui->layoutListWidget->setCurrentRow(ints[0]);
         qDebug()<<"item"<<ints[0];
     }
         break;
@@ -211,6 +211,14 @@ void MainWindow::menuTriggered(QAction* action)
     params.setStrings({(action->text()).toStdString()});
     StateManager::Run(EVENT::ACTION_TRIGGERED,params);
     return;
+
+
+
+
+
+
+
+    //----------------------------Unused--------------------------------//
     if(action->text()==ui->action_aboutQt->text())
     {
         QMessageBox::aboutQt(NULL);

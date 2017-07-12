@@ -1,4 +1,4 @@
-#ifndef ADDRECTINITSTATE_H
+﻿#ifndef ADDRECTINITSTATE_H
 #define ADDRECTINITSTATE_H
 #include "BaseState.h"
 class DrawRectInitState:public BaseState

@@ -1,4 +1,4 @@
-#ifndef ADDRECTSTATE_H
+﻿#ifndef ADDRECTSTATE_H
 #define ADDRECTSTATE_H
 #include "BaseState.h"
 class DrawRectState:public BaseState
