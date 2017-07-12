@@ -15,7 +15,7 @@ private:
     Pen pen;
     Brush brush;
     Layouts layouts;
-
+    int layoutCount;
     int ChangeBegin,ChangeLayout;
     shared_ptr<BaseShape> tempShape;
     int NowDoneIndex,MaxDoneIndex;

@@ -1,13 +1,32 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include "../Constants.h"
 #include "../Common/DataStructure.h"
 #include <QMainWindow>
 #include "../Common/Observer.h"
 #include "../Common/BaseCommand.h"
-#include "../View/imagewidget.h"
-
+#include "imagewidget.h"
+#include "statemanager.h"
+#include <QMessageBox>
+#include <QColorDialog>
+#include <QFileDialog>
+#include <QString>
+/*
+class BaseState;
+class DrawLineInitState;
+class DrawLineState;
+class DrawEllipseInitState;
+class DrawEllipseState;
+class DrawRectInitState;
+class DrawRectState;
+class MoveInitState;
+class MoveState;
+class ScaleInitState;
+class ScaleState;
+class RotateInitState;
+class RotateState;
+class StateCommonAction;
+*/
 namespace Ui {
     class MainWindow;
 }
@@ -28,6 +47,7 @@ public:
     void setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCommand);
     void setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTransCommand);
     void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand);
+    void setPixmapFilterCommand(const shared_ptr<BaseCommand> &pixmapFilterCommand){this->pixmapFilterCommand=pixmapFilterCommand;}
 
     void setBrushUpdateCommand(const shared_ptr<BaseCommand> &brushUpdateCommand){this->brushUpdateCommand=brushUpdateCommand;}
     void setChangeSelectedCommand(const shared_ptr<BaseCommand> &changeSelectedCommand){this->changeSelectedCommand=changeSelectedCommand;}
@@ -48,6 +68,21 @@ public:
     void ConnectQListWidget();
     void DisConnentQListWidget();
 
+    friend class BaseState;
+    friend class DrawLineInitState;
+    friend class DrawLineState;
+    friend class DrawEllipseInitState;
+    friend class DrawEllipseState;
+    friend class DrawRectInitState;
+    friend class DrawRectState;
+    friend class MoveInitState;
+    friend class MoveState;
+    friend class ScaleInitState;
+    friend class ScaleState;
+    friend class RotateInitState;
+    friend class RotateState;
+    friend class StateCommonAction;
+
 private:
     Ui::MainWindow *ui;
     const Pen* pen;
@@ -55,14 +90,14 @@ private:
     const QImage* displayImage;
     QString statusBarInfo;
     int cursorX,cursorY;
-    int state;
+    int state,ifPixmap,selectedLayout;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
-     layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
+     pixmapFilterCommand,layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
      ;
-    QMenu* canvasPopMenu;
-    friend class BaseState;
+    QMenu* canvasPopMenu,*listPopMenu;
+
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void StateChanged();
@@ -75,6 +110,7 @@ private:
      void UpdateCursorPosition(int,int);
      void UpdateStatusBarInfo(QString);
      void CanvasPopMenuShow(const QPoint);
+     void ListPopMenuShow(const QPoint);
 };
 
 #endif // MAINWINDOW_H

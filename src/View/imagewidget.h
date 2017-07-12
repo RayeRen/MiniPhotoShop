@@ -7,7 +7,7 @@
 #include "../Common/DataStructure.h"
 #include "../Constants.h"
 #include "../Common/BaseCommand.h"
-
+#include "statemanager.h"
 class ImageWidget : public QWidget
 {
     Q_OBJECT
@@ -47,7 +47,21 @@ private:
 
    int mouseLastX,mouseLastY,mouseX,mouseY;
    int realWidth,realHeight;
+
 friend class BaseState;
+friend class DrawLineInitState;
+friend class DrawLineState;
+friend class DrawEllipseInitState;
+friend class DrawEllipseState;
+friend class DrawRectInitState;
+friend class DrawRectState;
+friend class MoveInitState;
+friend class MoveState;
+friend class ScaleInitState;
+friend class ScaleState;
+friend class RotateInitState;
+friend class RotateState;
+friend class StateCommonAction;
 signals:
     void StateChanged();
     void CursorMove(int,int);

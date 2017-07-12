@@ -22,6 +22,7 @@
 #include "src/ViewModel/Commands/deletelayoutcommand.h"
 #include "src/ViewModel/Commands/saveaspicturecommand.h"
 #include "src/ViewModel/Commands/layoutorderchangecommand.h"
+#include "src/ViewModel/Commands/pixmapfiltercommand.h"
 #include <QPainter>
 #include <QDebug>
 
@@ -103,6 +104,7 @@ void ViewModel::update(Params params) {
         Params newParams;
         newParams.setType(NOTIFY::NEW_LAYOUT);
         newParams.setInts({ints[0]});
+        newParams.setStrings({(layouts->list)[ints[0]]->getName()});
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
         break;
@@ -368,6 +370,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     changeSelectedCommand(shared_ptr<BaseCommand>(new ChangeSelectedCommand(pModel,shared_ptr<ViewModel>(this)))),
     layoutTransCommand(shared_ptr<BaseCommand>(new LayoutTransCommand(pModel,shared_ptr<ViewModel>(this)))),
     layoutTransNotifyCommand(shared_ptr<BaseCommand>(new LayoutTransNotifyCommand(pModel,shared_ptr<ViewModel>(this)))),
+    pixmapFilterCommand(shared_ptr<BaseCommand>(new PixmapFilterCommand(pModel,shared_ptr<ViewModel>(this)))),
 
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
@@ -389,9 +392,8 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
 {
     int oldValue=this->selectedLayout;
     this->selectedLayout=selectedLayout;
-    qDebug()<<"Refresh"<<oldValue;
     RefreshDisplayImage(oldValue);
-    qDebug()<<"Refresh2:"<<selectedLayout;
+
     if(selectedLayout>=0)
         RefreshDisplayImage(selectedLayout);
 

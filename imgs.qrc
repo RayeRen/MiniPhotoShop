@@ -22,5 +22,7 @@
         <file>img/save.png</file>
         <file>img/text.png</file>
         <file>img/add.png</file>
+        <file>img/down.png</file>
+        <file>img/up.png</file>
     </qresource>
 </RCC>
