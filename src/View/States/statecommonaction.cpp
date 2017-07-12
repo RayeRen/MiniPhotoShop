@@ -25,8 +25,8 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_newCanvas->text())
     {
-        int newWidth=QInputDialog::getInt(pMainWindow,"请输入","画布宽度",800,1,3000);
-        int newHeight=QInputDialog::getInt(pMainWindow,"请输入","画布高度",800,1,3000);
+        int newWidth=QInputDialog::getInt(pMainWindow,QStringLiteral("请输入"),QStringLiteral("画布宽度"),800,1,3000);
+        int newHeight=QInputDialog::getInt(pMainWindow,QStringLiteral("请输入"),QStringLiteral("画布高度"),800,1,3000);
         Params params;
         params.setInts({newWidth,newHeight});
         pMainWindow->newCanvasCommand->setParams(params);
