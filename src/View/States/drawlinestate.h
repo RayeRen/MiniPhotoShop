@@ -1,4 +1,4 @@
-#ifndef DRAWLINESTATE_H
+﻿#ifndef DRAWLINESTATE_H
 #define DRAWLINESTATE_H
 
 #include "BaseState.h"
@@ -47,7 +47,7 @@ public:
                           pMainWindow->ui->MainDisplayWidget->mouseY-centerY});
             pMainWindow->ui->MainDisplayWidget->addLineCommand->setParams(para);
            pMainWindow->ui->MainDisplayWidget-> addLineCommand->exec();
-            pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点")));
+            pMainWindow->UpdateStatusBarInfo(QStringLiteral("请按下鼠标以确定直线的起点"));
              pMainWindow->ui->MainDisplayWidget->update();
         }
             return STATE::DRAW_LINE_INIT;

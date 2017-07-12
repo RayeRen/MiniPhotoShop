@@ -767,7 +767,6 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::undo(){
     if(NowDoneIndex>=0){
-        //Now Assume that the insert must be in the last layout.
         DoneInfo nowInfo=DoneList[NowDoneIndex];
         NowDoneIndex--;
         switch(nowInfo.getcommandtype()){

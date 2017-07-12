@@ -158,8 +158,9 @@ void ViewModel::SaveAsPicture(string path)
 {
     QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
     QPainter painter(&outputImage);
-    //painter.setCompositionMode(QPainter::CompositionMode_Source);
+
     painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
+    //painter.setCompositionMode(QPainter::CompositionMode_Source);
     for(int i=0;i<displayBuffer.size();i++)
     {
 
@@ -168,7 +169,7 @@ void ViewModel::SaveAsPicture(string path)
             QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
             QPainter layoutPainter(&tmpLayout);
 
-           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
+            //layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
             layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
             shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 

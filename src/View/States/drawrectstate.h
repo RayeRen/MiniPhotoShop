@@ -55,7 +55,7 @@ public:
           pMainWindow->ui->MainDisplayWidget->addRectCommand->setParams(para);
           pMainWindow->ui->MainDisplayWidget->addRectCommand->exec();
 
-          pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
+          pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点 ")));
       pMainWindow->ui->MainDisplayWidget->update();
        }
           return STATE::DRAW_RECT_INIT;

@@ -20,7 +20,7 @@ public:
             params.setType(COMMAND::LAYOUT_CHANGEEND);
             pMainWindow->ui->MainDisplayWidget->layoutTransNotifyCommand->setParams(params);
             pMainWindow->ui->MainDisplayWidget->layoutTransNotifyCommand->exec();
-            pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以开始移动图层")));
+            pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以开始移动图层 ")));
             pMainWindow->ui->MainDisplayWidget->update();
         }
         return STATE::MOVE_INIT;
