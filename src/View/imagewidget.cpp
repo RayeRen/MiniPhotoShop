@@ -1,21 +1,43 @@
-#include "imagewidget.h"
-#include <cmath>
+﻿#include "imagewidget.h"
 #include <QDebug>
 
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {
     image=new QImage;
+    canvasScale=1.0;
+    realWidth=width();
+    realHeight=height();
     setCursor(QCursor(Qt::CrossCursor));
+    emit NewCanvasScale(canvasScale);
 }
 
 void ImageWidget::paintEvent(QPaintEvent *event)
 {
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
     if(image!=NULL&&!image->isNull())
-    {
-        p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
-    }
+       p.drawImage(QRectF((realWidth-(image->width())*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale),*image,QRectF(0,0,image->width(),image->height()));
+    StateManager::Run(EVENT::CANVAS_REPAINT);
+    return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //DELETE_BEGIN
     switch(*state)
     {
     case STATE::INIT:break;
@@ -58,6 +80,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
         }
         break;
     }
+    //DELETE_END
 }
 
 void ImageWidget::ClearImage()
@@ -76,6 +99,20 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
     if(event->button()!=Qt::LeftButton)
         return;
     emit CursorMove(event->localPos().x(),event->localPos().y());
+    Params params;
+    params.setInts({(int)event->localPos().x(),(int)event->localPos().y()});
+    StateManager::Run(EVENT::MOUSE_LEFT_PRESSED,params);
+    return;
+
+
+
+
+
+
+
+
+
+    //DELETE_BEGIN
     switch(*state)
     {
     case STATE::DRAW_LINE_INIT:
@@ -100,7 +137,7 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         *state=STATE::MOVE;
         mouseX=event->localPos().x();
         mouseY=event->localPos().y();
-        qDebug()<<"begin move";
+
         Params params;
         params.setType(COMMAND::LAYOUT_CHANGEBEGIN);
         layoutTransNotifyCommand->setParams(params);
@@ -135,27 +172,31 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         break;
     }
     update();
+    //DELETE_END
 }
 
 void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-     emit CursorMove(-1,-1);
+    emit CursorMove(-1,-1);
+    StateManager::Run(EVENT::MOUSE_LEFT_RELEASED);
+    return;
     int centerX,centerY;
     Params para;
+
     switch(*state)
     {
     case STATE::DRAW_LINE:
         *state=STATE::DRAW_LINE_INIT;
         emit StateChanged();
         //Params para;
-        qDebug()<<mouseX<<mouseY<<mouseLastX<<mouseLastY;
+
         centerX=(mouseLastX+mouseX)/2,centerY=(mouseLastY+mouseY)/2;
         para.setInts({centerX,centerY,mouseLastX-centerX,
                       mouseLastY-centerY,mouseX-centerX,
                       mouseY-centerY});
         addLineCommand->setParams(para);
         addLineCommand->exec();
-        qDebug()<<"Finish Draw Line";
+
         break;
     case STATE::DRAW_ELLIPSE:
         *state=STATE::DRAW_ELLIPSE_INIT;
@@ -205,6 +246,17 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 void ImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
      emit CursorMove(event->localPos().x(),event->localPos().y());
+
+    Params params;
+    params.setInts({(int)event->localPos().x(),(int)event->localPos().y()});
+    StateManager::Run(EVENT::MOUSE_MOVE,params);
+    return;
+
+
+
+
+
+
     switch(*state)
     {
     case STATE::MOVE:
@@ -255,12 +307,11 @@ void ImageWidget::resizeEvent(QResizeEvent *event)
 {
     realWidth=event->size().width();
     realHeight=event->size().height();
-    if(newCanvasCommand!=nullptr)
-    {
-        Params params;
-        params.setInts({realWidth,realHeight});
-        newCanvasCommand->setParams(params);
-        newCanvasCommand->exec();
-    }
+}
 
+void ImageWidget::wheelEvent(QWheelEvent *event)
+{
+    canvasScale*=event->delta()*SETTINGS::CANVAS_SCALE_STEP+1;
+    emit NewCanvasScale(canvasScale);
+    update();
 }

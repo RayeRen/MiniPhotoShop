@@ -34,7 +34,10 @@ SOURCES += \
     src/ViewModel/Commands/addellipsecommand.cpp \
     src/Common/DataStructure.cpp \
     src/ViewModel/Commands/redocommand.cpp \
-    src/ViewModel/Commands/undocommand.cpp
+    src/ViewModel/Commands/undocommand.cpp \
+    src/View/statemanager.cpp \
+    src/View/States/statecommonaction.cpp \
+    src/View/newcanvasdialog.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -55,7 +58,6 @@ HEADERS += \
     src/ViewModel/Commands/AddRectCommand.h \
     src/ViewModel/Commands/changedselectedcommand.h \
     src/ViewModel/Commands/brushupdatecommand.h \
-    src/ViewModel/Commands/newprojectcommand.h \
     src/ViewModel/Commands/saveprojectcommand.h \
     src/ViewModel/Commands/loadprojectcommand.h \
     src/ViewModel/Commands/addpiccommand.h \
@@ -65,10 +67,42 @@ HEADERS += \
     src/ViewModel/Commands/layouttransformnotifycommand.h \
     src/ViewModel/Commands/deletelayoutcommand.h \
     src/ViewModel/Commands/pixmapfiltercommand.h \
-    src/ViewModel/Commands/saveaspicturecommand.h
+    src/ViewModel/Commands/saveaspicturecommand.h \
+    src/View/statemanager.h \
+    src/View/States/BaseState.h \
+    src/View/States/initstate.h \
+    src/ViewModel/Commands/layoutorderchangecommand.h \
+    src/View/States/drawlineinitstate.h \
+    src/View/States/drawlinestate.h \
+    src/View/States/drawellipsestate.h \
+    src/View/States/moveinitstate.h \
+    src/View/States/movestate.h \
+    src/View/States/rotateinitstate.h \
+    src/View/States/rotatestate.h \
+    src/View/States/scaleinitstate.h \
+    src/View/States/scalestate.h \
+    src/View/States/drawrectstate.h \
+    src/View/States/drawrectinitstate.h \
+    src/View/States/statecommonaction.h \
+    src/View/States/drawellipseinitstate.h \
+    src/View/States/drawellipsestate.h \
+    src/View/States/drawlineinitstate.h \
+    src/View/States/drawlinestate.h \
+    src/View/States/drawrectinitstate.h \
+    src/View/States/drawrectstate.h \
+    src/View/States/initstate.h \
+    src/View/States/moveinitstate.h \
+    src/View/States/movestate.h \
+    src/View/States/rotateinitstate.h \
+    src/View/States/rotatestate.h \
+    src/View/States/scaleinitstate.h \
+    src/View/States/scalestate.h \
+    src/ViewModel/Commands/addtextcommand.h \
+    src/View/newcanvasdialog.h
 
 FORMS += \
-    src/View/mainwindow.ui
+    src/View/mainwindow.ui \
+    src/View/newcanvasdialog.ui
 
 RESOURCES += \
     langs.qrc \

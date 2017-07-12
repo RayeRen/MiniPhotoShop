@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <iostream>
 #include <fstream>
-Model::Model(){
+Model::Model():layoutCount(0){
     ClearModel();
 }
 
@@ -14,7 +14,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
 {
     shared_ptr<Line> pLine;
     layouts.list.push_back(pLine=shared_ptr<Line>(new Line(centerX,
-        centerY,SHAPE::LINE,string("Line"),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
+        centerY,SHAPE::LINE,(QString("图层 %1 线段").arg(++layoutCount)).toStdString(),1.0,1.0,0.0,pen,x1,y1,x2,y2)));
     qDebug()<<centerX<<centerY<<x1<<y1<<x2<<y2;
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Line(*pLine)));
     Params params;
@@ -25,7 +25,7 @@ void Model::addLine(double centerX,double centerY,double x1,double y1,double x2,
 void Model::addEllipse(double centerX,double centerY,double a,double b){
     shared_ptr<Ellipse> pEllipse;
     layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(centerX,
-        centerY,SHAPE::ELLIPSE,string("Ellipse"),1.0,1.0,0.0,pen,brush,a,b)));
+        centerY,SHAPE::ELLIPSE,(QString("图层 %1 椭圆").arg(++layoutCount)).toStdString(),1.0,1.0,0.0,pen,brush,a,b)));
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Ellipse(*pEllipse)));
 
     Params params;
@@ -38,7 +38,7 @@ void Model::addRect(double centerX, double centerY, double width, double height)
 {
     shared_ptr<Rect> pRect;
     layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(centerX,
-         centerY, SHAPE::RECT, string("Rectangle"),1.0,1.0,0,pen,brush,width,height)));
+         centerY, SHAPE::RECT,(QString("图层 %1 矩形").arg(++layoutCount)).toStdString(),1.0,1.0,0,pen,brush,width,height)));
     addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Rect(*pRect)));
 
     Params params;
@@ -46,6 +46,18 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
+void Model::addText(int posX,int posY,string text){
+    shared_ptr<Text> pText;
+    layouts.list.push_back(pText = shared_ptr<Text>(new Text(posX,
+         posY, SHAPE::TEXT,(QString("图层 %1 文字").arg(++layoutCount)).toStdString(),1.0,1.0,0,pen,brush,text)));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Text(*pText)));
+
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)layouts.list.size()-1});
+    notify(params);
+}
+
 void Model::addBaseShape(vector<shared_ptr<BaseShape>>::iterator  it,shared_ptr<BaseShape> shape){
     //Redo Need it.
     if(shape!=nullptr){
@@ -64,14 +76,15 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
             newBaseShape=shared_ptr<BaseShape>(new Rect(*(static_pointer_cast<Rect>(shape))));
         }else if(type==SHAPE::PIXMAP){
             newBaseShape=shared_ptr<BaseShape>(new Pixmap(*(static_pointer_cast<Pixmap>(shape))));
-        }else{
+        }else if(type==SHAPE::TEXT){
+            newBaseShape=shared_ptr<BaseShape>(new Text(*(static_pointer_cast<Text>(shape))));
         }
     }else{
         qDebug()<<"The shape is null";
     }
     return newBaseShape;
 }
-void Model::LayoutChange(int Change,int LayoutIndex){
+void Model::LayoutTransform(int Change,int LayoutIndex){
     if(Change==1){
         //Begin
         ChangeBegin=Change;
@@ -88,6 +101,36 @@ void Model::LayoutChange(int Change,int LayoutIndex){
             tempShape=nullptr;
         }
     }
+}
+void Model::LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode){
+    if(beforeLayoutIndex<0||beforeLayoutIndex>=layouts.list.size())return;
+    if(afterLayoutIndex<0||afterLayoutIndex>=layouts.list.size())return;
+    if(beforeLayoutIndex==afterLayoutIndex)return;
+    int realafter=afterLayoutIndex;
+    if(afterLayoutIndex>beforeLayoutIndex){
+        realafter++;
+    }
+    vector<shared_ptr<BaseShape>>::iterator beforeit=layouts.list.begin()+beforeLayoutIndex;
+    vector<shared_ptr<BaseShape>>::iterator afterit=layouts.list.begin()+realafter;
+    layouts.list.insert(afterit,*beforeit);
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)realafter});
+    notify(params);
+
+    int notifyindex=beforeLayoutIndex;
+    if(notifyindex>=afterLayoutIndex){
+        notifyindex++;
+    }
+    beforeit=layouts.list.begin()+notifyindex;
+    layouts.list.erase(beforeit);
+
+    Params newparams;
+    newparams.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+    newparams.setInts({(int)notifyindex});
+    notify(newparams);
+    if(!mode)addDoneEvent(COMMAND::ORDERCHANGE,afterLayoutIndex,nullptr,nullptr,beforeLayoutIndex);
+
 }
 void Model::DeleteLayout(int LayoutIndex){
     if(LayoutIndex<0)return;
@@ -121,6 +164,7 @@ void Model::DeleteLayout(int LayoutIndex){
      if(!layouts.list.empty())
      {
          layouts.list.clear();
+         layoutCount = 0;
      }
      clearDoneEvent();
  }
@@ -132,14 +176,18 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::newProject()
  {
+     qDebug()<<"newProject";
      ClearModel();
+     Params params;
+     params.setType(NOTIFY::CLEAR);
+     notify(params);
  }
 
  void Model::saveProject(string path)const
  {
      fstream out;
      int i;
-     int num = layouts.list.capacity() - 1;
+     int num = layouts.list.size();
 
      out.open(path, ios::out | ios::binary);
      if(!out)
@@ -149,6 +197,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
      string head("This is a mpsd project file");
      out.write(head.c_str(), head.size());
+     out.write(reinterpret_cast<char*>(&num), sizeof(int));
+
      for(i = 0; i < num; i++)
      {
          int type = layouts.list[i]->getType();
@@ -364,28 +414,35 @@ void Model::DeleteLayout(int LayoutIndex){
  {
      fstream in;
      int type;
+     int num;
      char head[30];
      int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle, format;
      unsigned char R, G, B;
      double scaleX, scaleY, angle;
 
      ClearModel();
+     Params params;
+     params.setType(NOTIFY::CLEAR);
+     notify(params);
 
      in.open(path, ios::in | ios::binary);
      if(!in)
          return;
 
-     in.read(head, sizeof("This is a mpsd project file"));
+     in.read(head, 27);
+     head[27] = '\0';
      if(strcmp(head, "This is a mpsd project file") != 0)
          return;
+     in.read(reinterpret_cast<char*>(&num), sizeof(int));
 
-     while(!in.eof())
+     for(int i = 0; i < num; i++)
      {
          in.read(reinterpret_cast<char*>(&type), sizeof(int));
          switch(type)
          {
          case SHAPE::LINE:
          {
+             qDebug()<<"Load line";
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -416,7 +473,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Line> pLine;
              layouts.list.push_back(pLine=shared_ptr<Line>(new Line(PosX,
-                 PosY,SHAPE::LINE,string("Line"),scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
+                 PosY,SHAPE::LINE,(QString("图层 %1 线段").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -425,6 +482,8 @@ void Model::DeleteLayout(int LayoutIndex){
         }
          case SHAPE::ELLIPSE:
          {
+             qDebug()<<"Load ellipse";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -465,7 +524,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Ellipse> pEllipse;
              layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(PosX,
-                 PosY,SHAPE::ELLIPSE,string("Ellipse"),scaleX,scaleY,angle,pen,brush,a,b)));
+                 PosY,SHAPE::ELLIPSE,(QString("图层 %1 椭圆").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,brush,a,b)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -475,6 +534,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
          case SHAPE::RECT:
          {
+             qDebug()<<"Load rect";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -515,7 +576,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Rect> pRect;
              layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(PosX,
-                  PosY, SHAPE::RECT,string("Rectangle"),scaleX,scaleY,angle,pen,brush,width,height)));
+                  PosY, SHAPE::RECT,(QString("图层 %1 矩形").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,brush,width,height)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -525,6 +586,8 @@ void Model::DeleteLayout(int LayoutIndex){
 
          case SHAPE::PIXMAP:
          {
+             qDebug()<<"Load Pixmap";
+
              //BaseShape Data
              in.read(reinterpret_cast<char*>(&PosX), sizeof(int));
              in.read(reinterpret_cast<char*>(&PosY), sizeof(int));
@@ -550,6 +613,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Pixmap
              shared_ptr<Pixmap> ppixmap;
              layouts.list.push_back(ppixmap = shared_ptr<Pixmap>(new Pixmap(width, height)));
+             ppixmap->setName((QString("图层 %1 位图").arg(i + 1)).toStdString());
              memcpy(ppixmap->getRHead(), r, width * height);
              memcpy(ppixmap->getGHead(), g, width * height);
              memcpy(ppixmap->getBHead(), b, width * height);
@@ -579,7 +643,7 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::addImage(string fileName)
  {
-     shared_ptr<Pixmap> newImage(new Pixmap(string("image"),fileName));
+     shared_ptr<Pixmap> newImage(new Pixmap((QString("图层 %1 位图").arg(++layoutCount)).toStdString(),fileName));
     if(newImage->GetFormat()==PIXMAP::FMT_NULL)
     {
         Params params;
@@ -605,7 +669,8 @@ void Model::DeleteLayout(int LayoutIndex){
      shared_ptr<Pixmap> pic(static_pointer_cast<Pixmap>(layouts.list.at(layoutindex)));
      shared_ptr<BaseShape> tempPic(NewBaseShape(layouts.list.at(layoutindex)));
      if(pic==nullptr)return;
-     switch(type){
+     switch(type)
+     {
      case PIXMAP::LAPLACIANENHANCE:{
          int size;
          size=ints[0];
@@ -655,12 +720,12 @@ void Model::DeleteLayout(int LayoutIndex){
      tempShape=nullptr;
      DoneList.clear();
  }
- void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape){
+ void Model::addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape,shared_ptr<BaseShape> beforeshape,int beforelayoutindex){
     //delete ->before valid create ->after valid modify before after valid
      //add an event
      qDebug()<<"Begin Add Done Event";
     if(NowDoneIndex==MaxDoneIndex){
-        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape,beforelayoutindex));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else if(NowDoneIndex<MaxDoneIndex){
@@ -671,7 +736,7 @@ void Model::DeleteLayout(int LayoutIndex){
             qDebug()<<"Where";
             it=DoneList.erase(it);
         }
-        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape));
+        DoneList.push_back(DoneInfo(commandtype,layoutindex,aftershape,beforeshape,beforelayoutindex));
         NowDoneIndex++;
         MaxDoneIndex=NowDoneIndex;
     }else{
@@ -730,6 +795,13 @@ void Model::DeleteLayout(int LayoutIndex){
             notify(params);
         }
             break;
+        case COMMAND::ORDERCHANGE:{
+            //redo before -> after
+            int after=nowInfo.getlayoutindex();
+            int before=nowInfo.getbeforelayoutindexx();
+            LayoutOrderChange(before,after,1);
+        }
+            break;
         }
 
 
@@ -738,7 +810,6 @@ void Model::DeleteLayout(int LayoutIndex){
 
  void Model::undo(){
     if(NowDoneIndex>=0){
-        //Now Assume that the insert must be in the last layout.
         DoneInfo nowInfo=DoneList[NowDoneIndex];
         NowDoneIndex--;
         switch(nowInfo.getcommandtype()){
@@ -779,6 +850,15 @@ void Model::DeleteLayout(int LayoutIndex){
             notify(params);
         }
             break;
+        case COMMAND::ORDERCHANGE:{
+            //undo before -> after
+            //after -> before
+            int after=nowInfo.getlayoutindex();
+            int before=nowInfo.getbeforelayoutindexx();
+            LayoutOrderChange(after,before,1);
+        }
+            break;
+
         }
 
 

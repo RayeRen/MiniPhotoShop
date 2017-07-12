@@ -8,9 +8,8 @@ public:
     PixmapFilterCommand(const shared_ptr<Model> &pModel,const shared_ptr<ViewModel> &pViewModel) : BaseCommand(pModel,pViewModel) {}
 
     void exec() {
-        qDebug()<<"Exec Pixmap Filter";
-        Params params;
-        pModel->PixmapFilter(params);
+        qDebug()<<params.getType();
+        pModel->PixmapFilter(BaseCommand::params);
     }
 };
 #endif // PIXMAPFILTERCOMMAND_H

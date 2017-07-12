@@ -15,7 +15,7 @@ public:
             qDebug()<<"Change begin";
             int layoutindex=pViewModel->GetSelectedLayout();
             if(layoutindex>=0){
-                pModel->LayoutChange(1, layoutindex);
+                pModel->LayoutTransform(1, layoutindex);
             }
         }
             break;
@@ -24,7 +24,7 @@ public:
             qDebug()<<"Change end";
             int layoutindex=pViewModel->GetSelectedLayout();
             if(layoutindex>=0){
-                pModel->LayoutChange(0, layoutindex);
+                pModel->LayoutTransform(0, layoutindex);
             }
         }
             break;

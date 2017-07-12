@@ -71,7 +71,7 @@ protected:
     int brushStyle;
 public:
 
-    Brush():backR(0), backG(0), backB(0),brushStyle(BRUSHSTYLE::SOLIDPATTERN){}
+    Brush():backR(255), backG(255), backB(0),brushStyle(BRUSHSTYLE::SOLIDPATTERN){}
 
     Brush(unsigned char backR, unsigned char backG, unsigned char backB, int brushStyle) : backR(backR), backG(backG),backB(backB),brushStyle(brushStyle) {}
 
@@ -351,6 +351,48 @@ public:
         Rect::height = height;
     }
 };
+class Text:public BaseShape{
+protected:
+    Pen pen;
+    Brush brush;
+    string text;
+public:
+    Text(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
+         string text):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+        pen(pen),brush(brush), text(text){}
+    void setBrushColor(unsigned char r,unsigned char g,unsigned char b)
+    {
+        brush.setBackR(r);
+        brush.setBackG(g);
+        brush.setBackB(b);
+    }
+
+    void setBrushStyle(int newStyle)
+    {
+        brush.setBrushStyle(newStyle);
+    }
+
+    const Pen &getPen() const {
+        return pen;
+    }
+
+    void setPen(const Pen &pen) {
+        Text::pen = pen;
+    }
+    const Brush &getBrush()const{
+        return brush;
+    }
+    void setBrush(const Brush &brush){
+        Text::brush=brush;
+    }
+    const string &gettext()const{
+        return text;
+    }
+    void setText(const string &text){
+        Text::text=text;
+    }
+
+};
 
 typedef unsigned char UNUM8;	//8位无符号数
 typedef unsigned short UNUM16;	//16位无符号数
@@ -476,17 +518,25 @@ public:
     unsigned int *getBHead() { return hgB; }
 };
 class DoneInfo{
-    int layoutindex;
+    int layoutindex,beforelayoutindex;
     shared_ptr<BaseShape> aftershape,beforeshape;
     int commandtype;
 public:
-    DoneInfo(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr):commandtype(commandtype),layoutindex(layoutindex),aftershape(aftershape),beforeshape(beforeshape){}
+    DoneInfo(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr,int beforelayoutindex=-1):commandtype(commandtype),
+        layoutindex(layoutindex),aftershape(aftershape),beforeshape(beforeshape),beforelayoutindex(beforelayoutindex){}
     int getlayoutindex()const{
         return layoutindex;
     }
     void setlayoutindex(int layoutindex){
         this->layoutindex=layoutindex;
     }
+    int getbeforelayoutindexx()const{
+        return beforelayoutindex;
+    }
+    void setbeforelayoutindex(int beforelayoutindex){
+        this->beforelayoutindex=beforelayoutindex;
+    }
+
     shared_ptr<BaseShape> getaftershape() const{
         return aftershape;
     }

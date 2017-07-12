@@ -15,5 +15,14 @@
         <file>img/file.png</file>
         <file>img/redo.png</file>
         <file>img/undo.png</file>
+        <file>img/delete.png</file>
+        <file>img/font.png</file>
+        <file>img/png.png</file>
+        <file>img/printer.png</file>
+        <file>img/save.png</file>
+        <file>img/text.png</file>
+        <file>img/add.png</file>
+        <file>img/down.png</file>
+        <file>img/up.png</file>
     </qresource>
 </RCC>

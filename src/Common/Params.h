@@ -55,6 +55,14 @@ public:
         return type;
     }
 
+    void Clear()
+    {
+        ints.clear();
+        ptrs.clear();
+        doubles.clear();
+        strings.clear();
+    }
+
 private:
     int type;
     vector<int> ints;

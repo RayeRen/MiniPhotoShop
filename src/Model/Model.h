@@ -15,7 +15,7 @@ private:
     Pen pen;
     Brush brush;
     Layouts layouts;
-
+    int layoutCount;
     int ChangeBegin,ChangeLayout;
     shared_ptr<BaseShape> tempShape;
     int NowDoneIndex,MaxDoneIndex;
@@ -28,12 +28,15 @@ public:
     void addImage(string fileName);
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
-    void LayoutChange(int Change,int LayoutIndex);
+    void addText(int posX,int posY,string text);
+    void LayoutTransform(int Change,int LayoutIndex);
+    void LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode=0);
+
     void DeleteLayout(int LayoutIndex);
     void PixmapFilter(Params params);
     void clearDoneEvent();
 
-    void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr);
+    void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr,int beforelayoutindex=-1);
     void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);
     shared_ptr<BaseShape> NewBaseShape(shared_ptr<BaseShape> shape);
 
