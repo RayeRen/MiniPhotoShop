@@ -123,14 +123,15 @@ void MainWindow::update(Params params)
         vector<string> strings=params.getStrings();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString::fromStdString(strings[0]));
-        ui->layoutListWidget->insertItem(ints[0],newItem);
+        //ui->layoutListWidget->insertItem(IndexMapList(ints[0]),newItem);
+        ui->layoutListWidget->insertItem(IndexMapList(ints[0])+1,newItem);
     }
         break;
     case NOTIFY::DELETE_LAYOUT:{
         vector<int> ints=params.getInts();
         qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
-        ui->layoutListWidget->setCurrentRow(ints[1]);
-        QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(ints[0]);
+        ui->layoutListWidget->setCurrentRow(IndexMapList(ints[1]));
+        QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(IndexMapList(ints[0]));
         qDebug()<<"Remove:"<<ints[0];
         ui->layoutListWidget->removeItemWidget(deletedWidget);
         delete deletedWidget;
@@ -143,7 +144,7 @@ void MainWindow::update(Params params)
         vector<int> ints=params.getInts();
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
+        QListWidgetItem *item=ui->layoutListWidget->item(IndexMapList(ints[0]));
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
         qDebug()<<"item"<<ints[0];
     }
@@ -152,7 +153,7 @@ void MainWindow::update(Params params)
     {
         vector<int> ints=params.getInts();
         qDebug()<<"NOTIFY::SELECTED_CHANGE"<<ints[0];
-        if(ui->layoutListWidget->currentRow()!=ints[0])ui->layoutListWidget->setCurrentRow(ints[0]);
+        if(ui->layoutListWidget->currentRow()!=IndexMapList(ints[0]))ui->layoutListWidget->setCurrentRow(IndexMapList(ints[0]));
 
     }
         break;
@@ -164,8 +165,6 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::CLEAR:
         ui->MainDisplayWidget->update();
-
-
         ui->layoutListWidget->clear();
 
         break;
@@ -515,7 +514,7 @@ void MainWindow::ListItemSelectionChanged()
     if(changeSelectedCommand!=nullptr)
     {
         Params params;
-        params.setInts({ui->layoutListWidget->currentRow()});
+        params.setInts({ListMapIndex(ui->layoutListWidget->currentRow())});
         changeSelectedCommand->setParams(params);
         changeSelectedCommand->exec();
     }

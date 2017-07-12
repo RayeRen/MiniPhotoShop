@@ -234,7 +234,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::INVERSECOLOR);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
@@ -253,7 +253,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::HISTOEQUALIZING);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
@@ -269,7 +269,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::LOGOPERATION);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
