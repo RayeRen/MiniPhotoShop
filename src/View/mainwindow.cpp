@@ -207,7 +207,7 @@ void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCom
     this->newCanvasCommand=newCanvasCommand;
     ui->MainDisplayWidget->setNewCanvasCommand(newCanvasCommand);
     Params params;
-    params.setInts({SETTINGS::canvasWidth,SETTINGS::canvasHeight});
+    params.setInts({(int)SETTINGS::canvasWidth,(int)SETTINGS::canvasHeight});
     newCanvasCommand->setParams(params);
     newCanvasCommand->exec();
 }
@@ -565,5 +565,5 @@ void MainWindow::ListPopMenuShow(const QPoint)
 
 void MainWindow::CanvasScaleChanged(double newScale)
 {
-    ui->scaleLabel->setText(QString("缩放 %1 %").arg(newScale*100));
+    ui->scaleLabel->setText(QStringLiteral("缩放 ")+QString("%1 %").arg(newScale*100));
 }

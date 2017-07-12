@@ -172,7 +172,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_aboutPro->text())
     {
-        QMessageBox::about(NULL, "关于","Mini PhotoShop\nPowered By Qt5");
+        QMessageBox::about(NULL,QStringLiteral("关于"),"Mini PhotoShop\nPowered By Qt5");
         return state;
     }
     if(actionText==pMainWindow->ui->action_help->text())

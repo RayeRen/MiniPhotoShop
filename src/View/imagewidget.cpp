@@ -1,4 +1,4 @@
-#include "imagewidget.h"
+﻿#include "imagewidget.h"
 #include <QDebug>
 
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)

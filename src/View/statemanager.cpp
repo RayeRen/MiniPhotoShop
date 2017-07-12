@@ -1,4 +1,4 @@
-#include "statemanager.h"
+﻿#include "statemanager.h"
 #include "States/initstate.h"
 #include "States/drawlineinitstate.h"
 #include "States/drawlinestate.h"
