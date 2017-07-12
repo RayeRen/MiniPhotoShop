@@ -13,6 +13,7 @@
 #include <QInputDialog>
 #include <QString>
 #include "ui_mainwindow.h"
+#include "newcanvasdialog.h"
 /*
 class BaseState;
 class DrawLineInitState;

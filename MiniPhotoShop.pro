@@ -36,7 +36,8 @@ SOURCES += \
     src/ViewModel/Commands/redocommand.cpp \
     src/ViewModel/Commands/undocommand.cpp \
     src/View/statemanager.cpp \
-    src/View/States/statecommonaction.cpp
+    src/View/States/statecommonaction.cpp \
+    src/View/newcanvasdialog.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -96,10 +97,13 @@ HEADERS += \
     src/View/States/rotatestate.h \
     src/View/States/scaleinitstate.h \
     src/View/States/scalestate.h \
-    src/ViewModel/Commands/addtextcommand.h
+    src/ViewModel/Commands/addtextcommand.h \
+    src/View/newcanvasdialog.h
 
 FORMS += \
-    src/View/mainwindow.ui
+    src/View/mainwindow.ui \
+    src/View/newcanvaswidget.ui \
+    src/View/newcanvasdialog.ui
 
 RESOURCES += \
     langs.qrc \

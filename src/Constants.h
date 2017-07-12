@@ -85,4 +85,10 @@ enum{
 };
 }
 
+namespace RESULT{
+enum{
+    ACCEPTED,REJECTED
+};
+}
+
 #endif //MINIPHOTOSHOP_CONSTANTS_H
