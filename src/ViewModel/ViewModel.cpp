@@ -16,7 +16,6 @@
 #include "src/ViewModel/Commands/changedselectedcommand.h"
 #include "src/ViewModel/Commands/layouttransformcommand.h"
 #include "src/ViewModel/Commands/layouttransformnotifycommand.h"
-#include "src/ViewModel/Commands/newprojectcommand.h"
 #include "src/ViewModel/Commands/loadprojectcommand.h"
 #include "src/ViewModel/Commands/saveprojectcommand.h"
 #include "src/ViewModel/Commands/deletelayoutcommand.h"
@@ -373,7 +372,6 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
 
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
-    newProjectCommand(shared_ptr<BaseCommand>(new NewProjectCommand(pModel))),
     loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
     saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
     undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
