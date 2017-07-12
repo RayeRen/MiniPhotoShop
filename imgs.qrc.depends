@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/icon.png</file>
+        <file>img/SplashScreen.png</file>
+        <file>img/information.png</file>
+        <file>img/help.png</file>
+        <file>img/qt.png</file>
+        <file>img/ellipse.png</file>
+        <file>img/line.png</file>
+        <file>img/background.png</file>
+        <file>img/Rect.png</file>
+        <file>img/Move.png</file>
+        <file>img/Rotate.png</file>
+        <file>img/Scale.png</file>
+        <file>img/file.png</file>
+        <file>img/redo.png</file>
+        <file>img/undo.png</file>
+    </qresource>
+</RCC>
