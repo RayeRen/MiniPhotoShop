@@ -1,4 +1,4 @@
-#ifndef BASESTATE_H
+﻿#ifndef BASESTATE_H
 #define BASESTATE_H
 #include "../../Constants.h"
 #include "../../Common/Params.h"

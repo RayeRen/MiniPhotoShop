@@ -1,4 +1,4 @@
-#ifndef SCALEINITSTATE_H
+﻿#ifndef SCALEINITSTATE_H
 #define SCALEINITSTATE_H
 #include "BaseState.h"
 class ScaleInitState:public BaseState

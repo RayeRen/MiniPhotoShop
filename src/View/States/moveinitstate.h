@@ -1,4 +1,4 @@
-#ifndef MOVEINITSTATE_H
+﻿#ifndef MOVEINITSTATE_H
 #define MOVEINITSTATE_H
 #include "BaseState.h"
 class MoveInitState:public BaseState

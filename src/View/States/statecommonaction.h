@@ -1,4 +1,4 @@
-#ifndef STATECOMMONACTION_H
+﻿#ifndef STATECOMMONACTION_H
 #define STATECOMMONACTION_H
 #include "BaseState.h"
 

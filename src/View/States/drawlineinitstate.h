@@ -1,4 +1,4 @@
-#ifndef DRAWLINEINITSTATE_H
+﻿#ifndef DRAWLINEINITSTATE_H
 #define DRAWLINEINITSTATE_H
 #include "BaseState.h"
 #include "../statemanager.h"

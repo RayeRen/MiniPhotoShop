@@ -1,4 +1,4 @@
-#ifndef ROTATEINITSTATE_H
+﻿#ifndef ROTATEINITSTATE_H
 #define ROTATEINITSTATE_H
 #include "BaseState.h"
 class RotateInitState:public BaseState

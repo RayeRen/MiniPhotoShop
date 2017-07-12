@@ -1,4 +1,4 @@
-#ifndef INITSTATE_H
+﻿#ifndef INITSTATE_H
 #define INITSTATE_H
 #include "BaseState.h"
 #include "statecommonaction.h"
