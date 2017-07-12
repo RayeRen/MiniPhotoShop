@@ -11,6 +11,7 @@ ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 
 void ImageWidget::paintEvent(QPaintEvent *event)
 {
+
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
     if(image!=NULL&&!image->isNull())

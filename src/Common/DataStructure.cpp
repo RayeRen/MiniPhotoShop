@@ -1012,7 +1012,7 @@ shared_ptr<Pixmap>  Pixmap::AddBorder(unsigned int borderWidth, int mode) const
 }
 
 
-shared_ptr<Pixmap>  Pixmap::Convolution(double * filter, unsigned int filterSize, int normalization, double **outR, double **outG, double **outB) const
+shared_ptr<Pixmap> Pixmap::Convolution(double * filter, unsigned int filterSize, int normalization, double **outR, double **outG, double **outB) const
 {
     if (this->format == FMT_NULL || filter == NULL || !(filterSize % 2))
         return nullptr;
