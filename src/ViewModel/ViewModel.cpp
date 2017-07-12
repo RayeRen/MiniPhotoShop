@@ -421,6 +421,10 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
         notify(newParams);
     }
     qDebug()<<"Where is the bug";
+    Params params2;
+    params2.setType(NOTIFY::REFRESH_SELECTED_STATE);
+    params2.setInts({this->selectedLayout});
+    notify(params2);
     Params params;
     params.setType(NOTIFY::DISPLAY_REFRESH);
     notify(params);
