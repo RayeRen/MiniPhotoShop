@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QString>
 #include "ui_mainwindow.h"
 /*

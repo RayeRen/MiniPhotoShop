@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
     shared_ptr<Model> pModel(new Model());
     shared_ptr<ViewModel> pViewModel(new ViewModel(pModel));
     shared_ptr<MainWindow> pMainWindows(new MainWindow);
-
+    StateManager::Init();
+    StateManager::SetpMainWindow(pMainWindows.get());
     //add viewModel to the observer list of model
     pModel->addObserver(pViewModel);
     //add view to the observer list of viewModel.
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
     pMainWindows->setDeleteLayoutCommand(pViewModel->getDeleteLayoutCommand());
     pMainWindows->setSaveAsPictureCommand(pViewModel->getSaveAsPictureCommand());
     pMainWindows->setLayoutOrderChangeCommand(pViewModel->getLayoutOrderChangeCommand());
-     pMainWindows->setPixmapFilterCommand(pViewModel->getPixmapFilterCommand());
+    pMainWindows->setPixmapFilterCommand(pViewModel->getPixmapFilterCommand());
     QSplashScreen *screen=new QSplashScreen(QPixmap(":/img/img/SplashScreen.png"));
     screen->show();
     QElapsedTimer timer;
