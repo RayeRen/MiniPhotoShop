@@ -27,7 +27,7 @@ public:
                                       pMainWindow->ui->MainDisplayWidget->brush->getBackB()));
 
                tmpPen.setStyle(static_cast<Qt::PenStyle>(pMainWindow->ui->MainDisplayWidget->pen->getPenStyle()));
-               tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth());
+               tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth()*pMainWindow->ui->MainDisplayWidget->getCanvasScale());
                tmpBrush.setStyle(static_cast<Qt::BrushStyle>(pMainWindow->ui->MainDisplayWidget->brush->getBrushStyle()));
                p.setPen(tmpPen);
                p.setBrush(tmpBrush);
@@ -47,14 +47,15 @@ public:
           Params para;
 
           centerX=pMainWindow->ui->MainDisplayWidget->mouseLastX,centerY=pMainWindow->ui->MainDisplayWidget->mouseLastY;
-          para.setInts({centerX,centerY,
-                        std::abs(pMainWindow->ui->MainDisplayWidget->mouseX-pMainWindow->ui->MainDisplayWidget->mouseLastX),
-                        std::abs(pMainWindow->ui->MainDisplayWidget->mouseY-pMainWindow->ui->MainDisplayWidget->mouseLastY)});
+          para.setInts({(int)((centerX-pMainWindow->ui->MainDisplayWidget->getMouseSkewX())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)((centerY-pMainWindow->ui->MainDisplayWidget->getMouseSkewY())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)(std::abs(pMainWindow->ui->MainDisplayWidget->mouseX-pMainWindow->ui->MainDisplayWidget->mouseLastX)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)(std::abs(pMainWindow->ui->MainDisplayWidget->mouseY-pMainWindow->ui->MainDisplayWidget->mouseLastY)/pMainWindow->ui->MainDisplayWidget->getCanvasScale())});
           pMainWindow->ui->MainDisplayWidget->addEllipseCommand->setParams(para);
           pMainWindow->ui->MainDisplayWidget->addEllipseCommand->exec();
 
           pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心 ")));
-      pMainWindow->ui->MainDisplayWidget->update();
+          pMainWindow->ui->MainDisplayWidget->update();
        }
           return STATE::DRAW_ELLIPSE_INIT;
           break;

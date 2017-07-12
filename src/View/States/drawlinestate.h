@@ -27,9 +27,10 @@ public:
                                    pMainWindow->ui->MainDisplayWidget->pen->getForeG(),
                                    pMainWindow->ui->MainDisplayWidget->pen->getForeB()));
                 tmpPen.setStyle(static_cast<Qt::PenStyle>(pMainWindow->ui->MainDisplayWidget->pen->getPenStyle()));
-                tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth());
+                tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth()*pMainWindow->ui->MainDisplayWidget->getCanvasScale());
                 p.setPen(tmpPen);
-                p.drawLine(pMainWindow->ui->MainDisplayWidget->mouseLastX,pMainWindow->ui->MainDisplayWidget->mouseLastY,
+                p.drawLine(pMainWindow->ui->MainDisplayWidget->mouseLastX
+                           ,pMainWindow->ui->MainDisplayWidget->mouseLastY,
                            pMainWindow->ui->MainDisplayWidget->mouseX,pMainWindow->ui->MainDisplayWidget->mouseY);
             }
         }
@@ -42,9 +43,13 @@ public:
             Params para;
             centerX=(pMainWindow->ui->MainDisplayWidget->mouseLastX+pMainWindow->ui->MainDisplayWidget->mouseX)/2,
                     centerY=(pMainWindow->ui->MainDisplayWidget->mouseLastY+pMainWindow->ui->MainDisplayWidget->mouseY)/2;
-            para.setInts({centerX,centerY,pMainWindow->ui->MainDisplayWidget->mouseLastX-centerX,
-                          pMainWindow->ui->MainDisplayWidget->mouseLastY-centerY,pMainWindow->ui->MainDisplayWidget->mouseX-centerX,
-                          pMainWindow->ui->MainDisplayWidget->mouseY-centerY});
+            para.setInts({(int)((centerX-pMainWindow->ui->MainDisplayWidget->getMouseSkewX())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                          (int)((centerY-pMainWindow->ui->MainDisplayWidget->getMouseSkewY())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                          (int)((pMainWindow->ui->MainDisplayWidget->mouseLastX-centerX)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                          (int)((pMainWindow->ui->MainDisplayWidget->mouseLastY-centerY)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                         (int)((pMainWindow->ui->MainDisplayWidget->mouseX-centerX)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                         (int)((pMainWindow->ui->MainDisplayWidget->mouseY-centerY)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                          });
             pMainWindow->ui->MainDisplayWidget->addLineCommand->setParams(para);
            pMainWindow->ui->MainDisplayWidget-> addLineCommand->exec();
             pMainWindow->UpdateStatusBarInfo(QStringLiteral("请按下鼠标以确定直线的起点"));
