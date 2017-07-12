@@ -28,6 +28,7 @@ Makefile*
 *.depends
 *_plugin_import.cpp
 *.Debug
+*moc.cpp
 *.Release
 
 # QtCreator
