@@ -8,7 +8,7 @@
 //Shape
 namespace SHAPE {
     enum {
-        LINE, ELLIPSE, RECT, PIXMAP
+        LINE, ELLIPSE, RECT, PIXMAP,TEXT
     };
 }
 

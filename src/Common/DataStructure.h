@@ -351,6 +351,48 @@ public:
         Rect::height = height;
     }
 };
+class Text:public BaseShape{
+protected:
+    Pen pen;
+    Brush brush;
+    string text;
+public:
+    Text(int posX, int posY, int type, const string &name, double scaleX, double scaleY, double angle, const Pen &pen,const Brush &brush,
+         string text):BaseShape(posX, posY, type, name, scaleX, scaleY, angle),
+        pen(pen),brush(brush), text(text){}
+    void setBrushColor(unsigned char r,unsigned char g,unsigned char b)
+    {
+        brush.setBackR(r);
+        brush.setBackG(g);
+        brush.setBackB(b);
+    }
+
+    void setBrushStyle(int newStyle)
+    {
+        brush.setBrushStyle(newStyle);
+    }
+
+    const Pen &getPen() const {
+        return pen;
+    }
+
+    void setPen(const Pen &pen) {
+        Text::pen = pen;
+    }
+    const Brush &getBrush()const{
+        return brush;
+    }
+    void setBrush(const Brush &brush){
+        Text::brush=brush;
+    }
+    const string &gettext()const{
+        return text;
+    }
+    void setText(const string &text){
+        Text::text=text;
+    }
+
+};
 
 typedef unsigned char UNUM8;	//8位无符号数
 typedef unsigned short UNUM16;	//16位无符号数

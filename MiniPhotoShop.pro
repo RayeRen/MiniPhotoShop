@@ -96,7 +96,8 @@ HEADERS += \
     src/View/States/rotateinitstate.h \
     src/View/States/rotatestate.h \
     src/View/States/scaleinitstate.h \
-    src/View/States/scalestate.h
+    src/View/States/scalestate.h \
+    src/ViewModel/Commands/addtextcommand.h
 
 FORMS += \
     src/View/mainwindow.ui

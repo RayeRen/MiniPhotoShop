@@ -211,6 +211,14 @@ void MainWindow::menuTriggered(QAction* action)
     params.setStrings({(action->text()).toStdString()});
     StateManager::Run(EVENT::ACTION_TRIGGERED,params);
     return;
+
+
+
+
+
+
+
+    //----------------------------Unused--------------------------------//
     if(action->text()==ui->action_aboutQt->text())
     {
         QMessageBox::aboutQt(NULL);
