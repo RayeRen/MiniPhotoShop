@@ -111,6 +111,7 @@ private:
      void UpdateStatusBarInfo(QString);
      void CanvasPopMenuShow(const QPoint);
      void ListPopMenuShow(const QPoint);
+     void CanvasScaleChanged(double);
 };
 
 #endif // MAINWINDOW_H

@@ -4,8 +4,11 @@
 ImageWidget::ImageWidget(QWidget *parent) : QWidget(parent)
 {
     image=new QImage;
-    //viewPortScale=1.0;
+    canvasScale=1.0;
+    realWidth=width();
+    realHeight=height();
     setCursor(QCursor(Qt::CrossCursor));
+    emit NewCanvasScale(canvasScale);
 }
 
 void ImageWidget::paintEvent(QPaintEvent *event)
@@ -15,7 +18,11 @@ void ImageWidget::paintEvent(QPaintEvent *event)
     p.setRenderHint(QPainter::Antialiasing, true);
     if(image!=NULL&&!image->isNull())
     {
-        p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
+        //p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
+        p.drawImage(QRectF((realWidth-(image->width())*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale),*image,QRectF(0,0,image->width(),image->height()));
+        //(realWidth-(image->width)*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale
+
+
     }
     StateManager::Run(EVENT::CANVAS_REPAINT);
     return;
@@ -273,12 +280,11 @@ void ImageWidget::resizeEvent(QResizeEvent *event)
 {
     realWidth=event->size().width();
     realHeight=event->size().height();
-    if(newCanvasCommand!=nullptr)
-    {
-        Params params;
-        params.setInts({realWidth,realHeight});
-        newCanvasCommand->setParams(params);
-        newCanvasCommand->exec();
-    }
+}
 
+void ImageWidget::wheelEvent(QWheelEvent *event)
+{
+    canvasScale*=event->delta()*SETTINGS::CANVAS_SCALE_STEP+1;
+    emit NewCanvasScale(canvasScale);
+    update();
 }

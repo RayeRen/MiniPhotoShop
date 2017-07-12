@@ -158,9 +158,8 @@ void ViewModel::SaveAsPicture(string path)
 {
     QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
     QPainter painter(&outputImage);
-
-    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     //painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     for(int i=0;i<displayBuffer.size();i++)
     {
 
@@ -169,7 +168,7 @@ void ViewModel::SaveAsPicture(string path)
             QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
             QPainter layoutPainter(&tmpLayout);
 
-            //layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
+           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
             layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
             shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 
@@ -384,7 +383,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     layoutOrderChangeCommand(shared_ptr<BaseCommand>(new LayoutOrderChangeCommand(pModel,shared_ptr<ViewModel>(this)))),
     selectedLayout(-1)
 {
-    displayImage = QImage(QSize(200, 200), QImage::Format_ARGB32);
+    displayImage = QImage(QSize(SETTINGS::canvasWidth, SETTINGS::canvasHeight), QImage::Format_ARGB32);
     backGround=QImage(":/img/img/background.png");
 }
 

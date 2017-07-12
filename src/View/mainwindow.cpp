@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->layoutUpToolButton,SIGNAL(pressed()),ui->action_layoutUp,SLOT(trigger()));
     connect(ui->layoutDownToolButton,SIGNAL(pressed()),ui->action_layoutDown,SLOT(trigger()));
     connect(ui->layoutDeleteToolButton,SIGNAL(pressed()),ui->action_deleteLayout,SLOT(trigger()));
-
+    connect(ui->MainDisplayWidget,SIGNAL(NewCanvasScale(double)),this,SLOT(CanvasScaleChanged(double)));
 }
 
 MainWindow::~MainWindow()
@@ -200,7 +200,7 @@ void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCom
     this->newCanvasCommand=newCanvasCommand;
     ui->MainDisplayWidget->setNewCanvasCommand(newCanvasCommand);
     Params params;
-    params.setInts({ui->MainDisplayWidget->getRealWidth(),ui->MainDisplayWidget->getRealHeight()});
+    params.setInts({SETTINGS::canvasWidth,SETTINGS::canvasHeight});
     newCanvasCommand->setParams(params);
     newCanvasCommand->exec();
 }
@@ -546,4 +546,9 @@ void MainWindow::CanvasPopMenuShow(const QPoint)
 void MainWindow::ListPopMenuShow(const QPoint)
 {
     listPopMenu->exec(QCursor::pos());
+}
+
+void MainWindow::CanvasScaleChanged(double newScale)
+{
+    ui->scaleLabel->setText(QString("缩放 %1 %").arg(newScale*100));
 }

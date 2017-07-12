@@ -150,6 +150,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="ImageWidget" name="MainDisplayWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>800</width>
@@ -158,8 +164,8 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>800</width>
-              <height>800</height>
+              <width>3000</width>
+              <height>3000</height>
              </size>
             </property>
            </widget>
@@ -244,6 +250,13 @@
        </layout>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="scaleLabel">
+      <property name="text">
+       <string>缩放 100.00%</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

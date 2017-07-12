@@ -5,5 +5,6 @@ NewCanvasCommand::NewCanvasCommand(const shared_ptr<Model> &pModel, const shared
 
 void NewCanvasCommand::exec()    {
     vector<int> ints=params.getInts();
+    qDebug()<<"NEW_CANVAS"<<ints[0]<<ints[1];
     pViewModel->NewCanvas(ints[0],ints[1]);
 }

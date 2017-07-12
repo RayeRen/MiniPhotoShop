@@ -18,6 +18,7 @@ public:
     void mousePressEvent(QMouseEvent *event);        //单击
     void mouseReleaseEvent(QMouseEvent *event);      //释放
     void mouseMoveEvent(QMouseEvent *event);         //移动
+    void wheelEvent(QWheelEvent *event);
     void paintUpdate(); //刷新
     void ClearImage();  //清空图片
     void SetImage(const QImage *image){this->image=image;update();}
@@ -32,12 +33,18 @@ public:
     void setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){this->layoutTransNotifyCommand=layoutTransNotifyCommand;}
     int getRealWidth() const{return realWidth;}
     int getRealHeight() const {return realHeight;}
+    int getCanvasWidth() const {if(image!=NULL) return image->width();return 0;}
+    int getCanvasHeight() const {if(image!=NULL) return image->height();return 0;}
+    int getMouseSkewX() const{if(image!=NULL) return (realWidth-(image->width())*canvasScale)/2;return 0;}
+    int getMouseSkewY() const{if(image!=NULL) return (realHeight-(image->height())*canvasScale)/2;return 0;}
+    double getCanvasScale() const{return canvasScale;}
 private:
 
    const QImage *image;
    const Pen* pen;
    const Brush* brush;
    int* state;
+   double canvasScale;
    shared_ptr<BaseCommand> addLineCommand;
    shared_ptr<BaseCommand> addEllipseCommand;
    shared_ptr<BaseCommand> newCanvasCommand;
@@ -65,6 +72,7 @@ friend class StateCommonAction;
 signals:
     void StateChanged();
     void CursorMove(int,int);
+    void NewCanvasScale(double);
 };
 
 #endif // IMAGEWIDGET_H
