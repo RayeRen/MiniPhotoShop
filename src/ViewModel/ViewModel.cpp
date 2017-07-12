@@ -89,8 +89,10 @@ void ViewModel::update(Params params) {
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.insert(displayBuffer.begin()+ints[0],pImage);
         //displayBuffer.push_back(pImage);
-        if(this->selectedLayout>=ints[0])
-            this->selectedLayout++;
+        this->selectedLayout=-1;
+        //if(this->selectedLayout>=ints[0])
+        //    this->selectedLayout++;
+        //
         qDebug()<<"Buffer Size:"<<displayBuffer.size();
         RefreshDisplayImage(ints[0]);
         Params params;
@@ -106,6 +108,7 @@ void ViewModel::update(Params params) {
         newParams.setStrings({(layouts->list)[ints[0]]->getName()});
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
+        SetSelectedLayout(this->selectedLayout);
         break;
     }
     case NOTIFY::UPDATE_IMAGE_MINUS:{
@@ -114,8 +117,9 @@ void ViewModel::update(Params params) {
         qDebug()<<"Remove Minus:"<<ints[0];
         vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
         displayBuffer.erase(it);
-        if(this->selectedLayout>=ints[0])
-            this->selectedLayout--;
+        this->selectedLayout=-1;
+        //if(this->selectedLayout>=ints[0])
+        //    this->selectedLayout--;
         SetSelectedLayout(this->selectedLayout);
         qDebug()<<"Remove Refresh end";
         Params params;
@@ -199,7 +203,7 @@ void ViewModel::SaveAsPicture(string path)
                 tmpPen.setWidth(ellipsePen.getLineWidth());
                 tmpBrush.setStyle(static_cast<Qt::BrushStyle>(ellipseBrush.getBrushStyle()));
                 layoutPainter.setPen(tmpPen);
-               layoutPainter.setBrush(tmpBrush);
+                layoutPainter.setBrush(tmpBrush);
                 layoutPainter.drawEllipse(QPoint(0,0),ellipse->getA(),ellipse->getB());
             }
                 break;
