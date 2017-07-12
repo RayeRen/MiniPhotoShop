@@ -108,7 +108,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_newCanvas->text()){
         //New Project
-        pMainWindow->newProjectCommand->exec();
+        pMainWindow->newCanvasCommand->exec();
         return state;
     }
     if(actionText==pMainWindow->ui->action_saveCanvas->text()){
