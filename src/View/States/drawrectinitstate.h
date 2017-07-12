@@ -18,7 +18,7 @@ public:
            MainWindow* pMainWindow=StateManager::GetpMainWindow();
            pMainWindow->ui->MainDisplayWidget->mouseX=pMainWindow->ui->MainDisplayWidget->mouseLastX=ints[0];
            pMainWindow->ui->MainDisplayWidget->mouseY=pMainWindow->ui->MainDisplayWidget->mouseLastY=ints[1];
-           pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定矩形的第二个顶点")));
+           pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定矩形的第二个顶点 ")));
           pMainWindow->ui->MainDisplayWidget->update();
        }
            return STATE::DRAW_RECT;

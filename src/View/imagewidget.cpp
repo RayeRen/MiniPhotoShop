@@ -82,7 +82,7 @@ void ImageWidget::mousePressEvent(QMouseEvent *event)
         return;
     emit CursorMove(event->localPos().x(),event->localPos().y());
     Params params;
-    params.setInts({event->localPos().x(),event->localPos().y()});
+    params.setInts({(int)event->localPos().x(),(int)event->localPos().y()});
     StateManager::Run(EVENT::MOUSE_LEFT_PRESSED,params);
     return;
     //DELETE_BEGIN
@@ -220,7 +220,7 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *event)
      emit CursorMove(event->localPos().x(),event->localPos().y());
 
     Params params;
-    params.setInts({event->localPos().x(),event->localPos().y()});
+    params.setInts({(int)event->localPos().x(),(int)event->localPos().y()});
     StateManager::Run(EVENT::MOUSE_MOVE,params);
     return;
     switch(*state)

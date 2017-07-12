@@ -1,4 +1,4 @@
-#ifndef DRAWELLIPSEINITSTATE_H
+﻿#ifndef DRAWELLIPSEINITSTATE_H
 #define DRAWELLIPSEINITSTATE_H
 #include "BaseState.h"
 class DrawEllipseInitState:public BaseState

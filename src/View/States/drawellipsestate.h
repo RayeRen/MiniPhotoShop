@@ -53,7 +53,7 @@ public:
           pMainWindow->ui->MainDisplayWidget->addEllipseCommand->setParams(para);
           pMainWindow->ui->MainDisplayWidget->addEllipseCommand->exec();
 
-          pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
+          pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心 ")));
       pMainWindow->ui->MainDisplayWidget->update();
        }
           return STATE::DRAW_ELLIPSE_INIT;

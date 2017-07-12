@@ -27,7 +27,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
         pMainWindow->ui->action_drawLine->setChecked(true);
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点 ")));
         return STATE::DRAW_LINE_INIT;
     }
     if(actionText==pMainWindow->ui->action_drawEllipse->text())
@@ -46,7 +46,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
         pMainWindow->ui->action_drawEllipse->setChecked(true);
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心 ")));
         return STATE::DRAW_ELLIPSE_INIT;
     }
     if(actionText==pMainWindow->ui->action_drawRect->text())
@@ -64,7 +64,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
         pMainWindow->ui->action_drawRect->setChecked(true);
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点 ")));
 
         return STATE::DRAW_RECT_INIT;
     }
@@ -128,7 +128,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::OpenHandCursor);
         pMainWindow->ui->action_move->setChecked(true);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始移动图层")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始移动图层 ")));
 
         return STATE::MOVE_INIT;
     }
@@ -147,7 +147,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
         pMainWindow->ui->action_scale->setChecked(true);
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层 ")));
 
         return STATE::SCALE_INIT;
     }
@@ -166,7 +166,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         pMainWindow->ui->action_scale->setChecked(false);
 
         pMainWindow->ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
+        pMainWindow->UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层 ")));
 
         return STATE::ROTATE_INIT;
     }
