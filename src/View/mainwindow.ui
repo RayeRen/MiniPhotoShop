@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>913</width>
-    <height>806</height>
+    <height>828</height>
    </rect>
   </property>
   <property name="font">
@@ -312,6 +312,7 @@
     <addaction name="action_layoutUp"/>
     <addaction name="action_layoutDown"/>
     <addaction name="action_deleteLayout"/>
+    <addaction name="action_mergeLayout"/>
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
@@ -540,6 +541,11 @@
   <action name="action_logOper">
    <property name="text">
     <string>自动亮度调整</string>
+   </property>
+  </action>
+  <action name="action_mergeLayout">
+   <property name="text">
+    <string>合并全部图层</string>
    </property>
   </action>
  </widget>

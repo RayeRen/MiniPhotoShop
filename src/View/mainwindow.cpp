@@ -5,8 +5,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    StateManager::Init();
-    StateManager::SetpMainWindow(this);
     state=STATE::INIT;
     pen=NULL;
     brush=NULL;

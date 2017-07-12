@@ -17,13 +17,7 @@ void ImageWidget::paintEvent(QPaintEvent *event)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
     if(image!=NULL&&!image->isNull())
-    {
-        //p.drawImage(QRectF(0,0,realWidth,realHeight),*image,QRectF(0,0,image->width(),image->height()));
-        p.drawImage(QRectF((realWidth-(image->width())*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale),*image,QRectF(0,0,image->width(),image->height()));
-        //(realWidth-(image->width)*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale
-
-
-    }
+       p.drawImage(QRectF((realWidth-(image->width())*canvasScale)/2,(realHeight-(image->height())*canvasScale)/2,image->width()*canvasScale,image->height()*canvasScale),*image,QRectF(0,0,image->width(),image->height()));
     StateManager::Run(EVENT::CANVAS_REPAINT);
     return;
 
@@ -185,6 +179,7 @@ void ImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     emit CursorMove(-1,-1);
     StateManager::Run(EVENT::MOUSE_LEFT_RELEASED);
+    return;
     int centerX,centerY;
     Params para;
 

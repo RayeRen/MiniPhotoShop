@@ -71,7 +71,7 @@ protected:
     int brushStyle;
 public:
 
-    Brush():backR(0), backG(0), backB(0),brushStyle(BRUSHSTYLE::SOLIDPATTERN){}
+    Brush():backR(255), backG(255), backB(0),brushStyle(BRUSHSTYLE::SOLIDPATTERN){}
 
     Brush(unsigned char backR, unsigned char backG, unsigned char backB, int brushStyle) : backR(backR), backG(backG),backB(backB),brushStyle(brushStyle) {}
 
