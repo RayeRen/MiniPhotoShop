@@ -11,6 +11,7 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QString>
+#include "ui_mainwindow.h"
 /*
 class BaseState;
 class DrawLineInitState;

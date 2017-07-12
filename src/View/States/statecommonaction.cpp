@@ -1,6 +1,5 @@
 ﻿#include "statecommonaction.h"
 #include "../mainwindow.h"
-#include "ui_mainwindow.h"
 int StateCommonAction::ActionTrigged(int state,Params params)
 {
     vector<string> strings=params.getStrings();

@@ -4,7 +4,6 @@
 #include "../statemanager.h"
 
 #include "../mainwindow.h"
-#include "ui_mainwindow.h"
 
 class DrawLineInitState:public BaseState
 {
