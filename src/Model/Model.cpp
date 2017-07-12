@@ -121,6 +121,7 @@ void Model::DeleteLayout(int LayoutIndex){
      if(!layouts.list.empty())
      {
          layouts.list.clear();
+         layoutCount = 0;
      }
      clearDoneEvent();
  }
@@ -429,7 +430,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Line> pLine;
              layouts.list.push_back(pLine=shared_ptr<Line>(new Line(PosX,
-                 PosY,SHAPE::LINE,string("Line"),scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
+                 PosY,SHAPE::LINE,(QString("图层 %1 线段").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,x1,y1,x2,y2)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -480,7 +481,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Ellipse> pEllipse;
              layouts.list.push_back(pEllipse=shared_ptr<Ellipse>(new Ellipse(PosX,
-                 PosY,SHAPE::ELLIPSE,string("Ellipse"),scaleX,scaleY,angle,pen,brush,a,b)));
+                 PosY,SHAPE::ELLIPSE,(QString("图层 %1 椭圆").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,brush,a,b)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -532,7 +533,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Layout
              shared_ptr<Rect> pRect;
              layouts.list.push_back(pRect = shared_ptr<Rect>(new Rect(PosX,
-                  PosY, SHAPE::RECT,string("Rectangle"),scaleX,scaleY,angle,pen,brush,width,height)));
+                  PosY, SHAPE::RECT,(QString("图层 %1 矩形").arg(i + 1)).toStdString(),scaleX,scaleY,angle,pen,brush,width,height)));
              Params params;
              params.setType(NOTIFY::UPDATE_IMAGE_ADD);
              params.setInts({(int)layouts.list.size()-1});
@@ -569,6 +570,7 @@ void Model::DeleteLayout(int LayoutIndex){
              //New Pixmap
              shared_ptr<Pixmap> ppixmap;
              layouts.list.push_back(ppixmap = shared_ptr<Pixmap>(new Pixmap(width, height)));
+             ppixmap->setName((QString("图层 %1 位图").arg(i + 1)).toStdString());
              memcpy(ppixmap->getRHead(), r, width * height);
              memcpy(ppixmap->getGHead(), g, width * height);
              memcpy(ppixmap->getBHead(), b, width * height);
