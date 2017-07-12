@@ -102,7 +102,6 @@ HEADERS += \
 
 FORMS += \
     src/View/mainwindow.ui \
-    src/View/newcanvaswidget.ui \
     src/View/newcanvasdialog.ui
 
 RESOURCES += \

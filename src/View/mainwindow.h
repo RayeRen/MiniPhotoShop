@@ -70,6 +70,21 @@ public:
 
     void ConnectQListWidget();
     void DisConnentQListWidget();
+    int  ListMapIndex(int listindex){
+        //表的Index转化为内部数据的Index
+        int after=listindex;
+        if(listindex>=0)after=ui->layoutListWidget->count()-1-listindex;
+        qDebug()<<"ListMapIndex:Before:"<<listindex<<"after:"<<after;
+        return after;
+    }
+    int IndexMapList(int index){
+        //内部数据的Index转化为表的Index
+        int after=index;
+        if(index>=0)after=ui->layoutListWidget->count()-1-index;
+        qDebug()<<"IndexMapList:Before:"<<index<<"after:"<<after;
+        return after;
+    }
+
 
     friend class BaseState;
     friend class DrawLineInitState;

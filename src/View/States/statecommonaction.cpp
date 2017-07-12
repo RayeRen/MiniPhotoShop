@@ -28,13 +28,9 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         Params params=NewCanvasDialog::GetCanvasSize(pMainWindow);
         if(params.getType()==RESULT::ACCEPTED)
         {
-
             pMainWindow->newCanvasCommand->setParams(params);
             pMainWindow->newCanvasCommand->exec();
         }
-       // int newWidth=QInputDialog::getInt(pMainWindow,"请输入","画布宽度",800,1,3000);
-       // int newHeight=QInputDialog::getInt(pMainWindow,"请输入","画布高度",800,1,3000);
-
     }
     if(actionText==pMainWindow->ui->action_aboutQt->text())
     {
@@ -112,7 +108,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_newCanvas->text()){
         //New Project
-        pMainWindow->newProjectCommand->exec();
+        pMainWindow->newCanvasCommand->exec();
         return state;
     }
     if(actionText==pMainWindow->ui->action_saveCanvas->text()){
@@ -264,7 +260,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::INVERSECOLOR);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
@@ -308,7 +304,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::HISTOEQUALIZING);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();
@@ -353,7 +349,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             Params params;
             params.setType(PIXMAP::LOGOPERATION);
-            params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+            params.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
 
             pMainWindow->pixmapFilterCommand->setParams(params);
             pMainWindow->pixmapFilterCommand->exec();

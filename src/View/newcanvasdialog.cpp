@@ -16,6 +16,8 @@ NewCanvasDialog::NewCanvasDialog(QWidget *parent) :
 Params NewCanvasDialog::GetCanvasSize(QWidget *parent)
 {
     NewCanvasDialog *tmpWidget=new NewCanvasDialog(parent);
+    params.Clear();
+    params.setType(RESULT::REJECTED);
     tmpWidget->exec();
     delete tmpWidget;
     return params;
