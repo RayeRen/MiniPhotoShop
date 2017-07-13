@@ -63,5 +63,6 @@ int main(int argc, char *argv[])
     delete screen;
 
     pMainWindows->show();
+    pMainWindows->ShowHelp();
     return a.exec();
 }

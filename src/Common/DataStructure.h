@@ -424,9 +424,6 @@ public:
         memset(a, value, width*height);
         format = PIXMAP::FMT_RGB;
     }
-    Pixmap(const char* fileName = NULL) : BaseShape(0, 0, SHAPE::PIXMAP, string("image"), 1.0, 1.0, 0),width(0), height(0), r(NULL), g(NULL), b(NULL), a(NULL), format(PIXMAP::FMT_NULL)
-    { LoadBmpFile(fileName); }	//从图片文件载入
-
 
     ~Pixmap() { FreePixmap(); }
     int Load(const Pixmap &pixmap);
@@ -437,9 +434,6 @@ public:
     unsigned int GetWidth(){return width;}
     unsigned int GetHeight(){return height;}
 
-    int LoadBmpFile(const char * fileName);	//尝试从图片文件载入数据
-    int SaveAsBMP24b(const char * fileName) const;	//存储为24位BMP图片
-    int SaveAsGreyBMP8b(const char * fileName) const;	//存储为8位灰度图片
     //void FreePixmap();	//清空数据
 
     int ConvertFormat(unsigned int newFormat, int thre=-1);	//转换格式
@@ -452,26 +446,14 @@ public:
     int InverseColor();	//反色
     int LogOperation();	//对数操作
     int HistoEqualizing();	//直方图均衡
-    Pixel32b NearestInterpolation(double x,double y) const;	//最邻近插值
-    Pixel32b BilinearInterpolation(double x,double y) const;	//双线性插值
     static double Gaussian(double x,double r);//计算高斯分布
 
-    static int AffineTrans(const shared_ptr<Pixmap> src,shared_ptr<Pixmap> dst,double *matrix, int interpolMethod=0,UNUM8 backR=255,UNUM8 backG=255,UNUM8 backB=255);	//根据矩阵进行仿射变换  坐标(x,y,1)转置 matrix 3*3矩阵顺序 (1,1) (1,2) (1,3) (2,1) (2,2) (2,3) (3,1) (3,2) (3,3)
-    shared_ptr<Pixmap> Translation(double x,double y,int autoExpand=1,int interpolMethod=0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//平移
-    shared_ptr<Pixmap> Rotation(double angle, int autoExpand = 1,int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//旋转
-    shared_ptr<Pixmap> Mirror(int x,int y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//镜像
-    shared_ptr<Pixmap> Scale(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//缩放
-    shared_ptr<Pixmap> Shear(double x, double y, int autoExpand = 1, int interpolMethod = 0, UNUM8 backR = 255, UNUM8 backG = 255, UNUM8 backB = 255);	//斜切
-
-    shared_ptr<Pixmap> Dilation(const shared_ptr<Pixmap> stElement,unsigned int anchorX,unsigned int anchorY,unsigned int inverse=0) const;	//膨胀
-    shared_ptr<Pixmap> Erosion(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse=0) const;	//腐蚀
-    shared_ptr<Pixmap> Opening(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//开运算
-    shared_ptr<Pixmap> Closing(const shared_ptr<Pixmap>  stElement, unsigned int anchorX, unsigned int anchorY, unsigned int inverse = 0) const;	//闭运算
 
     shared_ptr<Pixmap> AddBorder(unsigned int borderWidth,int mode=0) const;	//镜像边缘扩展
     shared_ptr<Pixmap> Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//卷积
-    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
-    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
+    shared_ptr<Pixmap> ConvolutionGet(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL);	//卷积
+    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) ;	//拉普拉斯图像增强
+    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) ;//双边滤波
 
 
     const unsigned char *getRHead() const { return r; }	//返回r数组

@@ -17,10 +17,6 @@ class BaseCommand;
 class ViewModel : public Observable,
                   public Observer {
 public:
-//    static ViewModel& getInstance(shared_ptr<Model> pModel){
-//        static ViewModel instance(pModel);
-//        return instance;
-//    }
 
     const shared_ptr<BaseCommand> &getAddLineCommand() const;
     const shared_ptr<BaseCommand> &getAddEllipseCommand() const;
@@ -65,18 +61,13 @@ private:
     addRectCommand,newCanvasCommand,penUpdateCommand,brushUpdateCommand,
     newProjectCommand,saveProjectCommand,loadProjectCommand,changeSelectedCommand,
     addPicCommand,layoutTransCommand,undoCommand,redoCommand,layoutTransNotifyCommand,
-    deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand,pixmapFilterCommand
-    ;
+    deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand,pixmapFilterCommand;
     vector<shared_ptr<QImage>> displayBuffer;
     QImage displayImage;
     const Layouts* layouts;
-    QImage backGround;
     int selectedLayout;
     const Pen* pen;
     const Brush* brush;
-//    ViewModel(){};
-
-//    void operator = (const ViewModel& viewModel){}
 };
 
 

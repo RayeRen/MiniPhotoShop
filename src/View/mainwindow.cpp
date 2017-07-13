@@ -1,11 +1,113 @@
 ﻿#include "mainwindow.h"
-#include <QDebug>
+
+static QWizardPage *createPage1()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("简介"));
+    QLabel *label = new QLabel(QStringLiteral("此向导将介绍如何使用Mini PhotoShop"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage2()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("窗口布局"));
+    QLabel *label = new QLabel(QStringLiteral("窗口中心为画布\n窗口右侧为图层列表\n窗口上方为菜单栏与快捷工具栏\n快捷工具栏下方为描边与填充设置区，从左至右依次为：描边颜色设置、描边宽度设置、描边线型设置、填充颜色设置、填充方式设置\n窗口下方为状态栏"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage3()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("基本操作"));
+    QLabel *label = new QLabel(QStringLiteral("将鼠标移至画布并滚动鼠标滚轮可以缩放画布，在画布以及图层列表上单击鼠标右键可以显示弹出式菜单。\n单击快捷工具栏或菜单栏可以切换工具或执行操作，图层列表上方三个按键的功能分别为上移当前图层、下移当前图层与删除当前图层\n每次绘制都会自动生成一个新图层，图层分为 线段、矩形、椭圆与位图四种"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage4()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("工具说明"));
+    QLabel *label = new QLabel(QStringLiteral("画直线：在新图层上通过两点绘制一条直线\n"
+                                              "画椭圆：在新图层上通过确定椭圆中心与长短半轴绘制一个椭圆\n"
+                                              "画矩形：在新图层上通过确定矩形两个对角线顶点绘制一个矩形\n"
+                                              "平移：对所选图层通过拖动鼠标进行移动\n"
+                                              "旋转：对所选图层通过水平移动鼠标进行旋转\n"
+                                              "缩放：对所选图层通过拖动鼠标进行缩放"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage5()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("操作说明"));
+    QLabel *label = new QLabel(QStringLiteral("新建工程：清空当前工程，输入画布并尺寸新建工程\n"
+                                              "打开工程：打开.mps工程文件\n"
+                                              "打开图片：将外部图片插入至新图层\n"
+                                              "保存工程：保存当前工程\n"
+                                              "另存为图片：将当前工程输出至图片"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage6()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("撤销与重做"));
+    QLabel *label = new QLabel(QStringLiteral("通过撤销与重做命令，可以撤销修改或恢复被撤销的修改"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage7()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("图层操作"));
+    QLabel *label = new QLabel(QStringLiteral("可以对当前选定的图层进行上移、下移与删除操作\n可以将当前所有图层合并为一个位图图层"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+static QWizardPage *createPage8()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("滤镜操作"));
+    QLabel *label = new QLabel(QStringLiteral("滤镜只能对于位图图层操作\n如果需要对非位图图层进行滤镜操作，需要首先将所有图层合并为位图图层"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    state=STATE::INIT;
     pen=NULL;
     brush=NULL;
     displayImage=NULL;
@@ -13,8 +115,17 @@ MainWindow::MainWindow(QWidget *parent) :
     cursorY=-1;
     ifPixmap=0;
     ui->setupUi(this);
-    ui->MainDisplayWidget->SetState(&state);
-
+    wizard=new QWizard;
+    wizard->setWindowTitle(QStringLiteral("向导"));
+    wizard->addPage(createPage1());
+    wizard->addPage(createPage2());
+    wizard->addPage(createPage3());
+    wizard->addPage(createPage4());
+    wizard->addPage(createPage5());
+    wizard->addPage(createPage6());
+    wizard->addPage(createPage7());
+    wizard->addPage(createPage8());
+    wizard->setWizardStyle(QWizard::AeroStyle);
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
 
     ui->action_drawLine->setCheckable(true);
@@ -44,6 +155,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(4,QString(QStringLiteral("填充样式3")),QString("dense3"));
     ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式4")),QString("dense4"));
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
+    ui->brushStyleComboBox->insertItem(7,QString(QStringLiteral("填充样式6")),QString("dense6"));
+    ui->brushStyleComboBox->insertItem(8,QString(QStringLiteral("填充样式7")),QString("dense7"));
+    ui->brushStyleComboBox->insertItem(9,QString(QStringLiteral("水平线填充")),QString("hor"));
+    ui->brushStyleComboBox->insertItem(10,QString(QStringLiteral("竖直线填充")),QString("ver"));
+    ui->brushStyleComboBox->insertItem(11,QString(QStringLiteral("网格线填充")),QString("cross"));
+    ui->brushStyleComboBox->insertItem(12,QString(QStringLiteral("左斜线填充")),QString("bdiag"));
+    ui->brushStyleComboBox->insertItem(13,QString(QStringLiteral("右斜线填充")),QString("fdiag"));
+    ui->brushStyleComboBox->insertItem(14,QString(QStringLiteral("斜网格线填充")),QString("diagcross"));
+
     ui->brushStyleComboBox->setCurrentIndex(1);
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
     ui->layoutListWidget->setIconSize(QSize( SETTINGS::LIST_ICON_SIZE,SETTINGS::LIST_ICON_SIZE));
@@ -99,10 +219,12 @@ void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCom
 {
     this->penUpdateCommand=penUpdateCommand;
 }
-void MainWindow::ConnectQListWidget(){
+void MainWindow::ConnectQListWidget()
+{
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
-void MainWindow::DisConnentQListWidget(){
+void MainWindow::DisConnentQListWidget()
+{
     disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
 
@@ -127,14 +249,10 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::DELETE_LAYOUT:{
         vector<int> ints=params.getInts();
-        qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
         ui->layoutListWidget->setCurrentRow(IndexMapList(ints[1]));
         QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(IndexMapList(ints[0]));
-        qDebug()<<"Remove:"<<ints[0];
         ui->layoutListWidget->removeItemWidget(deletedWidget);
         delete deletedWidget;
-        qDebug()<<"After Delete Count"<<ui->layoutListWidget->count();
-
     }
         break;
     case NOTIFY::REFRESH_PREVIEW:
@@ -144,13 +262,11 @@ void MainWindow::update(Params params)
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *item=ui->layoutListWidget->item(IndexMapList(ints[0]));
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
-        qDebug()<<"item"<<ints[0];
     }
         break;
     case NOTIFY::REFRESH_SELECTED_STATE:
     {
         vector<int> ints=params.getInts();
-        qDebug()<<"NOTIFY::SELECTED_CHANGE"<<ints[0];
         if(ui->layoutListWidget->currentRow()!=IndexMapList(ints[0]))ui->layoutListWidget->setCurrentRow(IndexMapList(ints[0]));
 
     }
@@ -213,231 +329,6 @@ void MainWindow::menuTriggered(QAction* action)
     Params params;
     params.setStrings({(action->text()).toStdString()});
     StateManager::Run(EVENT::ACTION_TRIGGERED,params);
-    return;
-
-
-
-
-
-
-
-    //----------------------------Unused--------------------------------//
-    if(action->text()==ui->action_aboutQt->text())
-    {
-        QMessageBox::aboutQt(NULL);
-        return;
-    }
-    if(action->text()==ui->action_drawLine->text())
-    {
-
-        state=STATE::DRAW_LINE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_drawEllipse->text())
-    {
-
-        state=STATE::DRAW_ELLIPSE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_drawRect->text())
-    {
-
-        state=STATE::DRAW_RECT_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_openPic->text())
-    {
-        QFileDialog fileDialog(this);
-        QString aimPicFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
-        if(!aimPicFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimPicFileName.toStdString()});
-            addPicCommand->setParams(params);
-            addPicCommand->exec();
-        }
-        return;
-    }
-    if(action->text()==ui->action_newCanvas->text()){
-        //New Project
-        newProjectCommand->exec();
-    }
-    if(action->text()==ui->action_saveCanvas->text()){
-        //Save Project
-        QFileDialog fileDialog(this);
-        QString aimProjectFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
-        if(!aimProjectFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimProjectFileName.toStdString()});
-            saveProjectCommand->setParams(params);
-            saveProjectCommand->exec();
-        }
-    }
-    if(action->text()==ui->action_saveAsPic->text()){
-        //Save Picture
-        QFileDialog fileDialog(this);
-        QString aimPicFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
-        if(!aimPicFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimPicFileName.toStdString()});
-            saveAsPictureCommand->setParams(params);
-            saveAsPictureCommand->exec();
-        }
-    }
-
-    if(action->text()==ui->action_move->text())
-    {
-        state=STATE::MOVE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_scale->text())
-    {
-        state=STATE::SCALE_INIT;
-        StateChanged();
-    }
-
-    if(action->text()==ui->action_rotate->text())
-    {
-        state=STATE::ROTATE_INIT;
-        StateChanged();
-    }
-    if(action->text()==ui->action_aboutPro->text())
-    {
-        QMessageBox::about(NULL, "关于","Mini PhotoShop\nPowered By Qt5");
-    }
-    if(action->text()==ui->action_help->text())
-    {
-
-    }
-    if(action->text()==ui->action_undo->text())
-    {
-        Params params;
-        undoCommand->setParams(params);
-        undoCommand->exec();
-
-    }
-    if(action->text()==ui->action_redo->text())
-    {
-        Params params;
-        redoCommand->setParams(params);
-        redoCommand->exec();
-    }
-    if(action->text()==ui->action_openPro->text())
-    {
-        //打开工程
-        QFileDialog fileDialog(this);
-        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
-        if(!aimProjectFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimProjectFileName.toStdString()});
-            loadProjectCommand->setParams(params);
-            loadProjectCommand->exec();
-        }
-    }
-    if(action->text()==ui->action_deleteLayout->text())
-    {
-        //删除图层
-        deleteLayoutCommand->exec();
-    }
-    if(action->text()==ui->action_layoutUp->text())
-    {
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_UP);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
-    }
-    if(action->text()==ui->action_layoutDown->text())
-    {
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_DOWN);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
-    }
-}
-
-void MainWindow::StateChanged()
-{
-    ui->action_drawLine->setChecked(false);
-    ui->action_drawEllipse->setChecked(false);
-    ui->action_drawRect->setChecked(false);
-    ui->action_move->setChecked(false);
-    ui->action_scale->setChecked(false);
-    ui->action_rotate->setChecked(false);
-    switch(state)
-    {
-    case STATE::INIT:
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        break;
-    case STATE::DRAW_LINE_INIT:
-        ui->action_drawLine->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点")));
-        break;
-    case STATE::DRAW_LINE:
-        ui->action_drawLine->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定直线的终点")));
-        break;
-    case STATE::DRAW_ELLIPSE_INIT:
-        ui->action_drawEllipse->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
-        break;
-    case STATE::DRAW_ELLIPSE:
-        ui->action_drawEllipse->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定椭圆的长轴与短轴")));
-        break;
-    case STATE::DRAW_RECT_INIT:
-        ui->action_drawRect->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
-        break;
-    case STATE::DRAW_RECT:
-        ui->action_drawRect->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定矩形的第二个顶点")));
-        break;
-    case STATE::MOVE_INIT:
-        ui->MainDisplayWidget->setCursor(Qt::OpenHandCursor);
-        ui->action_move->setChecked(true);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始移动图层")));
-        break;
-    case STATE::MOVE:
-        ui->MainDisplayWidget->setCursor(Qt::ClosedHandCursor);
-        ui->action_move->setChecked(true);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层")));
-        break;
-
-    case STATE::SCALE_INIT:
-        ui->action_scale->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层")));
-        break;
-    case STATE::SCALE:
-        ui->action_scale->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以缩放图层")));
-        break;
-    case STATE::ROTATE_INIT:
-        ui->action_rotate->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
-        break;
-    case STATE::ROTATE:
-        ui->action_rotate->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下并水平移动鼠标以旋转图层")));
-        break;
-    }
-    QWidget::update();
 }
 
 void MainWindow::ButtonForeColorPressed()
@@ -522,16 +413,17 @@ void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTran
 {
     ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
 }
-void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){
+void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand)
+{
     ui->MainDisplayWidget->setLayoutTransNotifyCommand(layoutTransNotifyCommand);
-
 }
 
 void MainWindow::UpdateCursorPosition(int x,int y)
 {
     cursorX=x;
     cursorY=y;
-    if(cursorX>=0&&cursorY>=0){
+    if(cursorX>=0&&cursorY>=0)
+    {
         QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
         ui->statusBar->showMessage(messageA);
     }
@@ -542,10 +434,12 @@ void MainWindow::UpdateCursorPosition(int x,int y)
 void MainWindow::UpdateStatusBarInfo(QString info)
 {
     statusBarInfo=info;
-    if(cursorX>=0&&cursorY>=0){
+    if(cursorX>=0&&cursorY>=0)
+    {
         QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
         ui->statusBar->showMessage(messageA);
-    }else
+    }
+    else
         ui->statusBar->showMessage(statusBarInfo);
 }
 
@@ -562,4 +456,9 @@ void MainWindow::ListPopMenuShow(const QPoint)
 void MainWindow::CanvasScaleChanged(double newScale)
 {
     ui->scaleLabel->setText(QStringLiteral("缩放 ")+QString("%1 %").arg(newScale*100));
+}
+
+void MainWindow::ShowHelp()
+{
+    wizard->show();
 }
