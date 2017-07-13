@@ -44,6 +44,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->brushStyleComboBox->insertItem(4,QString(QStringLiteral("填充样式3")),QString("dense3"));
     ui->brushStyleComboBox->insertItem(5,QString(QStringLiteral("填充样式4")),QString("dense4"));
     ui->brushStyleComboBox->insertItem(6,QString(QStringLiteral("填充样式5")),QString("dense5"));
+    ui->brushStyleComboBox->insertItem(7,QString(QStringLiteral("填充样式6")),QString("dense6"));
+    ui->brushStyleComboBox->insertItem(8,QString(QStringLiteral("填充样式7")),QString("dense7"));
+    ui->brushStyleComboBox->insertItem(9,QString(QStringLiteral("水平线填充")),QString("hor"));
+    ui->brushStyleComboBox->insertItem(10,QString(QStringLiteral("竖直线填充")),QString("ver"));
+    ui->brushStyleComboBox->insertItem(11,QString(QStringLiteral("网格线填充")),QString("cross"));
+    ui->brushStyleComboBox->insertItem(12,QString(QStringLiteral("左斜线填充")),QString("bdiag"));
+    ui->brushStyleComboBox->insertItem(13,QString(QStringLiteral("右斜线填充")),QString("fdiag"));
+    ui->brushStyleComboBox->insertItem(14,QString(QStringLiteral("斜网格线填充")),QString("diagcross"));
+
     ui->brushStyleComboBox->setCurrentIndex(1);
     //QListWidgetItem *item1=new QListWidgetItem(QIcon(":/img/img/SplashScreen.png"),QString("layout1"), ui->layoutListWidget);
     ui->layoutListWidget->setIconSize(QSize( SETTINGS::LIST_ICON_SIZE,SETTINGS::LIST_ICON_SIZE));

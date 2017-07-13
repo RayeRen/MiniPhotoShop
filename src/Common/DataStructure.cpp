@@ -1253,6 +1253,13 @@ shared_ptr<Pixmap> Pixmap::BilateralFiltering(int filterSize,double intenPara,do
     shared_ptr<Pixmap> src = this->AddBorder(filterSize / 2), res = shared_ptr<Pixmap>(new Pixmap(width, height));
     src->ConvertToYUV();
     res->format=FMT_YUV;
+    res->setPosX(getPosX());
+    res->setPosY(getPosY());
+    res->setAngle(getAngle());
+    res->setName(getName());
+    res->setScaleX(getScaleX());
+    res->setScaleY(getScaleY());
+    res->setType(getType());
     int halfSize = filterSize / 2;
     double *gauSpace=(double*)malloc(sizeof(double)*filterSize*filterSize);
     double wp,factor,gauInt;
@@ -1282,6 +1289,7 @@ shared_ptr<Pixmap> Pixmap::BilateralFiltering(int filterSize,double intenPara,do
     delete gauSpace;
     //delete src;
     res->ConvertFormat(format);
+    Load(*res);
     return res;
 }
 

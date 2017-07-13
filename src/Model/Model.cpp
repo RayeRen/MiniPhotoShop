@@ -691,7 +691,7 @@ void Model::DeleteLayout(int LayoutIndex){
      }
          break;
      case PIXMAP::BILATERALFILTERING:
-         pic=pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
+         pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
          break;
      case PIXMAP::HISTOEQUALIZING:
          pic->HistoEqualizing();
@@ -719,6 +719,17 @@ void Model::DeleteLayout(int LayoutIndex){
          pic->ConvolutionGet(conv,size);
          delete[] conv;
      }
+         break;
+     case PIXMAP::LUMACHANGE:
+        pic->ChangeLuma(ints[1]);
+         break;
+     case PIXMAP::CONVERTGREY:
+         pic->ConvertFormat(PIXMAP::FMT_GREY);
+         pic->ConvertFormat(PIXMAP::FMT_RGB);
+       break;
+    case PIXMAP::CONVERTBIN:
+         pic->ConvertFormat(PIXMAP::FMT_BIN,ints[1]);
+         pic->ConvertFormat(PIXMAP::FMT_RGB);
          break;
      default:
          return;

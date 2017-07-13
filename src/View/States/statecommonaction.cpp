@@ -256,7 +256,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
-                                     QStringLiteral("取消")))
+                                      QStringLiteral("取消")))
             {
                 PerformLayoutMerge();
                 {
@@ -286,7 +286,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
-                                     QStringLiteral("取消")))
+                                      QStringLiteral("取消")))
             {
                 PerformLayoutMerge();
                 {
@@ -317,7 +317,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
-                                     QStringLiteral("取消")))
+                                      QStringLiteral("取消")))
             {
                 PerformLayoutMerge();
                 {
@@ -352,7 +352,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         {
             QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
-                                     QStringLiteral("取消")))
+                                      QStringLiteral("取消")))
             {
                 PerformLayoutMerge();
                 Params newParams=ConvolutionDialog::GetConvolutionCore(pMainWindow);
@@ -375,20 +375,134 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     {
         if(pMainWindow->ifPixmap)
         {
-           PerformLaplac();
+            PerformLaplac();
         }
         else
         {
             QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
-                                     QStringLiteral("取消")))
+                                      QStringLiteral("取消")))
             {
-               PerformLayoutMerge();
+                PerformLayoutMerge();
                 PerformLaplac();
             }
         }
         return state;
     }
+    if(actionText==pMainWindow->ui->action_bilafilter->text())
+    {
+        if(pMainWindow->ifPixmap)
+            PerformBilaFilter();
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                      QStringLiteral("取消")))
+            {
+                PerformLayoutMerge();
+                PerformBilaFilter();
+            }
+        }
+        return state;
+    }
+
+    if(actionText==pMainWindow->ui->action_grey->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params newParams;
+            newParams.setType(PIXMAP::CONVERTGREY);
+            newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
+
+            pMainWindow->pixmapFilterCommand->setParams(newParams);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                      QStringLiteral("取消")))
+            {
+                PerformLayoutMerge();
+                Params newParams;
+                newParams.setType(PIXMAP::CONVERTGREY);
+                newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow())});
+
+                pMainWindow->pixmapFilterCommand->setParams(newParams);
+                pMainWindow->pixmapFilterCommand->exec();
+            }
+        }
+        return state;
+    }
+
+
+    if(actionText==pMainWindow->ui->action_bin->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params newParams;
+            newParams.setType(PIXMAP::CONVERTBIN);
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("图像二值化"),QStringLiteral("是否自动设定阈值？"),QStringLiteral("自动设定阈值"),
+                                      QStringLiteral("手动输入阈值")))
+                newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),-1});
+            else
+                newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像二值化"),
+                                   QStringLiteral("请输入阈值"),150,1,255,1)});
+            pMainWindow->pixmapFilterCommand->setParams(newParams);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                      QStringLiteral("取消")))
+            {
+                PerformLayoutMerge();
+                Params newParams;
+                newParams.setType(PIXMAP::CONVERTGREY);
+                if(!QMessageBox::question(pMainWindow,QStringLiteral("图像二值化"),QStringLiteral("是否自动设定阈值？"),QStringLiteral("自动设定阈值"),
+                                          QStringLiteral("手动输入阈值")))
+                    newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),-1});
+                else
+                    newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像二值化"),
+                                       QStringLiteral("请输入阈值"),150,1,255,1)});
+                pMainWindow->pixmapFilterCommand->setParams(newParams);
+                pMainWindow->pixmapFilterCommand->exec();
+            }
+        }
+        return state;
+    }
+
+    if(actionText==pMainWindow->ui->action_lumaChange->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params newParams;
+            newParams.setType(PIXMAP::LUMACHANGE);
+
+            newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像亮度调整"),
+                               QStringLiteral("请输入亮度变化量"),0,-255,255,1)});
+            pMainWindow->pixmapFilterCommand->setParams(newParams);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                      QStringLiteral("取消")))
+            {
+                PerformLayoutMerge();
+                Params newParams;
+                newParams.setType(PIXMAP::CONVERTGREY);
+                newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像亮度调整"),
+                                   QStringLiteral("请输入亮度变化量"),0,-255,255,1)});
+                pMainWindow->pixmapFilterCommand->setParams(newParams);
+                pMainWindow->pixmapFilterCommand->exec();
+            }
+        }
+        return state;
+    }
+
 
     return state;
 }
@@ -439,4 +553,27 @@ void  StateCommonAction::PerformLaplac()
             pMainWindow->pixmapFilterCommand->exec();
         }
     }
+}
+
+void StateCommonAction::PerformBilaFilter()
+{
+    Params newParams;
+    MainWindow* pMainWindow=StateManager::GetpMainWindow();
+    newParams.setType(PIXMAP::BILATERALFILTERING);
+    if(!QMessageBox::question(pMainWindow,QStringLiteral("双边滤波"),QStringLiteral("是否使用默认参数？"),
+                              QStringLiteral("使用默认参数"),QStringLiteral("自定义参数")))
+    {
+        newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),-1});
+        newParams.setDoubles({-1.0,-1.0});
+    }
+    else
+    {
+        newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),
+                           QInputDialog::getInt(pMainWindow,QStringLiteral("双边滤波"),QStringLiteral("请输入卷积核尺寸"),33,13,41,2)});
+        newParams.setDoubles({QInputDialog::getDouble(pMainWindow,QStringLiteral("双边滤波"),
+                              QStringLiteral("请输入空间域高斯函数标准差"),13.5,1,999,0.1),QInputDialog::getDouble(pMainWindow,QStringLiteral("图像亮度调整"),
+                              QStringLiteral("请输入值域高斯函数标准差"),0.15,1,999,0.1)});
+    }
+    pMainWindow->pixmapFilterCommand->setParams(newParams);
+    pMainWindow->pixmapFilterCommand->exec();
 }
