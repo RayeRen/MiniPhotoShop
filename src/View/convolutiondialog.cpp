@@ -17,7 +17,6 @@ ConvolutionDialog::ConvolutionDialog(QWidget *parent,int defaultValue) :
     QTableWidgetItem *item;
     for(int i=0;i<size;i++)
     {
-        qDebug()<<ui->tableWidget->height()<<ui->tableWidget->height();
         ui->tableWidget->setRowHeight(i,(ui->tableWidget->height()*0.9)/size);
         ui->tableWidget->setColumnWidth(i,(ui->tableWidget->width()*0.9)/size);
         for(int j=0;j<size;j++)
@@ -29,9 +28,6 @@ ConvolutionDialog::ConvolutionDialog(QWidget *parent,int defaultValue) :
             ui->tableWidget->setItem(i,j,item);
         }
     }
-
-
-
     connect(ui->acceptButton,SIGNAL(pressed()),this,SLOT(AcceptButtonPressed()));
     connect(ui->rejectButton,SIGNAL(pressed()),this,SLOT(RejectButtonPressed()));
     connect(ui->sizeSpinBox,SIGNAL(valueChanged(int)),this,SLOT(SizeChanged(int)));

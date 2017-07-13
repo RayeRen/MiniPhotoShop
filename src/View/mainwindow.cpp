@@ -1,11 +1,9 @@
 ﻿#include "mainwindow.h"
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    state=STATE::INIT;
     pen=NULL;
     brush=NULL;
     displayImage=NULL;
@@ -13,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     cursorY=-1;
     ifPixmap=0;
     ui->setupUi(this);
-    ui->MainDisplayWidget->SetState(&state);
 
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
 
@@ -108,10 +105,12 @@ void MainWindow::setPenUpdateCommand(const shared_ptr<BaseCommand> &penUpdateCom
 {
     this->penUpdateCommand=penUpdateCommand;
 }
-void MainWindow::ConnectQListWidget(){
+void MainWindow::ConnectQListWidget()
+{
     connect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
-void MainWindow::DisConnentQListWidget(){
+void MainWindow::DisConnentQListWidget()
+{
     disconnect(ui->layoutListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(ListItemSelectionChanged()));
 }
 
@@ -136,14 +135,10 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::DELETE_LAYOUT:{
         vector<int> ints=params.getInts();
-        qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
         ui->layoutListWidget->setCurrentRow(IndexMapList(ints[1]));
         QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(IndexMapList(ints[0]));
-        qDebug()<<"Remove:"<<ints[0];
         ui->layoutListWidget->removeItemWidget(deletedWidget);
         delete deletedWidget;
-        qDebug()<<"After Delete Count"<<ui->layoutListWidget->count();
-
     }
         break;
     case NOTIFY::REFRESH_PREVIEW:
@@ -153,13 +148,11 @@ void MainWindow::update(Params params)
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *item=ui->layoutListWidget->item(IndexMapList(ints[0]));
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
-        qDebug()<<"item"<<ints[0];
     }
         break;
     case NOTIFY::REFRESH_SELECTED_STATE:
     {
         vector<int> ints=params.getInts();
-        qDebug()<<"NOTIFY::SELECTED_CHANGE"<<ints[0];
         if(ui->layoutListWidget->currentRow()!=IndexMapList(ints[0]))ui->layoutListWidget->setCurrentRow(IndexMapList(ints[0]));
 
     }
@@ -222,231 +215,6 @@ void MainWindow::menuTriggered(QAction* action)
     Params params;
     params.setStrings({(action->text()).toStdString()});
     StateManager::Run(EVENT::ACTION_TRIGGERED,params);
-    return;
-
-
-
-
-
-
-
-    //----------------------------Unused--------------------------------//
-    if(action->text()==ui->action_aboutQt->text())
-    {
-        QMessageBox::aboutQt(NULL);
-        return;
-    }
-    if(action->text()==ui->action_drawLine->text())
-    {
-
-        state=STATE::DRAW_LINE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_drawEllipse->text())
-    {
-
-        state=STATE::DRAW_ELLIPSE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_drawRect->text())
-    {
-
-        state=STATE::DRAW_RECT_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_openPic->text())
-    {
-        QFileDialog fileDialog(this);
-        QString aimPicFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
-        if(!aimPicFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimPicFileName.toStdString()});
-            addPicCommand->setParams(params);
-            addPicCommand->exec();
-        }
-        return;
-    }
-    if(action->text()==ui->action_newCanvas->text()){
-        //New Project
-        newProjectCommand->exec();
-    }
-    if(action->text()==ui->action_saveCanvas->text()){
-        //Save Project
-        QFileDialog fileDialog(this);
-        QString aimProjectFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
-        if(!aimProjectFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimProjectFileName.toStdString()});
-            saveProjectCommand->setParams(params);
-            saveProjectCommand->exec();
-        }
-    }
-    if(action->text()==ui->action_saveAsPic->text()){
-        //Save Picture
-        QFileDialog fileDialog(this);
-        QString aimPicFileName=fileDialog.getSaveFileName(this,QStringLiteral("保存图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
-        if(!aimPicFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimPicFileName.toStdString()});
-            saveAsPictureCommand->setParams(params);
-            saveAsPictureCommand->exec();
-        }
-    }
-
-    if(action->text()==ui->action_move->text())
-    {
-        state=STATE::MOVE_INIT;
-        StateChanged();
-        return;
-    }
-    if(action->text()==ui->action_scale->text())
-    {
-        state=STATE::SCALE_INIT;
-        StateChanged();
-    }
-
-    if(action->text()==ui->action_rotate->text())
-    {
-        state=STATE::ROTATE_INIT;
-        StateChanged();
-    }
-    if(action->text()==ui->action_aboutPro->text())
-    {
-        QMessageBox::about(NULL, "关于","Mini PhotoShop\nPowered By Qt5");
-    }
-    if(action->text()==ui->action_help->text())
-    {
-
-    }
-    if(action->text()==ui->action_undo->text())
-    {
-        Params params;
-        undoCommand->setParams(params);
-        undoCommand->exec();
-
-    }
-    if(action->text()==ui->action_redo->text())
-    {
-        Params params;
-        redoCommand->setParams(params);
-        redoCommand->exec();
-    }
-    if(action->text()==ui->action_openPro->text())
-    {
-        //打开工程
-        QFileDialog fileDialog(this);
-        QString aimProjectFileName=fileDialog.getOpenFileName(this,QStringLiteral("打开项目文件"),".","MiniPhotoshop Project(*.mps)");
-        if(!aimProjectFileName.isNull())
-        {
-            Params params;
-            params.setStrings({aimProjectFileName.toStdString()});
-            loadProjectCommand->setParams(params);
-            loadProjectCommand->exec();
-        }
-    }
-    if(action->text()==ui->action_deleteLayout->text())
-    {
-        //删除图层
-        deleteLayoutCommand->exec();
-    }
-    if(action->text()==ui->action_layoutUp->text())
-    {
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_UP);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
-    }
-    if(action->text()==ui->action_layoutDown->text())
-    {
-        Params params;
-        params.setType(COMMAND::LAYOUT_ORDER_DOWN);
-        layoutOrderChangeCommand->setParams(params);
-        layoutOrderChangeCommand->exec();
-    }
-}
-
-void MainWindow::StateChanged()
-{
-    ui->action_drawLine->setChecked(false);
-    ui->action_drawEllipse->setChecked(false);
-    ui->action_drawRect->setChecked(false);
-    ui->action_move->setChecked(false);
-    ui->action_scale->setChecked(false);
-    ui->action_rotate->setChecked(false);
-    switch(state)
-    {
-    case STATE::INIT:
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        break;
-    case STATE::DRAW_LINE_INIT:
-        ui->action_drawLine->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定直线的起点")));
-        break;
-    case STATE::DRAW_LINE:
-        ui->action_drawLine->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定直线的终点")));
-        break;
-    case STATE::DRAW_ELLIPSE_INIT:
-        ui->action_drawEllipse->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定椭圆的中心")));
-        break;
-    case STATE::DRAW_ELLIPSE:
-        ui->action_drawEllipse->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定椭圆的长轴与短轴")));
-        break;
-    case STATE::DRAW_RECT_INIT:
-        ui->action_drawRect->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标以确定矩形的第一个顶点")));
-        break;
-    case STATE::DRAW_RECT:
-        ui->action_drawRect->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::CrossCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请松开鼠标以确定矩形的第二个顶点")));
-        break;
-    case STATE::MOVE_INIT:
-        ui->MainDisplayWidget->setCursor(Qt::OpenHandCursor);
-        ui->action_move->setChecked(true);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始移动图层")));
-        break;
-    case STATE::MOVE:
-        ui->MainDisplayWidget->setCursor(Qt::ClosedHandCursor);
-        ui->action_move->setChecked(true);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以移动图层")));
-        break;
-
-    case STATE::SCALE_INIT:
-        ui->action_scale->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始缩放图层")));
-        break;
-    case STATE::SCALE:
-        ui->action_scale->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeFDiagCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下以缩放图层")));
-        break;
-    case STATE::ROTATE_INIT:
-        ui->action_rotate->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请按下鼠标开始旋转图层")));
-        break;
-    case STATE::ROTATE:
-        ui->action_rotate->setChecked(true);
-        ui->MainDisplayWidget->setCursor(Qt::SizeHorCursor);
-        UpdateStatusBarInfo(QString(QStringLiteral("请保持鼠标按下并水平移动鼠标以旋转图层")));
-        break;
-    }
-    QWidget::update();
 }
 
 void MainWindow::ButtonForeColorPressed()
@@ -531,16 +299,17 @@ void MainWindow::setLayoutTransCommand(const shared_ptr<BaseCommand> &layoutTran
 {
     ui->MainDisplayWidget->setLayoutTransCommand(layoutTransCommand);
 }
-void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand){
+void MainWindow::setLayoutTransNotifyCommand(const shared_ptr<BaseCommand> &layoutTransNotifyCommand)
+{
     ui->MainDisplayWidget->setLayoutTransNotifyCommand(layoutTransNotifyCommand);
-
 }
 
 void MainWindow::UpdateCursorPosition(int x,int y)
 {
     cursorX=x;
     cursorY=y;
-    if(cursorX>=0&&cursorY>=0){
+    if(cursorX>=0&&cursorY>=0)
+    {
         QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
         ui->statusBar->showMessage(messageA);
     }
@@ -551,10 +320,12 @@ void MainWindow::UpdateCursorPosition(int x,int y)
 void MainWindow::UpdateStatusBarInfo(QString info)
 {
     statusBarInfo=info;
-    if(cursorX>=0&&cursorY>=0){
+    if(cursorX>=0&&cursorY>=0)
+    {
         QString messageA=QString(statusBarInfo)+QStringLiteral(" 位置")+QString("(%1,%2)").arg(cursorX).arg(cursorY);
         ui->statusBar->showMessage(messageA);
-    }else
+    }
+    else
         ui->statusBar->showMessage(statusBarInfo);
 }
 

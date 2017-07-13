@@ -12,16 +12,14 @@
 #include "States/rotatestate.h"
 #include "States/scaleinitstate.h"
 #include "States/scalestate.h"
-#include <QDebug>
+
 int StateManager::currentState=STATE::INIT;
 map<int,shared_ptr<BaseState>> StateManager::stateMap;
 MainWindow *StateManager::pMainWindow=NULL;
 
 void StateManager::Run(int event,Params params)
 {
-    qDebug()<<"BEGIN"<<event<<currentState;
     currentState=stateMap[currentState]->Process(event,params);
-    qDebug()<<"END"<<currentState;
 }
 
 void StateManager::Init()

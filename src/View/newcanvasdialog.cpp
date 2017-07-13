@@ -9,7 +9,7 @@ NewCanvasDialog::NewCanvasDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->acceptButton,SIGNAL(pressed()),this,SLOT(AcceptButton()));
-        connect(ui->rejectButton,SIGNAL(pressed()),this,SLOT(RejectButton()));
+    connect(ui->rejectButton,SIGNAL(pressed()),this,SLOT(RejectButton()));
 }
 
 

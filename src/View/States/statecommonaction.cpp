@@ -26,11 +26,6 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_drawLine->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::DRAW_LINE_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
         pMainWindow->ui->action_drawEllipse->setChecked(false);
         pMainWindow->ui->action_drawRect->setChecked(false);
         pMainWindow->ui->action_move->setChecked(false);
@@ -44,11 +39,6 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_drawEllipse->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::DRAW_ELLIPSE_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
         pMainWindow->ui->action_drawLine->setChecked(false);
         pMainWindow->ui->action_drawRect->setChecked(false);
         pMainWindow->ui->action_move->setChecked(false);
@@ -63,12 +53,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_drawRect->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::DRAW_RECT_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
-        pMainWindow->ui->action_drawLine->setChecked(false);
+                pMainWindow->ui->action_drawLine->setChecked(false);
         pMainWindow->ui->action_drawEllipse->setChecked(false);
         pMainWindow->ui->action_move->setChecked(false);
         pMainWindow->ui->action_scale->setChecked(false);
@@ -127,12 +112,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
     if(actionText==pMainWindow->ui->action_move->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::MOVE_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
-        pMainWindow->ui->action_drawLine->setChecked(false);
+            pMainWindow->ui->action_drawLine->setChecked(false);
         pMainWindow->ui->action_drawEllipse->setChecked(false);
         pMainWindow->ui->action_drawRect->setChecked(false);
         pMainWindow->ui->action_scale->setChecked(false);
@@ -146,12 +126,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_scale->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::SCALE_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
-        pMainWindow->ui->action_drawLine->setChecked(false);
+             pMainWindow->ui->action_drawLine->setChecked(false);
         pMainWindow->ui->action_drawEllipse->setChecked(false);
         pMainWindow->ui->action_drawRect->setChecked(false);
         pMainWindow->ui->action_move->setChecked(false);
@@ -166,12 +141,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
 
     if(actionText==pMainWindow->ui->action_rotate->text())
     {
-        //DELETE_BEGIN
-        pMainWindow->state=STATE::ROTATE_INIT;
-        pMainWindow->StateChanged();
-        //DELETE_END
-
-        pMainWindow->ui->action_drawLine->setChecked(false);
+             pMainWindow->ui->action_drawLine->setChecked(false);
         pMainWindow->ui->action_drawEllipse->setChecked(false);
         pMainWindow->ui->action_drawRect->setChecked(false);
         pMainWindow->ui->action_move->setChecked(false);
@@ -465,7 +435,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
                     newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),-1});
                 else
                     newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像二值化"),
-                                       QStringLiteral("请输入阈值"),150,1,255,1)});
+                                       QStringLiteral("请输入阈值（取值范围0~255）"),150,0,255,1)});
                 pMainWindow->pixmapFilterCommand->setParams(newParams);
                 pMainWindow->pixmapFilterCommand->exec();
             }
@@ -481,7 +451,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
             newParams.setType(PIXMAP::LUMACHANGE);
 
             newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像亮度调整"),
-                               QStringLiteral("请输入亮度变化量"),0,-255,255,1)});
+                               QStringLiteral("请输入亮度变化量（取值范围-255~255）"),0,-255,255,1)});
             pMainWindow->pixmapFilterCommand->setParams(newParams);
             pMainWindow->pixmapFilterCommand->exec();
         }
@@ -495,7 +465,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
                 Params newParams;
                 newParams.setType(PIXMAP::CONVERTGREY);
                 newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),QInputDialog::getInt(pMainWindow,QStringLiteral("图像亮度调整"),
-                                   QStringLiteral("请输入亮度变化量"),0,-255,255,1)});
+                                   QStringLiteral("请输入亮度变化量（取值范围-255~255）"),0,-255,255,1)});
                 pMainWindow->pixmapFilterCommand->setParams(newParams);
                 pMainWindow->pixmapFilterCommand->exec();
             }
@@ -571,9 +541,10 @@ void StateCommonAction::PerformBilaFilter()
         newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),
                            QInputDialog::getInt(pMainWindow,QStringLiteral("双边滤波"),QStringLiteral("请输入卷积核尺寸"),33,13,41,2)});
         newParams.setDoubles({QInputDialog::getDouble(pMainWindow,QStringLiteral("双边滤波"),
-                              QStringLiteral("请输入空间域高斯函数标准差"),13.5,1,999,0.1),QInputDialog::getDouble(pMainWindow,QStringLiteral("图像亮度调整"),
-                              QStringLiteral("请输入值域高斯函数标准差"),0.15,1,999,0.1)});
+                              QStringLiteral("请输入空间域高斯函数标准差"),13.5,0.01,9999.0),QInputDialog::getDouble(pMainWindow,QStringLiteral("双边滤波"),
+                              QStringLiteral("请输入值域高斯函数标准差"),0.15,0.01,9999.0)});
     }
+    QMessageBox::information(pMainWindow,QStringLiteral("提示"),QStringLiteral("双边滤波耗时可能较长，计算期间窗口可能会无响应"));
     pMainWindow->pixmapFilterCommand->setParams(newParams);
     pMainWindow->pixmapFilterCommand->exec();
 }
