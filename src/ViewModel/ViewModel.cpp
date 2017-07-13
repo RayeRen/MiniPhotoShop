@@ -253,7 +253,7 @@ void ViewModel::RefreshDisplayImage(int i)
     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
     painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
     painter.setRenderHint(QPainter::Antialiasing, true);
-    if(i<0)
+    if(i<0||i>=layouts->list.size())
     {
 
     }
