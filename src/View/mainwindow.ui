@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>913</width>
-    <height>806</height>
+    <height>828</height>
    </rect>
   </property>
   <property name="font">
@@ -150,6 +150,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="ImageWidget" name="MainDisplayWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>800</width>
@@ -158,8 +164,8 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>800</width>
-              <height>800</height>
+              <width>3000</width>
+              <height>3000</height>
              </size>
             </property>
            </widget>
@@ -245,6 +251,13 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QLabel" name="scaleLabel">
+      <property name="text">
+       <string>缩放 100.00%</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -299,6 +312,7 @@
     <addaction name="action_layoutUp"/>
     <addaction name="action_layoutDown"/>
     <addaction name="action_deleteLayout"/>
+    <addaction name="action_mergeLayout"/>
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
@@ -307,6 +321,8 @@
     <addaction name="action_inverse"/>
     <addaction name="action_histoEqu"/>
     <addaction name="action_logOper"/>
+    <addaction name="action_convo"/>
+    <addaction name="action_laplac"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -527,6 +543,21 @@
   <action name="action_logOper">
    <property name="text">
     <string>自动亮度调整</string>
+   </property>
+  </action>
+  <action name="action_mergeLayout">
+   <property name="text">
+    <string>合并全部图层</string>
+   </property>
+  </action>
+  <action name="action_convo">
+   <property name="text">
+    <string>通用卷积变换</string>
+   </property>
+  </action>
+  <action name="action_laplac">
+   <property name="text">
+    <string>拉普拉斯图像增强</string>
    </property>
   </action>
  </widget>

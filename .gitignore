@@ -25,6 +25,11 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *build-*
+*.depends
+*_plugin_import.cpp
+*.Debug
+*moc.cpp
+*.Release
 
 # QtCreator
 
@@ -52,4 +57,4 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
-
+build.sh

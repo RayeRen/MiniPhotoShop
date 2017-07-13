@@ -1,4 +1,4 @@
-#ifndef ADDRECTSTATE_H
+﻿#ifndef ADDRECTSTATE_H
 #define ADDRECTSTATE_H
 #include "BaseState.h"
 class DrawRectState:public BaseState
@@ -27,7 +27,7 @@ public:
                                       pMainWindow->ui->MainDisplayWidget->brush->getBackB()));
 
                tmpPen.setStyle(static_cast<Qt::PenStyle>(pMainWindow->ui->MainDisplayWidget->pen->getPenStyle()));
-               tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth());
+               tmpPen.setWidth(pMainWindow->ui->MainDisplayWidget->pen->getLineWidth()*pMainWindow->ui->MainDisplayWidget->getCanvasScale());
                tmpBrush.setStyle(static_cast<Qt::BrushStyle>(pMainWindow->ui->MainDisplayWidget->brush->getBrushStyle()));
                p.setPen(tmpPen);
                p.setBrush(tmpBrush);
@@ -49,9 +49,10 @@ public:
 
           centerX=(pMainWindow->ui->MainDisplayWidget->mouseLastX+pMainWindow->ui->MainDisplayWidget->mouseX)/2,
                   centerY=(pMainWindow->ui->MainDisplayWidget->mouseLastY+pMainWindow->ui->MainDisplayWidget->mouseY)/2;
-          para.setInts({centerX,centerY,
-                        std::abs(pMainWindow->ui->MainDisplayWidget->mouseX-pMainWindow->ui->MainDisplayWidget->mouseLastX),
-                        std::abs(pMainWindow->ui->MainDisplayWidget->mouseY-pMainWindow->ui->MainDisplayWidget->mouseLastY)});
+          para.setInts({(int)((centerX-pMainWindow->ui->MainDisplayWidget->getMouseSkewX())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)((centerY-pMainWindow->ui->MainDisplayWidget->getMouseSkewY())/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)(std::abs(pMainWindow->ui->MainDisplayWidget->mouseX-pMainWindow->ui->MainDisplayWidget->mouseLastX)/pMainWindow->ui->MainDisplayWidget->getCanvasScale()),
+                        (int)(std::abs(pMainWindow->ui->MainDisplayWidget->mouseY-pMainWindow->ui->MainDisplayWidget->mouseLastY)/pMainWindow->ui->MainDisplayWidget->getCanvasScale())});
           pMainWindow->ui->MainDisplayWidget->addRectCommand->setParams(para);
           pMainWindow->ui->MainDisplayWidget->addRectCommand->exec();
 

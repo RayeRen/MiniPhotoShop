@@ -16,7 +16,6 @@
 #include "src/ViewModel/Commands/changedselectedcommand.h"
 #include "src/ViewModel/Commands/layouttransformcommand.h"
 #include "src/ViewModel/Commands/layouttransformnotifycommand.h"
-#include "src/ViewModel/Commands/newprojectcommand.h"
 #include "src/ViewModel/Commands/loadprojectcommand.h"
 #include "src/ViewModel/Commands/saveprojectcommand.h"
 #include "src/ViewModel/Commands/deletelayoutcommand.h"
@@ -86,12 +85,16 @@ void ViewModel::update(Params params) {
         break;
     case NOTIFY::UPDATE_IMAGE_ADD:
     {
+        SetSelectedLayout(-1);
         vector<int> ints=params.getInts();
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.insert(displayBuffer.begin()+ints[0],pImage);
         //displayBuffer.push_back(pImage);
-        if(this->selectedLayout>=ints[0])
-            this->selectedLayout++;
+
+        //this->selectedLayout=-1;
+        //if(this->selectedLayout>=ints[0])
+        //    this->selectedLayout++;
+        //
         qDebug()<<"Buffer Size:"<<displayBuffer.size();
         RefreshDisplayImage(ints[0]);
         Params params;
@@ -107,17 +110,22 @@ void ViewModel::update(Params params) {
         newParams.setStrings({(layouts->list)[ints[0]]->getName()});
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
+
         break;
     }
     case NOTIFY::UPDATE_IMAGE_MINUS:{
+
         qDebug()<<"minus";
         vector<int> ints=params.getInts();
         qDebug()<<"Remove Minus:"<<ints[0];
         vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
         displayBuffer.erase(it);
-        if(this->selectedLayout>=ints[0])
-            this->selectedLayout--;
-        SetSelectedLayout(this->selectedLayout);
+        //Ignore the old value.
+        this->selectedLayout=-1;
+        SetSelectedLayout(-1);
+        //if(this->selectedLayout>=ints[0])
+        //    this->selectedLayout--;
+
         qDebug()<<"Remove Refresh end";
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
@@ -158,10 +166,9 @@ void ViewModel::SaveAsPicture(string path)
 {
     QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
     QPainter painter(&outputImage);
-
-    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     //painter.setCompositionMode(QPainter::CompositionMode_Source);
-    for(unsigned int i=0;i<displayBuffer.size();i++)
+    painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
+    for(int i=0;i<displayBuffer.size();i++)
     {
 
         if(i==selectedLayout)
@@ -169,7 +176,7 @@ void ViewModel::SaveAsPicture(string path)
             QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
             QPainter layoutPainter(&tmpLayout);
 
-            //layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
+           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
             layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
             shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 
@@ -201,7 +208,7 @@ void ViewModel::SaveAsPicture(string path)
                 tmpPen.setWidth(ellipsePen.getLineWidth());
                 tmpBrush.setStyle(static_cast<Qt::BrushStyle>(ellipseBrush.getBrushStyle()));
                 layoutPainter.setPen(tmpPen);
-               layoutPainter.setBrush(tmpBrush);
+                layoutPainter.setBrush(tmpBrush);
                 layoutPainter.drawEllipse(QPoint(0,0),ellipse->getA(),ellipse->getB());
             }
                 break;
@@ -236,9 +243,10 @@ void ViewModel::SaveAsPicture(string path)
 
 void ViewModel::RefreshDisplayImage(int i)
 {
+    //If layout.list[i] is not existed , there will be a vector subscript out of range.
     if (layouts == nullptr)
         return;
-    qDebug()<<"RefreshDisplayImage"<<this->selectedLayout;
+    qDebug()<<"RefreshDisplayImage"<<this->selectedLayout<<i;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
     // painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -350,9 +358,11 @@ void ViewModel::RefreshDisplayImage(int i)
             break;
         }
     }
+    qDebug()<<"DisplayBuffer:"<<displayBuffer.size();
 
     for(int i=0;i<displayBuffer.size();i++)
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
+    qDebug()<<"DisplayBuffer Refresh End:";
 }
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
@@ -374,7 +384,6 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
 
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
-    newProjectCommand(shared_ptr<BaseCommand>(new NewProjectCommand(pModel))),
     loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
     saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
     undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
@@ -384,12 +393,14 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     layoutOrderChangeCommand(shared_ptr<BaseCommand>(new LayoutOrderChangeCommand(pModel,shared_ptr<ViewModel>(this)))),
     selectedLayout(-1)
 {
-    displayImage = QImage(QSize(200, 200), QImage::Format_ARGB32);
+    displayImage = QImage(QSize(SETTINGS::canvasWidth, SETTINGS::canvasHeight), QImage::Format_ARGB32);
     backGround=QImage(":/img/img/background.png");
 }
 
 void ViewModel::SetSelectedLayout(int selectedLayout)
 {
+    //It will refresh the old value.
+    qDebug()<<"SetSelectedLAyout:"<<selectedLayout;
     int oldValue=this->selectedLayout;
     this->selectedLayout=selectedLayout;
     RefreshDisplayImage(oldValue);
@@ -399,6 +410,7 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
 
     if(oldValue>=0)
     {
+        qDebug()<<"SetSelectedLAyout:oldValue"<<oldValue;
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
@@ -421,6 +433,10 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
         notify(newParams);
     }
     qDebug()<<"Where is the bug";
+    Params params2;
+    params2.setType(NOTIFY::REFRESH_SELECTED_STATE);
+    params2.setInts({this->selectedLayout});
+    notify(params2);
     Params params;
     params.setType(NOTIFY::DISPLAY_REFRESH);
     notify(params);

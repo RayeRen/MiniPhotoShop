@@ -10,7 +10,11 @@
 #include <QMessageBox>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QString>
+#include "ui_mainwindow.h"
+#include "newcanvasdialog.h"
+#include "convolutiondialog.h"
 /*
 class BaseState;
 class DrawLineInitState;
@@ -67,6 +71,21 @@ public:
 
     void ConnectQListWidget();
     void DisConnentQListWidget();
+    int  ListMapIndex(int listindex){
+        //表的Index转化为内部数据的Index
+        int after=listindex;
+        if(listindex>=0)after=ui->layoutListWidget->count()-1-listindex;
+        qDebug()<<"ListMapIndex:Before:"<<listindex<<"after:"<<after;
+        return after;
+    }
+    int IndexMapList(int index){
+        //内部数据的Index转化为表的Index
+        int after=index;
+        if(index>=0)after=ui->layoutListWidget->count()-1-index;
+        qDebug()<<"IndexMapList:Before:"<<index<<"after:"<<after;
+        return after;
+    }
+
 
     friend class BaseState;
     friend class DrawLineInitState;
@@ -111,6 +130,7 @@ private:
      void UpdateStatusBarInfo(QString);
      void CanvasPopMenuShow(const QPoint);
      void ListPopMenuShow(const QPoint);
+     void CanvasScaleChanged(double);
 };
 
 #endif // MAINWINDOW_H

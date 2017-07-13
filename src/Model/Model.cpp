@@ -46,6 +46,18 @@ void Model::addRect(double centerX, double centerY, double width, double height)
     params.setInts({(int)layouts.list.size()-1});
     notify(params);
 }
+void Model::addText(int posX,int posY,string text){
+    shared_ptr<Text> pText;
+    layouts.list.push_back(pText = shared_ptr<Text>(new Text(posX,
+         posY, SHAPE::TEXT,(QString("图层 %1 文字").arg(++layoutCount)).toStdString(),1.0,1.0,0,pen,brush,text)));
+    addDoneEvent(COMMAND::CREATE,layouts.list.size()-1,shared_ptr<BaseShape>(new Text(*pText)));
+
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)layouts.list.size()-1});
+    notify(params);
+}
+
 void Model::addBaseShape(vector<shared_ptr<BaseShape>>::iterator  it,shared_ptr<BaseShape> shape){
     //Redo Need it.
     if(shape!=nullptr){
@@ -64,7 +76,8 @@ shared_ptr<BaseShape> Model::NewBaseShape(shared_ptr<BaseShape> shape){
             newBaseShape=shared_ptr<BaseShape>(new Rect(*(static_pointer_cast<Rect>(shape))));
         }else if(type==SHAPE::PIXMAP){
             newBaseShape=shared_ptr<BaseShape>(new Pixmap(*(static_pointer_cast<Pixmap>(shape))));
-        }else{
+        }else if(type==SHAPE::TEXT){
+            newBaseShape=shared_ptr<BaseShape>(new Text(*(static_pointer_cast<Text>(shape))));
         }
     }else{
         qDebug()<<"The shape is null";
@@ -88,6 +101,36 @@ void Model::LayoutTransform(int Change,int LayoutIndex){
             tempShape=nullptr;
         }
     }
+}
+void Model::LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode){
+    if(beforeLayoutIndex<0||beforeLayoutIndex>=layouts.list.size())return;
+    if(afterLayoutIndex<0||afterLayoutIndex>=layouts.list.size())return;
+    if(beforeLayoutIndex==afterLayoutIndex)return;
+    int realafter=afterLayoutIndex;
+    if(afterLayoutIndex>beforeLayoutIndex){
+        realafter++;
+    }
+    vector<shared_ptr<BaseShape>>::iterator beforeit=layouts.list.begin()+beforeLayoutIndex;
+    vector<shared_ptr<BaseShape>>::iterator afterit=layouts.list.begin()+realafter;
+    layouts.list.insert(afterit,*beforeit);
+    Params params;
+    params.setType(NOTIFY::UPDATE_IMAGE_ADD);
+    params.setInts({(int)realafter});
+    notify(params);
+
+    int notifyindex=beforeLayoutIndex;
+    if(notifyindex>=afterLayoutIndex){
+        notifyindex++;
+    }
+    beforeit=layouts.list.begin()+notifyindex;
+    layouts.list.erase(beforeit);
+
+    Params newparams;
+    newparams.setType(NOTIFY::UPDATE_IMAGE_MINUS);
+    newparams.setInts({(int)notifyindex});
+    notify(newparams);
+    if(!mode)addDoneEvent(COMMAND::ORDERCHANGE,afterLayoutIndex,nullptr,nullptr,beforeLayoutIndex);
+
 }
 void Model::DeleteLayout(int LayoutIndex){
     if(LayoutIndex<0)return;
@@ -630,7 +673,7 @@ void Model::DeleteLayout(int LayoutIndex){
      {
      case PIXMAP::LAPLACIANENHANCE:{
          int size;
-         size=ints[0];
+         size=ints[1];
          double* conv=NULL;
          if(size>0){
             conv=new double[size*size];
@@ -643,11 +686,12 @@ void Model::DeleteLayout(int LayoutIndex){
          }else{
 
          }
-         pic->LaplacianEnhance(conv,size);
+         pic=pic->LaplacianEnhance(conv,size);
+         delete[] conv;
      }
          break;
      case PIXMAP::BILATERALFILTERING:
-         pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
+         pic=pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
          break;
      case PIXMAP::HISTOEQUALIZING:
          pic->HistoEqualizing();
@@ -657,6 +701,24 @@ void Model::DeleteLayout(int LayoutIndex){
          break;
      case PIXMAP::LOGOPERATION:
          pic->LogOperation();
+         break;
+    case PIXMAP::CONVOLUTION:
+     {
+         int size;
+         size=ints[1];
+         double* conv=NULL;
+         if(size>0)
+         {
+            conv=new double[size*size];
+            double *nowconv=conv;
+            for(int i=0;i<size;i++)
+                for(int j=0;j<size;j++)
+                    *(nowconv++)=doubles[i*size+j];
+         }
+
+         pic->ConvolutionGet(conv,size);
+         delete[] conv;
+     }
          break;
      default:
          return;

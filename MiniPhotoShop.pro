@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = MiniPhotoShop
 TEMPLATE = app
-
+RC_FILE = ico.rc
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -36,7 +36,9 @@ SOURCES += \
     src/ViewModel/Commands/redocommand.cpp \
     src/ViewModel/Commands/undocommand.cpp \
     src/View/statemanager.cpp \
-    src/View/States/statecommonaction.cpp
+    src/View/States/statecommonaction.cpp \
+    src/View/newcanvasdialog.cpp \
+    src/View/convolutiondialog.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -57,7 +59,6 @@ HEADERS += \
     src/ViewModel/Commands/AddRectCommand.h \
     src/ViewModel/Commands/changedselectedcommand.h \
     src/ViewModel/Commands/brushupdatecommand.h \
-    src/ViewModel/Commands/newprojectcommand.h \
     src/ViewModel/Commands/saveprojectcommand.h \
     src/ViewModel/Commands/loadprojectcommand.h \
     src/ViewModel/Commands/addpiccommand.h \
@@ -96,10 +97,15 @@ HEADERS += \
     src/View/States/rotateinitstate.h \
     src/View/States/rotatestate.h \
     src/View/States/scaleinitstate.h \
-    src/View/States/scalestate.h
+    src/View/States/scalestate.h \
+    src/ViewModel/Commands/addtextcommand.h \
+    src/View/newcanvasdialog.h \
+    src/View/convolutiondialog.h
 
 FORMS += \
-    src/View/mainwindow.ui
+    src/View/mainwindow.ui \
+    src/View/newcanvasdialog.ui \
+    src/View/convolutiondialog.ui
 
 RESOURCES += \
     langs.qrc \

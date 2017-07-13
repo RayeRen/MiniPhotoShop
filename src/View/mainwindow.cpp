@@ -1,13 +1,10 @@
 ﻿#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    StateManager::Init();
-    StateManager::SetpMainWindow(this);
     state=STATE::INIT;
     pen=NULL;
     brush=NULL;
@@ -76,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->layoutUpToolButton,SIGNAL(pressed()),ui->action_layoutUp,SLOT(trigger()));
     connect(ui->layoutDownToolButton,SIGNAL(pressed()),ui->action_layoutDown,SLOT(trigger()));
     connect(ui->layoutDeleteToolButton,SIGNAL(pressed()),ui->action_deleteLayout,SLOT(trigger()));
-
+    connect(ui->MainDisplayWidget,SIGNAL(NewCanvasScale(double)),this,SLOT(CanvasScaleChanged(double)));
 }
 
 MainWindow::~MainWindow()
@@ -124,14 +121,15 @@ void MainWindow::update(Params params)
         vector<string> strings=params.getStrings();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
         QListWidgetItem *newItem=new QListWidgetItem(QIcon(QPixmap::fromImage(*newImage)),QString::fromStdString(strings[0]));
-        ui->layoutListWidget->insertItem(ints[0],newItem);
+        //ui->layoutListWidget->insertItem(IndexMapList(ints[0]),newItem);
+        ui->layoutListWidget->insertItem(IndexMapList(ints[0])+1,newItem);
     }
         break;
     case NOTIFY::DELETE_LAYOUT:{
         vector<int> ints=params.getInts();
         qDebug()<<"Go?"<<ints[0]<<ui->layoutListWidget->count();
-        ui->layoutListWidget->setCurrentRow(ints[1]);
-        QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(ints[0]);
+        ui->layoutListWidget->setCurrentRow(IndexMapList(ints[1]));
+        QListWidgetItem * deletedWidget=ui->layoutListWidget->takeItem(IndexMapList(ints[0]));
         qDebug()<<"Remove:"<<ints[0];
         ui->layoutListWidget->removeItemWidget(deletedWidget);
         delete deletedWidget;
@@ -144,10 +142,17 @@ void MainWindow::update(Params params)
         vector<int> ints=params.getInts();
         vector<shared_ptr<void>> ptrs=params.getPtrs();
         shared_ptr<QImage> newImage=(static_pointer_cast<QImage>(ptrs[0]));
-        QListWidgetItem *item=ui->layoutListWidget->item(ints[0]);
+        QListWidgetItem *item=ui->layoutListWidget->item(IndexMapList(ints[0]));
         item->setIcon(QIcon(QPixmap::fromImage(*newImage)));
-        if(ui->layoutListWidget->currentRow()!=ints[0])ui->layoutListWidget->setCurrentRow(ints[0]);
         qDebug()<<"item"<<ints[0];
+    }
+        break;
+    case NOTIFY::REFRESH_SELECTED_STATE:
+    {
+        vector<int> ints=params.getInts();
+        qDebug()<<"NOTIFY::SELECTED_CHANGE"<<ints[0];
+        if(ui->layoutListWidget->currentRow()!=IndexMapList(ints[0]))ui->layoutListWidget->setCurrentRow(IndexMapList(ints[0]));
+
     }
         break;
     case NOTIFY::DISPLAY_REFRESH:
@@ -158,8 +163,6 @@ void MainWindow::update(Params params)
         break;
     case NOTIFY::CLEAR:
         ui->MainDisplayWidget->update();
-
-
         ui->layoutListWidget->clear();
 
         break;
@@ -200,7 +203,7 @@ void MainWindow::setNewCanvasCommand(const shared_ptr<BaseCommand> &newCanvasCom
     this->newCanvasCommand=newCanvasCommand;
     ui->MainDisplayWidget->setNewCanvasCommand(newCanvasCommand);
     Params params;
-    params.setInts({ui->MainDisplayWidget->getRealWidth(),ui->MainDisplayWidget->getRealHeight()});
+    params.setInts({(int)SETTINGS::canvasWidth,(int)SETTINGS::canvasHeight});
     newCanvasCommand->setParams(params);
     newCanvasCommand->exec();
 }
@@ -211,6 +214,14 @@ void MainWindow::menuTriggered(QAction* action)
     params.setStrings({(action->text()).toStdString()});
     StateManager::Run(EVENT::ACTION_TRIGGERED,params);
     return;
+
+
+
+
+
+
+
+    //----------------------------Unused--------------------------------//
     if(action->text()==ui->action_aboutQt->text())
     {
         QMessageBox::aboutQt(NULL);
@@ -501,7 +512,7 @@ void MainWindow::ListItemSelectionChanged()
     if(changeSelectedCommand!=nullptr)
     {
         Params params;
-        params.setInts({ui->layoutListWidget->currentRow()});
+        params.setInts({ListMapIndex(ui->layoutListWidget->currentRow())});
         changeSelectedCommand->setParams(params);
         changeSelectedCommand->exec();
     }
@@ -546,4 +557,9 @@ void MainWindow::CanvasPopMenuShow(const QPoint)
 void MainWindow::ListPopMenuShow(const QPoint)
 {
     listPopMenu->exec(QCursor::pos());
+}
+
+void MainWindow::CanvasScaleChanged(double newScale)
+{
+    ui->scaleLabel->setText(QStringLiteral("缩放 ")+QString("%1 %").arg(newScale*100));
 }
