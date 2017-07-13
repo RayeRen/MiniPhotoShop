@@ -14,6 +14,7 @@
 #include <QString>
 #include "ui_mainwindow.h"
 #include "newcanvasdialog.h"
+#include "convolutiondialog.h"
 /*
 class BaseState;
 class DrawLineInitState;

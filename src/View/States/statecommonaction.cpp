@@ -1,5 +1,6 @@
 ﻿#include "statecommonaction.h"
 #include "../mainwindow.h"
+
 int StateCommonAction::ActionTrigged(int state,Params params)
 {
     vector<string> strings=params.getStrings();
@@ -7,21 +8,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     MainWindow* pMainWindow=StateManager::GetpMainWindow();
     if(actionText==pMainWindow->ui->action_mergeLayout->text())
     {
-        Params params;
-        params.setInts({pMainWindow->ui->MainDisplayWidget->getCanvasWidth(),pMainWindow->ui->MainDisplayWidget->getCanvasHeight()});
-        params.setStrings({string("tmp_file.png")});
-        pMainWindow->saveAsPictureCommand->setParams(params);
-        pMainWindow->saveAsPictureCommand->exec();
-        pMainWindow->newCanvasCommand->setParams(params);
-        pMainWindow->newCanvasCommand->exec();
-        pMainWindow->addPicCommand->setParams(params);
-        pMainWindow->addPicCommand->exec();
-        {
-            Params params;
-            params.setInts({0});
-            pMainWindow->changeSelectedCommand->setParams(params);
-            pMainWindow->changeSelectedCommand->exec();
-        }
+        PerformLayoutMerge();
     }
     if(actionText==pMainWindow->ui->action_newCanvas->text())
     {
@@ -34,7 +21,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_aboutQt->text())
     {
-        QMessageBox::aboutQt(NULL);
+        QMessageBox::aboutQt(pMainWindow);
         return state;
     }
     if(actionText==pMainWindow->ui->action_drawLine->text())
@@ -106,13 +93,13 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         }
         return state;
     }
-    if(actionText==pMainWindow->ui->action_newCanvas->text()){
-        //New Project
+    if(actionText==pMainWindow->ui->action_newCanvas->text())
+    {
         pMainWindow->newCanvasCommand->exec();
         return state;
     }
-    if(actionText==pMainWindow->ui->action_saveCanvas->text()){
-        //Save Project
+    if(actionText==pMainWindow->ui->action_saveCanvas->text())
+    {
         QFileDialog fileDialog(pMainWindow);
         QString aimProjectFileName=fileDialog.getSaveFileName(pMainWindow,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
         if(!aimProjectFileName.isNull())
@@ -124,8 +111,8 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         }
         return state;
     }
-    if(actionText==pMainWindow->ui->action_saveAsPic->text()){
-        //Save Picture
+    if(actionText==pMainWindow->ui->action_saveAsPic->text())
+    {
         QFileDialog fileDialog(pMainWindow);
         QString aimPicFileName=fileDialog.getSaveFileName(pMainWindow,QStringLiteral("保存图片文件"),".","Images(*.png *.jpg *.bmp *.jpeg *.pbm *.gif *.pgm *.ppm *.xbm *.xpm)");
         if(!aimPicFileName.isNull())
@@ -271,21 +258,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
                                      QStringLiteral("取消")))
             {
-                Params params;
-                params.setInts({pMainWindow->ui->MainDisplayWidget->getCanvasWidth(),pMainWindow->ui->MainDisplayWidget->getCanvasHeight()});
-                params.setStrings({string("tmp_file.png")});
-                pMainWindow->saveAsPictureCommand->setParams(params);
-                pMainWindow->saveAsPictureCommand->exec();
-                pMainWindow->newCanvasCommand->setParams(params);
-                pMainWindow->newCanvasCommand->exec();
-                pMainWindow->addPicCommand->setParams(params);
-                pMainWindow->addPicCommand->exec();
-                {
-                    Params params;
-                    params.setInts({0});
-                    pMainWindow->changeSelectedCommand->setParams(params);
-                    pMainWindow->changeSelectedCommand->exec();
-                }
+                PerformLayoutMerge();
                 {
                     Params params;
                     params.setType(PIXMAP::INVERSECOLOR);
@@ -315,21 +288,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
                                      QStringLiteral("取消")))
             {
-                Params params;
-                params.setInts({pMainWindow->ui->MainDisplayWidget->getCanvasWidth(),pMainWindow->ui->MainDisplayWidget->getCanvasHeight()});
-                params.setStrings({string("tmp_file.png")});
-                pMainWindow->saveAsPictureCommand->setParams(params);
-                pMainWindow->saveAsPictureCommand->exec();
-                pMainWindow->newCanvasCommand->setParams(params);
-                pMainWindow->newCanvasCommand->exec();
-                pMainWindow->addPicCommand->setParams(params);
-                pMainWindow->addPicCommand->exec();
-                {
-                    Params params;
-                    params.setInts({0});
-                    pMainWindow->changeSelectedCommand->setParams(params);
-                    pMainWindow->changeSelectedCommand->exec();
-                }
+                PerformLayoutMerge();
                 {
                     Params params;
                     params.setType(PIXMAP::HISTOEQUALIZING);
@@ -360,21 +319,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
             if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
                                      QStringLiteral("取消")))
             {
-                Params params;
-                params.setInts({pMainWindow->ui->MainDisplayWidget->getCanvasWidth(),pMainWindow->ui->MainDisplayWidget->getCanvasHeight()});
-                params.setStrings({string("tmp_file.png")});
-                pMainWindow->saveAsPictureCommand->setParams(params);
-                pMainWindow->saveAsPictureCommand->exec();
-                pMainWindow->newCanvasCommand->setParams(params);
-                pMainWindow->newCanvasCommand->exec();
-                pMainWindow->addPicCommand->setParams(params);
-                pMainWindow->addPicCommand->exec();
-                {
-                    Params params;
-                    params.setInts({0});
-                    pMainWindow->changeSelectedCommand->setParams(params);
-                    pMainWindow->changeSelectedCommand->exec();
-                }
+                PerformLayoutMerge();
                 {
                     Params params;
                     params.setType(PIXMAP::LOGOPERATION);
@@ -387,5 +332,109 @@ int StateCommonAction::ActionTrigged(int state,Params params)
         }
         return state;
     }
+    if(actionText==pMainWindow->ui->action_convo->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            Params newParams=ConvolutionDialog::GetConvolutionCore(pMainWindow);
+            if(newParams.getType()==RESULT::ACCEPTED)
+            {
+                newParams.setType(PIXMAP::CONVOLUTION);
+                vector<int> ints=newParams.getInts();
+                ints.push_back(ints[0]);
+                ints[0]=pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow());
+                newParams.setInts(ints);
+                pMainWindow->pixmapFilterCommand->setParams(newParams);
+                pMainWindow->pixmapFilterCommand->exec();
+            }
+        }
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                     QStringLiteral("取消")))
+            {
+                PerformLayoutMerge();
+                {
+                    Params params;
+                    params.setType(PIXMAP::LOGOPERATION);
+                    params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
+
+                    pMainWindow->pixmapFilterCommand->setParams(params);
+                    pMainWindow->pixmapFilterCommand->exec();
+                }
+            }
+        }
+        return state;
+    }
+
+    if(actionText==pMainWindow->ui->action_laplac->text())
+    {
+        if(pMainWindow->ifPixmap)
+        {
+            PerformLayoutMerge();
+
+        }
+        else
+        {
+            QMessageBox::critical(pMainWindow,QStringLiteral("错误 "),QStringLiteral("请选择一个位图图层以进行滤镜操作 "));
+            if(!QMessageBox::question(pMainWindow,QStringLiteral("合并图层"),QStringLiteral("是否合并全部图层以进行滤镜操作？"),QStringLiteral("合并全部图层"),
+                                     QStringLiteral("取消")))
+            {
+               PerformLayoutMerge();
+                PerformLaplac();
+            }
+        }
+        return state;
+    }
+
     return state;
+}
+
+void StateCommonAction::PerformLayoutMerge()
+{
+    MainWindow* pMainWindow=StateManager::GetpMainWindow();
+    Params params;
+    params.setInts({pMainWindow->ui->MainDisplayWidget->getCanvasWidth(),pMainWindow->ui->MainDisplayWidget->getCanvasHeight()});
+    params.setStrings({string("tmp_file.png")});
+    pMainWindow->saveAsPictureCommand->setParams(params);
+    pMainWindow->saveAsPictureCommand->exec();
+    pMainWindow->newCanvasCommand->setParams(params);
+    pMainWindow->newCanvasCommand->exec();
+    pMainWindow->addPicCommand->setParams(params);
+    pMainWindow->addPicCommand->exec();
+    {
+        Params params;
+        params.setInts({0});
+        pMainWindow->changeSelectedCommand->setParams(params);
+        pMainWindow->changeSelectedCommand->exec();
+    }
+}
+
+void  StateCommonAction::PerformLaplac()
+{
+    MainWindow* pMainWindow=StateManager::GetpMainWindow();
+    if(!QMessageBox::question(pMainWindow,QStringLiteral("拉普拉斯图像增强"),QStringLiteral("是否使用默认卷积核？"),
+                              QStringLiteral("使用默认卷积核"),QStringLiteral("自定义卷积核")))
+    {
+        Params newParams;
+        newParams.setType(PIXMAP::LAPLACIANENHANCE);
+        newParams.setInts({pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow()),0});
+        pMainWindow->pixmapFilterCommand->setParams(newParams);
+        pMainWindow->pixmapFilterCommand->exec();
+    }
+    else
+    {
+        Params newParams=ConvolutionDialog::GetConvolutionCore(pMainWindow,PIXMAP::LAPLACIANENHANCE);
+        if(newParams.getType()==RESULT::ACCEPTED)
+        {
+            newParams.setType(PIXMAP::LAPLACIANENHANCE);
+            vector<int> ints=newParams.getInts();
+            ints.push_back(ints[0]);
+            ints[0]=pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow());
+            newParams.setInts(ints);
+            pMainWindow->pixmapFilterCommand->setParams(newParams);
+            pMainWindow->pixmapFilterCommand->exec();
+        }
+    }
 }

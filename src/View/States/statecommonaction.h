@@ -6,6 +6,8 @@ class StateCommonAction
 {
 public:
     static int ActionTrigged(int state,Params params);
+    static void PerformLayoutMerge();
+    static void PerformLaplac();
 };
 
 #endif // STATECOMMONACTION_H

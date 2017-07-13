@@ -1088,10 +1088,99 @@ shared_ptr<Pixmap> Pixmap::Convolution(double * filter, unsigned int filterSize,
     else
         *outB = dataB;
     //delete src;
+
     return res;
 }
 
-shared_ptr<Pixmap>  Pixmap::LaplacianEnhance(double * filter, unsigned int filterSize) const
+shared_ptr<Pixmap> Pixmap::ConvolutionGet(double * filter, unsigned int filterSize, int normalization, double **outR, double **outG, double **outB)
+{
+    if (this->format == FMT_NULL || filter == NULL || !(filterSize % 2))
+        return nullptr;
+    shared_ptr<Pixmap> src = this->AddBorder(filterSize / 2), res = shared_ptr<Pixmap>(new Pixmap(width, height));
+    res->setPosX(getPosX());
+    res->setPosY(getPosY());
+    res->setAngle(getAngle());
+    res->setName(getName());
+    res->setScaleX(getScaleX());
+    res->setScaleY(getScaleY());
+    res->setType(getType());
+    double *dataR = (double*)malloc(sizeof(double)*width*height);
+    double *dataG = (double*)malloc(sizeof(double)*width*height);
+    double *dataB = (double*)malloc(sizeof(double)*width*height);
+    double tmpR, tmpG, tmpB, tmpA;
+    int halfSize = filterSize / 2;
+    for (unsigned int x = halfSize; x < halfSize + width; x++)
+        for (unsigned int y = halfSize; y < halfSize + height; y++)
+        {
+            tmpR = tmpG = tmpB = tmpA = 0;
+            for (int i = -halfSize; i <= halfSize; i++)
+                for (int j = -halfSize; j <= halfSize; j++)
+                {
+                    tmpR += *(filter + (i + halfSize)*filterSize + j + halfSize)* (*(src->getR((unsigned int)(x + j), (unsigned int)(y + i))));
+                    tmpG += *(filter + (i + halfSize)*filterSize + j + halfSize)* (*(src->getG((unsigned int)(x + j), (unsigned int)(y + i))));
+                    tmpB += *(filter + (i + halfSize)*filterSize + j + halfSize)* (*(src->getB((unsigned int)(x + j), (unsigned int)(y + i))));
+                }
+            *(dataR + (y - halfSize)*width + x - halfSize) = tmpR;
+            *(dataG + (y - halfSize)*width + x - halfSize) = tmpG;
+            *(dataB + (y - halfSize)*width + x - halfSize) = tmpB;
+        }
+    double minR = INFINITY, maxR = -INFINITY, minG = INFINITY, maxG = -INFINITY, minB = INFINITY, maxB = -INFINITY;
+    double *rp = dataR, *gp = dataG, *bp = dataB;
+    if (normalization)
+    {
+        for (unsigned int i = 0; i < width*height; i++, rp++, gp++, bp++)
+        {
+            if (*rp > maxR) maxR = *rp;
+            if (*rp < minR) minR = *rp;
+            if (*gp > maxG) maxG = *gp;
+            if (*gp < minG) minG = *gp;
+            if (*bp > maxB) maxB = *bp;
+            if (*bp < minB) minB = *bp;
+        }
+        rp = dataR;
+        gp = dataG;
+        bp = dataB;
+        double diffR = maxR - minR, diffG = maxG - minG, diffB = maxB - minB;
+        for (unsigned int i = 0; i < width * height; i++, rp++, gp++, bp++)
+        {
+            *rp = (*rp - minR) / diffR * 256;
+            *gp = (*gp - minG) / diffG * 256;
+            *bp = (*bp - minB) / diffB * 256;
+        }
+        rp = dataR;
+        gp = dataG;
+        bp = dataB;
+    }
+    UNUM8 *resR = res->getRHead(), *resG = res->getGHead(), *resB = res->getBHead(), *resA = res->getAHead();
+    const UNUM8 *srcA = this->getAHead();
+    for (unsigned int i = 0; i < width*height; i++, rp++, gp++, bp++, resR++, resG++, resB++, resA++, srcA++)
+    {
+        *resR = (UNUM8)ClipToUNUM8(*rp);
+        *resG = (UNUM8)ClipToUNUM8(*gp);
+        *resB = (UNUM8)ClipToUNUM8(*bp);
+        *resA = *srcA;
+    }
+    if (outR == NULL)
+        delete dataR;
+    else
+        *outR = dataR;
+
+    if (outG == NULL)
+        delete dataG;
+    else
+        *outG = dataG;
+
+    if (outB == NULL)
+        delete dataB;
+    else
+        *outB = dataB;
+    //delete src;
+    Load(*res);
+    return res;
+}
+
+
+shared_ptr<Pixmap>  Pixmap::LaplacianEnhance(double * filter, unsigned int filterSize)
 {
     double *inputFilter;
     if (filter == NULL || filterSize == 0)
@@ -1108,6 +1197,13 @@ shared_ptr<Pixmap>  Pixmap::LaplacianEnhance(double * filter, unsigned int filte
     shared_ptr<Pixmap> res = Convolution(inputFilter, filterSize, 0, outR, outG, outB);
     if (res == nullptr)
         return nullptr;
+    res->setPosX(getPosX());
+    res->setPosY(getPosY());
+    res->setAngle(getAngle());
+    res->setName(getName());
+    res->setScaleX(getScaleX());
+    res->setScaleY(getScaleY());
+    res->setType(getType());
     UNUM8 *resR = res->getRHead(), *resG = res->getGHead(), *resB = res->getBHead();
     const UNUM8 *leftR = getRHead(), *leftG = getGHead(), *leftB = getBHead();
     double *tmpR = *outR, *tmpG = *outG, *tmpB = *outB;
@@ -1123,6 +1219,7 @@ shared_ptr<Pixmap>  Pixmap::LaplacianEnhance(double * filter, unsigned int filte
     delete outR;
     delete outG;
     delete outB;
+    Load(*res);
     return res;
 }
 
@@ -1145,7 +1242,7 @@ double Pixmap::Gaussian(double x,double r)
     return pow(2.7182818,-x*x/(2*r*r))/(r*tmp);
 }
 
-shared_ptr<Pixmap> Pixmap::BilateralFiltering(int filterSize,double intenPara,double spacePara) const
+shared_ptr<Pixmap> Pixmap::BilateralFiltering(int filterSize,double intenPara,double spacePara)
 {
     if (this->format == FMT_NULL)
         return nullptr;

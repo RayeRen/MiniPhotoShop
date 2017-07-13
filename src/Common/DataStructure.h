@@ -470,8 +470,9 @@ public:
 
     shared_ptr<Pixmap> AddBorder(unsigned int borderWidth,int mode=0) const;	//镜像边缘扩展
     shared_ptr<Pixmap> Convolution(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL) const;	//卷积
-    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) const;	//拉普拉斯图像增强
-    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) const;//双边滤波
+    shared_ptr<Pixmap> ConvolutionGet(double * filter, unsigned int filterSize, int normalization=1,double **outR=NULL,double **outG=NULL,double **outB=NULL);	//卷积
+    shared_ptr<Pixmap> LaplacianEnhance(double * filter=NULL, unsigned int filterSize=0) ;	//拉普拉斯图像增强
+    shared_ptr<Pixmap> BilateralFiltering(int filterSize=-1,double intenPara=-1,double spacePara=-1) ;//双边滤波
 
 
     const unsigned char *getRHead() const { return r; }	//返回r数组

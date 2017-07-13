@@ -673,7 +673,7 @@ void Model::DeleteLayout(int LayoutIndex){
      {
      case PIXMAP::LAPLACIANENHANCE:{
          int size;
-         size=ints[0];
+         size=ints[1];
          double* conv=NULL;
          if(size>0){
             conv=new double[size*size];
@@ -686,11 +686,12 @@ void Model::DeleteLayout(int LayoutIndex){
          }else{
 
          }
-         pic->LaplacianEnhance(conv,size);
+         pic=pic->LaplacianEnhance(conv,size);
+         delete[] conv;
      }
          break;
      case PIXMAP::BILATERALFILTERING:
-         pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
+         pic=pic->BilateralFiltering(ints[1],doubles[0],doubles[1]);
          break;
      case PIXMAP::HISTOEQUALIZING:
          pic->HistoEqualizing();
@@ -700,6 +701,24 @@ void Model::DeleteLayout(int LayoutIndex){
          break;
      case PIXMAP::LOGOPERATION:
          pic->LogOperation();
+         break;
+    case PIXMAP::CONVOLUTION:
+     {
+         int size;
+         size=ints[1];
+         double* conv=NULL;
+         if(size>0)
+         {
+            conv=new double[size*size];
+            double *nowconv=conv;
+            for(int i=0;i<size;i++)
+                for(int j=0;j<size;j++)
+                    *(nowconv++)=doubles[i*size+j];
+         }
+
+         pic->ConvolutionGet(conv,size);
+         delete[] conv;
+     }
          break;
      default:
          return;

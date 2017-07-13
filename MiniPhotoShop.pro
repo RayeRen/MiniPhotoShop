@@ -37,7 +37,8 @@ SOURCES += \
     src/ViewModel/Commands/undocommand.cpp \
     src/View/statemanager.cpp \
     src/View/States/statecommonaction.cpp \
-    src/View/newcanvasdialog.cpp
+    src/View/newcanvasdialog.cpp \
+    src/View/convolutiondialog.cpp
 
 HEADERS += \
     src/Common/BaseCommand.h \
@@ -98,11 +99,13 @@ HEADERS += \
     src/View/States/scaleinitstate.h \
     src/View/States/scalestate.h \
     src/ViewModel/Commands/addtextcommand.h \
-    src/View/newcanvasdialog.h
+    src/View/newcanvasdialog.h \
+    src/View/convolutiondialog.h
 
 FORMS += \
     src/View/mainwindow.ui \
-    src/View/newcanvasdialog.ui
+    src/View/newcanvasdialog.ui \
+    src/View/convolutiondialog.ui
 
 RESOURCES += \
     langs.qrc \
