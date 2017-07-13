@@ -19,7 +19,9 @@ A light and simple mini photoshop.
     3. Open the executable file and enjoy the Mini PhotoShop.
 
 # Update Logs
+- `v2.0`
 - `v1.0` Add *draw line*, *draw ellipse*, *change pen color*, *change pen weight*
+
 
 # License
 MiniPhotoShop is open-sourced software licensed under the LGPL.
