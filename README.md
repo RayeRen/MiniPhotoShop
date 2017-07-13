@@ -19,7 +19,7 @@ A light and simple mini photoshop.
     3. Open the executable file and enjoy the Mini PhotoShop.
 
 # Update Logs
-- `v2.0`
+- `v2.0` Add *load*, *save*, *filters*, *move*, *transform* and more other useful operations.
 - `v1.0` Add *draw line*, *draw ellipse*, *change pen color*, *change pen weight*
 
 
