@@ -1,5 +1,109 @@
 ﻿#include "mainwindow.h"
 
+static QWizardPage *createPage1()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("简介"));
+    QLabel *label = new QLabel(QStringLiteral("此向导将介绍如何使用Mini PhotoShop"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage2()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("窗口布局"));
+    QLabel *label = new QLabel(QStringLiteral("窗口中心为画布\n窗口右侧为图层列表\n窗口上方为菜单栏与快捷工具栏\n快捷工具栏下方为描边与填充设置区，从左至右依次为：描边颜色设置、描边宽度设置、描边线型设置、填充颜色设置、填充方式设置\n窗口下方为状态栏"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage3()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("基本操作"));
+    QLabel *label = new QLabel(QStringLiteral("将鼠标移至画布并滚动鼠标滚轮可以缩放画布，在画布以及图层列表上单击鼠标右键可以显示弹出式菜单。\n单击快捷工具栏或菜单栏可以切换工具或执行操作，图层列表上方三个按键的功能分别为上移当前图层、下移当前图层与删除当前图层\n每次绘制都会自动生成一个新图层，图层分为 线段、矩形、椭圆与位图四种"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage4()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("工具说明"));
+    QLabel *label = new QLabel(QStringLiteral("画直线：在新图层上通过两点绘制一条直线\n"
+                                              "画椭圆：在新图层上通过确定椭圆中心与长短半轴绘制一个椭圆\n"
+                                              "画矩形：在新图层上通过确定矩形两个对角线顶点绘制一个矩形\n"
+                                              "平移：对所选图层通过拖动鼠标进行移动\n"
+                                              "旋转：对所选图层通过水平移动鼠标进行旋转\n"
+                                              "缩放：对所选图层通过拖动鼠标进行缩放"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage5()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("操作说明"));
+    QLabel *label = new QLabel(QStringLiteral("新建工程：清空当前工程，输入画布并尺寸新建工程\n"
+                                              "打开工程：打开.mps工程文件\n"
+                                              "打开图片：将外部图片插入至新图层\n"
+                                              "保存工程：保存当前工程\n"
+                                              "另存为图片：将当前工程输出至图片"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage6()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("撤销与重做"));
+    QLabel *label = new QLabel(QStringLiteral("通过撤销与重做命令，可以撤销修改或恢复被撤销的修改"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
+static QWizardPage *createPage7()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("图层操作"));
+    QLabel *label = new QLabel(QStringLiteral("可以对当前选定的图层进行上移、下移与删除操作\n可以将当前所有图层合并为一个位图图层"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+static QWizardPage *createPage8()
+{
+    QWizardPage *page = new QWizardPage;
+    page->setTitle(QStringLiteral("滤镜操作"));
+    QLabel *label = new QLabel(QStringLiteral("滤镜只能对于位图图层操作\n如果需要对非位图图层进行滤镜操作，需要首先将所有图层合并为位图图层"));
+    label->setWordWrap(true);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    page->setLayout(layout);
+    return page;
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -11,7 +115,17 @@ MainWindow::MainWindow(QWidget *parent) :
     cursorY=-1;
     ifPixmap=0;
     ui->setupUi(this);
-
+    wizard=new QWizard;
+    wizard->setWindowTitle(QStringLiteral("向导"));
+    wizard->addPage(createPage1());
+    wizard->addPage(createPage2());
+    wizard->addPage(createPage3());
+    wizard->addPage(createPage4());
+    wizard->addPage(createPage5());
+    wizard->addPage(createPage6());
+    wizard->addPage(createPage7());
+    wizard->addPage(createPage8());
+    wizard->setWizardStyle(QWizard::AeroStyle);
     connect(ui->menuBar,SIGNAL(triggered(QAction*)),this,SLOT(menuTriggered(QAction*)));
 
     ui->action_drawLine->setCheckable(true);
@@ -342,4 +456,9 @@ void MainWindow::ListPopMenuShow(const QPoint)
 void MainWindow::CanvasScaleChanged(double newScale)
 {
     ui->scaleLabel->setText(QStringLiteral("缩放 ")+QString("%1 %").arg(newScale*100));
+}
+
+void MainWindow::ShowHelp()
+{
+    wizard->show();
 }

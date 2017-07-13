@@ -12,6 +12,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QString>
+#include <QWizard>
 #include "ui_mainwindow.h"
 #include "newcanvasdialog.h"
 #include "convolutiondialog.h"
@@ -51,7 +52,7 @@ public:
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
-
+    void ShowHelp();
     virtual void update(Params params);
 
     void ConnectQListWidget();
@@ -100,7 +101,7 @@ private:
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
      pixmapFilterCommand,layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand;
     QMenu* canvasPopMenu,*listPopMenu;
-
+    QWizard* wizard;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
      void ButtonForeColorPressed();

@@ -12,6 +12,19 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_newCanvas->text())
     {
+        if(!QMessageBox::question(pMainWindow,QStringLiteral("新建工程"),QStringLiteral("是否保存当前工程？"),QStringLiteral("保存"),
+                                  QStringLiteral("不保存")))
+        {
+            QFileDialog fileDialog(pMainWindow);
+            QString aimProjectFileName=fileDialog.getSaveFileName(pMainWindow,QStringLiteral("保存项目文件"),".","MiniPhotoshop Project(*.mps)");
+            if(!aimProjectFileName.isNull())
+            {
+                Params params;
+                params.setStrings({aimProjectFileName.toStdString()});
+                pMainWindow->saveProjectCommand->setParams(params);
+                pMainWindow->saveProjectCommand->exec();
+            }
+        }
         Params params=NewCanvasDialog::GetCanvasSize(pMainWindow);
         if(params.getType()==RESULT::ACCEPTED)
         {
@@ -154,11 +167,12 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     }
     if(actionText==pMainWindow->ui->action_aboutPro->text())
     {
-        QMessageBox::about(NULL,QStringLiteral("关于"),"Mini PhotoShop\nPowered By Qt5");
+        QMessageBox::about(NULL,QStringLiteral("关于"),"Mini PhotoShop\nAuthor:\n\tRY@ZJU\n\tGHZ@ZJU\n\tJZH@ZJU\n\tMZ@ZJU\nJuly 2017\nPowered By Qt5");
         return state;
     }
     if(actionText==pMainWindow->ui->action_help->text())
     {
+        pMainWindow->ShowHelp();
         return state;
     }
     if(actionText==pMainWindow->ui->action_undo->text())

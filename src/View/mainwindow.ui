@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Mini PhotoShop v1.0</string>
+   <string>Mini PhotoShop</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../imgs.qrc">
@@ -112,9 +112,6 @@
       </item>
       <item>
        <widget class="QComboBox" name="brushStyleComboBox"/>
-      </item>
-      <item>
-       <widget class="QFontComboBox" name="fontComboBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
