@@ -355,12 +355,15 @@ int StateCommonAction::ActionTrigged(int state,Params params)
                                      QStringLiteral("取消")))
             {
                 PerformLayoutMerge();
+                Params newParams=ConvolutionDialog::GetConvolutionCore(pMainWindow);
+                if(newParams.getType()==RESULT::ACCEPTED)
                 {
-                    Params params;
-                    params.setType(PIXMAP::LOGOPERATION);
-                    params.setInts({pMainWindow->ui->layoutListWidget->currentRow()});
-
-                    pMainWindow->pixmapFilterCommand->setParams(params);
+                    newParams.setType(PIXMAP::CONVOLUTION);
+                    vector<int> ints=newParams.getInts();
+                    ints.push_back(ints[0]);
+                    ints[0]=pMainWindow->ListMapIndex(pMainWindow->ui->layoutListWidget->currentRow());
+                    newParams.setInts(ints);
+                    pMainWindow->pixmapFilterCommand->setParams(newParams);
                     pMainWindow->pixmapFilterCommand->exec();
                 }
             }
@@ -372,8 +375,7 @@ int StateCommonAction::ActionTrigged(int state,Params params)
     {
         if(pMainWindow->ifPixmap)
         {
-            PerformLayoutMerge();
-
+           PerformLaplac();
         }
         else
         {
