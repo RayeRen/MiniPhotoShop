@@ -161,7 +161,7 @@ void ViewModel::SaveAsPicture(string path)
 
     painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     //painter.setCompositionMode(QPainter::CompositionMode_Source);
-    for(int i=0;i<displayBuffer.size();i++)
+    for(unsigned int i=0;i<displayBuffer.size();i++)
     {
 
         if(i==selectedLayout)
