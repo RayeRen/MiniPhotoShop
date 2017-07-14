@@ -46,6 +46,7 @@ public:
     void loadProject(string path);
     int getCanvasWidth();
     int getCanvasHeight();
+
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
