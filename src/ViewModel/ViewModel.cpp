@@ -140,6 +140,14 @@ void ViewModel::update(Params params) {
         notify(newParams);
     }
         break;
+    case NOTIFY::LOAD_CANVAS:{
+        vector<int> ints=params.getInts();
+        NewCanvas(ints[0], ints[1]);
+        Params newParams;
+        newParams.setType(NOTIFY::CLEAR);
+        notify(newParams);
+    }
+        break;
     }
 }
 void ViewModel::ClearViewModel(){
@@ -366,7 +374,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
 
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
-    loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
+    loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel, shared_ptr<ViewModel>(this)))),
     saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
     undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
     redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),
