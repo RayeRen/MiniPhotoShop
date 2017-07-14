@@ -10,20 +10,20 @@
 
    打开程序后，会首先显示2秒欢迎界面
 
-   ![](..\pic/ghz1.png)
+   ![](../pic/ghz1.png)
 
 2. Wizard 
 
    欢迎界面之后，会显示向导窗口与主窗口
 
-   ![](..\pic\ghz2.png)
+   ![](../pic/ghz2.png)
 
 3. MainWindow
   主窗口中心为主绘图区域，最上方为菜单栏，菜单栏下方为快捷工具栏。
   快捷工具栏下方为描边与填充设置区，从左至右依次为：描边颜色设置、描边宽度设置、描边线型设置、填充颜色设置、填充方式设置。
   窗口下方为状态栏，显示缩放与操作提示。
   窗口右侧为图层列表。
-  ![](..\pic\ghz3.png)
+  ![](../pic/ghz3.png)
 
 4. Buttons & Pop Menus
 
@@ -31,22 +31,22 @@
 
    单击快捷工具栏或菜单栏可以切换工具或执行操作，图层列表上方三个按键的功能分别为上移当前图层、下移当前图层与删除当前图层。
    画布上的弹出式菜单
-   ![](..\pic\ghz4.png)
+   ![](../pic/ghz4.png)
    图层列表中的弹出式菜单
-   ![](..\pic\ghz5.png)
+   ![](../pic/ghz5.png)
    可浮动的快捷工具栏
-   ![](..\pic\ghz6.png)
+   ![](../pic/ghz6.png)
    画布的缩放功能
-   ![](..\pic\ghz7.png)
-   ![](..\pic\ghz8.png)
-   ![](..\pic\ghz9.png)
+   ![](../pic/ghz7.png)
+   ![](../pic/ghz8.png)
+   ![](../pic/ghz9.png)
 5. Other Windows
   前景色与背景色设置窗口
-   ![](pic\ghz10.png)
+   ![](../pic/ghz10.png)
   新建工程窗口
-  ![](..\pic\ghz11.png)
+  ![](../pic/ghz11.png)
    卷积核设置窗口
-  ![](..\pic\ghz12.png)
+  ![](../pic/ghz12.png)
 
 ### MainWindow类
 
