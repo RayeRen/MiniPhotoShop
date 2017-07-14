@@ -40,6 +40,7 @@ public:
     virtual void update(Params params);
 
     void ClearViewModel();
+
     void SaveAsPicture(string path);
     void SetLayouts(const Layouts* layouts){this->layouts=layouts;}
     const QImage* GetDisplayImage(){return &displayImage;}
