@@ -8,11 +8,24 @@ A light and simple mini photoshop.
 1. Qt5+
 
 # Usage
+## Run directly
+
+#### Windows
+1. Download from [here](https://raw.githubusercontent.com/RayeRen/MiniPhotoShop/master/release/MiniPhotoShop.exe)
+2. Run
+
+#### Linux
+
+1. Download from [here](https://raw.githubusercontent.com/RayeRen/MiniPhotoShop/master/release/MiniPhotoShop)
+2. chmod +x MiniPhotoShop
+3. ./MiniPhotoShop
+
+## Compile and Run
 - use QT creator
     1. Clone the repository to your own directory.
     2. Choose your own compiler and make sure it supports C++11.
     3. Click the `run` button and enjoy the Mini PhotoShop.
-    
+
 - use CMake
     1. Run `cmake .` in terminal.
     2. Run `make` in terminal.
