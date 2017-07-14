@@ -11,7 +11,6 @@ public:
     void exec(){
         string path(params.getStrings()[0]);
         pModel->loadProject(path);
-        pViewModel->NewCanvas(pModel->getCanvasWidth(),pModel->getCanvasHeight());
     }
 };
 

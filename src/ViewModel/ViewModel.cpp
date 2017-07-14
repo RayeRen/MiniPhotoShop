@@ -140,6 +140,14 @@ void ViewModel::update(Params params) {
         notify(newParams);
     }
         break;
+    case NOTIFY::LOAD_CANVAS:{
+        vector<int> ints=params.getInts();
+        NewCanvas(ints[0], ints[1]);
+        Params newParams;
+        newParams.setType(NOTIFY::CLEAR);
+        notify(newParams);
+    }
+        break;
     }
 }
 void ViewModel::ClearViewModel(){
@@ -349,6 +357,7 @@ void ViewModel::RefreshDisplayImage(int i)
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
 {
+    qDebug()<<"NewCanvas:"<<width<<height;
     displayImage = QImage(QSize(width, height), QImage::Format_ARGB32);
     RefreshDisplayImage();
 }
