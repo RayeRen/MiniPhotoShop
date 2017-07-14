@@ -68,11 +68,19 @@
 
 ### MainWindow类
 
+​	*MainWindow*类是程序的主窗口，也是View模块与其他部分对接的类。有一些设置命令的函数，并且通过指针绑定了ViewModel层的displayImage用于显示。另外还有一些槽函数用于与其他控件通信。通过通知的方式接受ViewModel的消息以同步数据。在按键被按下时调用*StateManager*来处理事件并改变状态。通过ViewModel层绑定了Model中的*pen*和*brush*变量，并且将变量传递给了*MainDisplayWidget*控件。
+
 ### ImageWidget类
+
+​	*ImageWidget*类是主窗口中用于显示的显示区域，负责将ViewModel计算好的displayImage显示在窗口上，并且接受用户的鼠标操作事件，调用*StateManager*来处理事件并改变状态。
 
 ### ConvolutionDialog类
 
+​	*ConvolutionDialog*类是用于设置卷积核的窗口，该类有一个静态成员函数`static Params GetConvolutionCore(QWidget*,int)`，用于设置卷积核。调用该函数后，会弹出一个阻塞窗口，当该窗口被关闭时函数返回，并且用*Params*类返回结果。
+
 ### NewCanvasDialog类
+
+​	*NewCanvasDialog*类是用于设置画布尺寸的窗口，该类有一个静态成员`static Params GetCanvasSize(QWidget *);`。调用该函数后，会弹出一个阻塞式窗口，当该窗口被关闭时函数返回，并且用*Params*类返回结果。
 
 ## ViewModel 部分函数报告
 
