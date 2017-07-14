@@ -16,6 +16,7 @@ private:
     Brush brush;
     Layouts layouts;
     int layoutCount;
+    int width, height;
     int ChangeBegin,ChangeLayout;
     shared_ptr<BaseShape> tempShape;
     int NowDoneIndex,MaxDoneIndex;
@@ -42,9 +43,11 @@ public:
 
     void redo();
     void undo();
-    void newProject();
+    void newProject(int width, int height);
     void saveProject(string path)const;
     void loadProject(string path);
+    int getCanvasWidth();
+    int getCanvasHeight();
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}

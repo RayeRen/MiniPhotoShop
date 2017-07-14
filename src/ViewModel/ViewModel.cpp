@@ -384,7 +384,7 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
 
     penUpdateCommand(shared_ptr<BaseCommand>(new PenUpdateCommand(pModel))),
     brushUpdateCommand(shared_ptr<BaseCommand>(new BrushUpdateCommand(pModel))),
-    loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel))),
+    loadProjectCommand(shared_ptr<BaseCommand>(new LoadProjectCommand(pModel, shared_ptr<ViewModel>(this)))),
     saveProjectCommand(shared_ptr<BaseCommand>(new SaveProjectCommand(pModel))),
     undoCommand(shared_ptr<BaseCommand>(new UndoCommand(pModel))),
     redoCommand(shared_ptr<BaseCommand>(new RedoCommand(pModel))),

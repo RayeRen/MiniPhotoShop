@@ -7,10 +7,11 @@
 class LoadProjectCommand:public BaseCommand
 {
 public:
-    LoadProjectCommand(const shared_ptr<Model> &pModel):BaseCommand(pModel){}
+    LoadProjectCommand(const shared_ptr<Model> &pModel, const shared_ptr<ViewModel> &pViewModel):BaseCommand(pModel, pViewModel){}
     void exec(){
         string path(params.getStrings()[0]);
         pModel->loadProject(path);
+        pViewModel->NewCanvas(pModel->getCanvasWidth(),pModel->getCanvasHeight());
     }
 };
 

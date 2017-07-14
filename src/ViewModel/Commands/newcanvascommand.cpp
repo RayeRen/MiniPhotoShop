@@ -9,5 +9,5 @@ void NewCanvasCommand::exec()
     qDebug()<<"NEW_CANVAS"<<ints[0]<<ints[1];
     pViewModel->NewCanvas(ints[0],ints[1]);
     if(!pModel->isProjectEmpty())
-        pModel->newProject();
+        pModel->newProject(ints[0],ints[1]);
 }
