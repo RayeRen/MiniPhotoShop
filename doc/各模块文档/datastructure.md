@@ -117,4 +117,13 @@ class Layouts
     vector<shared_ptr<BaseShape>>list;  //图层链表
 }
 ```
+## 日志
+```cpp
+class DoneInfo{
+    int layoutindex,beforelayoutindex;              //图层位置信息
+    shared_ptr<BaseShape> aftershape,beforeshape;   //形状信息
+    int commandtype;                                //命令类型
+}
+```
+
 注：以上介绍省略了成员的Get方法和Set方法。
