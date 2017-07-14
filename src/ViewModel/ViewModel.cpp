@@ -349,6 +349,7 @@ void ViewModel::RefreshDisplayImage(int i)
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
 {
+    qDebug()<<"NewCanvas:"<<width<<height;
     displayImage = QImage(QSize(width, height), QImage::Format_ARGB32);
     RefreshDisplayImage();
 }
