@@ -44,12 +44,8 @@ public:
     void newProject(int width, int height);
     void saveProject(string path)const;
     void loadProject(string path);
-<<<<<<< HEAD
     int getCanvasWidth();
     int getCanvasHeight();
-=======
-
->>>>>>> bc1199bd7d8f2baf6849a607892392e75e3e2aad
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}

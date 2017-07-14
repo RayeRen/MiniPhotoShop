@@ -214,6 +214,7 @@ void Model::DeleteLayout(int LayoutIndex){
 
      canvas_width = Model::width;
      canvas_height = Model::height;
+     qDebug() << "in file" << canvas_width << canvas_height;
      out.write(reinterpret_cast<char*>(&canvas_width), sizeof(int));
      out.write(reinterpret_cast<char*>(&canvas_height),sizeof(int));
 
@@ -455,8 +456,13 @@ void Model::DeleteLayout(int LayoutIndex){
      in.read(reinterpret_cast<char*>(&num), sizeof(int));
      in.read(reinterpret_cast<char*>(&canvas_width), sizeof(int));
      in.read(reinterpret_cast<char*>(&canvas_height), sizeof(int));
-     Model::width = canvas_width;
-     Model::height = canvas_height;
+     qDebug() << "out file" << canvas_width << canvas_height;
+     {
+         Params params;
+         params.setType(NOTIFY::LOAD_CANVAS);
+         params.setInts({canvas_width, canvas_height});
+         notify(params);
+     }
 
      for(int i = 0; i < num; i++)
      {
