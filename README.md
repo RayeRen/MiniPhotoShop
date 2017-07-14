@@ -2,7 +2,10 @@
 A light and simple mini photoshop.
 
 # Authors
-郭慧钊(*hzguo*)，金志华(*jnzhihuoo1*)，马哲(*Maryeon*)，任意(*RayeRen*)
+- 任意(*RayeRen*)：组长，整体架构设计，持续集成部署
+- 郭慧钊(*hzguo*)：View，ViewModel，测试
+- 金志华(*jnzhihuoo1*)：ViewModel，Model，测试
+- 马哲(*Maryeon*)：Model，测试
 
 # Dependency
 1. Qt5+
