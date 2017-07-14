@@ -12,25 +12,11 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QString>
+#include <QWizard>
 #include "ui_mainwindow.h"
 #include "newcanvasdialog.h"
 #include "convolutiondialog.h"
-/*
-class BaseState;
-class DrawLineInitState;
-class DrawLineState;
-class DrawEllipseInitState;
-class DrawEllipseState;
-class DrawRectInitState;
-class DrawRectState;
-class MoveInitState;
-class MoveState;
-class ScaleInitState;
-class ScaleState;
-class RotateInitState;
-class RotateState;
-class StateCommonAction;
-*/
+
 namespace Ui {
     class MainWindow;
 }
@@ -66,7 +52,7 @@ public:
     void SetPen(const Pen* pen);
     void SetBrush(const Brush* brush);
     void SetDisplayImage(const QImage* displayImage);
-
+    void ShowHelp();
     virtual void update(Params params);
 
     void ConnectQListWidget();
@@ -109,17 +95,15 @@ private:
     const QImage* displayImage;
     QString statusBarInfo;
     int cursorX,cursorY;
-    int state,ifPixmap,selectedLayout;
+    int ifPixmap,selectedLayout;
      shared_ptr<BaseCommand> newCanvasCommand,
      penUpdateCommand,brushUpdateCommand,addPicCommand,changeSelectedCommand,
      loadProjectCommand,saveProjectCommand,newProjectCommand,undoCommand,redoCommand,
-     pixmapFilterCommand,layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand
-     ;
+     pixmapFilterCommand,layoutTransNotifyCommand,deleteLayoutCommand,saveAsPictureCommand,layoutOrderChangeCommand;
     QMenu* canvasPopMenu,*listPopMenu;
-
+    QWizard* wizard;
  public slots:
      void menuTriggered(QAction*);   //响应菜单栏事件
-     void StateChanged();
      void ButtonForeColorPressed();
      void ButtonBackColorPressed();
      void PenWidthSliderChanged(int);

@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Mini PhotoShop v1.0</string>
+   <string>Mini PhotoShop</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../imgs.qrc">
@@ -112,9 +112,6 @@
       </item>
       <item>
        <widget class="QComboBox" name="brushStyleComboBox"/>
-      </item>
-      <item>
-       <widget class="QFontComboBox" name="fontComboBox"/>
       </item>
       <item>
        <spacer name="horizontalSpacer">
@@ -323,6 +320,10 @@
     <addaction name="action_logOper"/>
     <addaction name="action_convo"/>
     <addaction name="action_laplac"/>
+    <addaction name="action_grey"/>
+    <addaction name="action_bin"/>
+    <addaction name="action_lumaChange"/>
+    <addaction name="action_bilafilter"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -542,7 +543,7 @@
   </action>
   <action name="action_logOper">
    <property name="text">
-    <string>自动亮度调整</string>
+    <string>自动亮度适应</string>
    </property>
   </action>
   <action name="action_mergeLayout">
@@ -558,6 +559,26 @@
   <action name="action_laplac">
    <property name="text">
     <string>拉普拉斯图像增强</string>
+   </property>
+  </action>
+  <action name="action_grey">
+   <property name="text">
+    <string>灰阶化</string>
+   </property>
+  </action>
+  <action name="action_bin">
+   <property name="text">
+    <string>二值化</string>
+   </property>
+  </action>
+  <action name="action_bilafilter">
+   <property name="text">
+    <string>双边滤波</string>
+   </property>
+  </action>
+  <action name="action_lumaChange">
+   <property name="text">
+    <string>亮度调整</string>
    </property>
   </action>
  </widget>

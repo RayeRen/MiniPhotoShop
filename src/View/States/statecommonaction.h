@@ -8,6 +8,7 @@ public:
     static int ActionTrigged(int state,Params params);
     static void PerformLayoutMerge();
     static void PerformLaplac();
+    static void PerformBilaFilter();
 };
 
 #endif // STATECOMMONACTION_H

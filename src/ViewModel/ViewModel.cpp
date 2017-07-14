@@ -23,7 +23,6 @@
 #include "src/ViewModel/Commands/layoutorderchangecommand.h"
 #include "src/ViewModel/Commands/pixmapfiltercommand.h"
 #include <QPainter>
-#include <QDebug>
 
 
 const shared_ptr<BaseCommand> &ViewModel::getAddLineCommand() const {
@@ -69,14 +68,16 @@ void ViewModel::update(Params params) {
 
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[ints[0]],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
 
         Params newParams;
-        qDebug()<<"UPDATE_IMAGE";
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
         newParams.setInts({ints[0]});
         newParams.setPtrs({shared_ptr<void>(preview)});
@@ -89,20 +90,16 @@ void ViewModel::update(Params params) {
         vector<int> ints=params.getInts();
         shared_ptr<QImage> pImage(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         displayBuffer.insert(displayBuffer.begin()+ints[0],pImage);
-        //displayBuffer.push_back(pImage);
-
-        //this->selectedLayout=-1;
-        //if(this->selectedLayout>=ints[0])
-        //    this->selectedLayout++;
-        //
-        qDebug()<<"Buffer Size:"<<displayBuffer.size();
         RefreshDisplayImage(ints[0]);
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*pImage,QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::NEW_LAYOUT);
@@ -115,27 +112,18 @@ void ViewModel::update(Params params) {
     }
     case NOTIFY::UPDATE_IMAGE_MINUS:{
 
-        qDebug()<<"minus";
         vector<int> ints=params.getInts();
-        qDebug()<<"Remove Minus:"<<ints[0];
         vector<shared_ptr<QImage>>::iterator it=displayBuffer.begin()+ints[0];
         displayBuffer.erase(it);
-        //Ignore the old value.
         this->selectedLayout=-1;
         SetSelectedLayout(-1);
-        //if(this->selectedLayout>=ints[0])
-        //    this->selectedLayout--;
-
-        qDebug()<<"Remove Refresh end";
         Params params;
         params.setType(NOTIFY::DISPLAY_REFRESH);
         notify(params);
-        qDebug()<<"Message Display_refresh end";
         Params newParams;
         newParams.setType(NOTIFY::DELETE_LAYOUT);
         newParams.setInts({ints[0],this->selectedLayout});
         notify(newParams);
-        qDebug()<<"Message Notify";
     }
         break;
     case NOTIFY::ADD_IMAGE_FAILED:
@@ -146,9 +134,7 @@ void ViewModel::update(Params params) {
         notify(params);
         break;
     case NOTIFY::CLEAR:{
-        qDebug()<<"clear view model";
         ClearViewModel();
-        qDebug()<<"ok view model";
         Params newParams;
         newParams.setType(NOTIFY::CLEAR);
         notify(newParams);
@@ -166,7 +152,6 @@ void ViewModel::SaveAsPicture(string path)
 {
     QImage outputImage=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
     QPainter painter(&outputImage);
-    //painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),QColor(0,0,0,0));
     for(int i=0;i<displayBuffer.size();i++)
     {
@@ -176,7 +161,7 @@ void ViewModel::SaveAsPicture(string path)
             QImage tmpLayout=QImage(QSize(displayImage.width(),displayImage.height()),QImage::Format_ARGB32);
             QPainter layoutPainter(&tmpLayout);
 
-           // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
+            // layoutPainter.setCompositionMode(QPainter::CompositionMode_Source);
             layoutPainter.fillRect(QRect(0,0,displayImage.width(),displayImage.height()),Qt::transparent);
             shared_ptr<BaseShape> baseShape=(layouts->list)[i];
 
@@ -230,7 +215,7 @@ void ViewModel::SaveAsPicture(string path)
                 tmpBrush.setStyle(static_cast<Qt::BrushStyle>(rectBrush.getBrushStyle()));
                 layoutPainter.setPen(tmpPen);
                 layoutPainter.setBrush(tmpBrush);
-               layoutPainter.drawRect(QRectF(-rect->getWidth()/2,-rect->getHeight()/2, rect->getWidth(),rect->getHeight()));
+                layoutPainter.drawRect(QRectF(-rect->getWidth()/2,-rect->getHeight()/2, rect->getWidth(),rect->getHeight()));
                 break;
             }
             painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),tmpLayout,QRectF(0,0,displayImage.width(),displayImage.height()));
@@ -243,21 +228,18 @@ void ViewModel::SaveAsPicture(string path)
 
 void ViewModel::RefreshDisplayImage(int i)
 {
-    //If layout.list[i] is not existed , there will be a vector subscript out of range.
+
     if (layouts == nullptr)
         return;
-    qDebug()<<"RefreshDisplayImage"<<this->selectedLayout<<i;
     displayImage = QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32);
     QPainter painter(&displayImage);
-    // painter.setCompositionMode(QPainter::CompositionMode_Source);
-    painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),QColor(255,255,255));
-    painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+    QBrush backBrush;
+    backBrush.setStyle(Qt::TexturePattern);
+    backBrush.setTexture(QPixmap(":/img/img/background.png"));
+    painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    if(i<0)
-    {
 
-    }
-    else
+    if(i>=0&&i<layouts->list.size())
     {
         QPen selectedRectPen(SETTINGS::SELETCED_RECT_COLOR);
         selectedRectPen.setStyle(SETTINGS::SELECTED_RETC_STYLE);
@@ -358,11 +340,11 @@ void ViewModel::RefreshDisplayImage(int i)
             break;
         }
     }
-    qDebug()<<"DisplayBuffer:"<<displayBuffer.size();
+
 
     for(int i=0;i<displayBuffer.size();i++)
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[i],QRectF(0,0,displayImage.width(),displayImage.height()));
-    qDebug()<<"DisplayBuffer Refresh End:";
+
 }
 
 void ViewModel::NewCanvas(unsigned int width, unsigned int height)
@@ -394,13 +376,11 @@ ViewModel::ViewModel(shared_ptr<Model> pModel) :
     selectedLayout(-1)
 {
     displayImage = QImage(QSize(SETTINGS::canvasWidth, SETTINGS::canvasHeight), QImage::Format_ARGB32);
-    backGround=QImage(":/img/img/background.png");
 }
 
 void ViewModel::SetSelectedLayout(int selectedLayout)
 {
-    //It will refresh the old value.
-    qDebug()<<"SetSelectedLAyout:"<<selectedLayout;
+
     int oldValue=this->selectedLayout;
     this->selectedLayout=selectedLayout;
     RefreshDisplayImage(oldValue);
@@ -410,10 +390,12 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
 
     if(oldValue>=0)
     {
-        qDebug()<<"SetSelectedLAyout:oldValue"<<oldValue;
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[oldValue],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
@@ -424,7 +406,10 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
     if(selectedLayout>=0){
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
@@ -432,7 +417,6 @@ void ViewModel::SetSelectedLayout(int selectedLayout)
         newParams.setPtrs({shared_ptr<void>(preview)});
         notify(newParams);
     }
-    qDebug()<<"Where is the bug";
     Params params2;
     params2.setType(NOTIFY::REFRESH_SELECTED_STATE);
     params2.setInts({this->selectedLayout});
@@ -462,7 +446,10 @@ void ViewModel::LayoutMove(int x,int y)
 
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
@@ -491,7 +478,10 @@ void ViewModel::LayoutRotate(double angle)
 
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::REFRESH_PREVIEW);
@@ -520,7 +510,10 @@ void ViewModel::LayoutScale(double scaleX,double scaleY)
 
         shared_ptr<QImage> preview(new QImage(QSize(displayImage.width(), displayImage.height()), QImage::Format_ARGB32));
         QPainter painter(&(*preview));
-        painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),backGround,QRectF(0,0,displayImage.width(),displayImage.height()));
+        QBrush backBrush;
+        backBrush.setStyle(Qt::TexturePattern);
+        backBrush.setTexture(QPixmap(":/img/img/background.png"));
+        painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
         painter.drawImage(QRectF(0,0,displayImage.width(),displayImage.height()),*displayBuffer[selectedLayout],QRectF(0,0,displayImage.width(),displayImage.height()));
         Params newParams;
         newParams.setType(NOTIFY::REFRESH_PREVIEW);

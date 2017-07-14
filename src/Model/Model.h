@@ -30,24 +30,26 @@ public:
     void addEllipse(double centerX,double centerY,double a,double b);//a -- x axis, b -- y axis
     void addRect(double centerX, double centerY, double width, double height);
     void addText(int posX,int posY,string text);
+
     void LayoutTransform(int Change,int LayoutIndex);
     void LayoutOrderChange(int beforeLayoutIndex,int afterLayoutIndex,int mode=0);
-
     void DeleteLayout(int LayoutIndex);
     void PixmapFilter(Params params);
     void clearDoneEvent();
-
     void addDoneEvent(int commandtype,int layoutindex,shared_ptr<BaseShape> aftershape=nullptr,shared_ptr<BaseShape> beforeshape=nullptr,int beforelayoutindex=-1);
     void addBaseShape(vector<shared_ptr<BaseShape>>::iterator it,shared_ptr<BaseShape> shape);
     shared_ptr<BaseShape> NewBaseShape(shared_ptr<BaseShape> shape);
-
     void redo();
     void undo();
     void newProject(int width, int height);
     void saveProject(string path)const;
     void loadProject(string path);
+<<<<<<< HEAD
     int getCanvasWidth();
     int getCanvasHeight();
+=======
+
+>>>>>>> bc1199bd7d8f2baf6849a607892392e75e3e2aad
     void SetPen(Pen pen){this->pen=pen;}
     void SetPenColor(unsigned char r,unsigned char g,unsigned char b);
     void SetPenWidth(int newWidth){pen.setLineWidth(newWidth);}
