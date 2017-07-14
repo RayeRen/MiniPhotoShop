@@ -238,7 +238,8 @@ void ViewModel::RefreshDisplayImage(int i)
     backBrush.setTexture(QPixmap(":/img/img/background.png"));
     painter.fillRect(QRectF(0,0,displayImage.width(),displayImage.height()),backBrush);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    if(i>=0)
+
+    if(i>=0&&i<layouts->list.size())
     {
         QPen selectedRectPen(SETTINGS::SELETCED_RECT_COLOR);
         selectedRectPen.setStyle(SETTINGS::SELECTED_RETC_STYLE);
