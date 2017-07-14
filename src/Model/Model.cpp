@@ -159,6 +159,16 @@ void Model::DeleteLayout(int LayoutIndex){
      brush.setBackB(b);
  }
 
+ int Model::getCanvasWidth()
+ {
+     return width;
+ }
+
+ int Model::getCanvasHeight()
+ {
+     return height;
+ }
+
  void Model::ClearModel()
  {
      if(!layouts.list.empty())
@@ -174,10 +184,12 @@ void Model::DeleteLayout(int LayoutIndex){
      return layouts.list.empty();
  }
 
- void Model::newProject()
+ void Model::newProject(int width, int height)
  {
      qDebug()<<"newProject";
      ClearModel();
+     Model::width = width;
+     Model::height = height;
      Params params;
      params.setType(NOTIFY::CLEAR);
      notify(params);
@@ -188,6 +200,7 @@ void Model::DeleteLayout(int LayoutIndex){
      fstream out;
      int i;
      int num = layouts.list.size();
+     int canvas_width, canvas_height;
 
      out.open(path, ios::out | ios::binary);
      if(!out)
@@ -198,6 +211,12 @@ void Model::DeleteLayout(int LayoutIndex){
      string head("This is a mpsd project file");
      out.write(head.c_str(), head.size());
      out.write(reinterpret_cast<char*>(&num), sizeof(int));
+
+     canvas_width = Model::width;
+     canvas_height = Model::height;
+     qDebug() << "in file" << canvas_width << canvas_height;
+     out.write(reinterpret_cast<char*>(&canvas_width), sizeof(int));
+     out.write(reinterpret_cast<char*>(&canvas_height),sizeof(int));
 
      for(i = 0; i < num; i++)
      {
@@ -419,6 +438,7 @@ void Model::DeleteLayout(int LayoutIndex){
      int PosX, PosY, x1, y1, x2, y2, a, b, width, height, penStyle, lineWidth, brushstyle, format;
      unsigned char R, G, B;
      double scaleX, scaleY, angle;
+     int canvas_width, canvas_height;
 
      ClearModel();
      Params params;
@@ -434,6 +454,15 @@ void Model::DeleteLayout(int LayoutIndex){
      if(strcmp(head, "This is a mpsd project file") != 0)
          return;
      in.read(reinterpret_cast<char*>(&num), sizeof(int));
+     in.read(reinterpret_cast<char*>(&canvas_width), sizeof(int));
+     in.read(reinterpret_cast<char*>(&canvas_height), sizeof(int));
+     qDebug() << "out file" << canvas_width << canvas_height;
+     {
+         Params params;
+         params.setType(NOTIFY::LOAD_CANVAS);
+         params.setInts({canvas_width, canvas_height});
+         notify(params);
+     }
 
      for(int i = 0; i < num; i++)
      {
