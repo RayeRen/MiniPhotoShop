@@ -10,7 +10,7 @@
 
 ​	Layouts类维护了一条图层向量表，同时将Model和ViewModel设为友元以方便访问。
 
-![mz1](pic/mz1.jpg)
+![mz1](../pic/mz1.jpg)
 
 
 
@@ -20,7 +20,7 @@
 
 ​	Model类作为观察者模式中的被观察者，继承了Obervable类；作为MVVM模式的底层，提供了一系列操作数据的接口，是ViewModel层命令的直接调用对象。
 
-![mz2](pic/mz2.jpg)
+![mz2](../pic/mz2.jpg)
 
 ### 接口说明
 
